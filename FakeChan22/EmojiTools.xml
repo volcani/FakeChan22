@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>EmojiTools</name>
+    </assembly>
+    <members>
+        <member name="T:EmojiTools.EnumEmojiComponent">
+            <summary>
+            絵文字のタイプ
+            </summary>
+        </member>
+        <member name="F:EmojiTools.EnumEmojiComponent.NoneEmoji">
+            <summary>
+            絵文字ではない
+            </summary>
+        </member>
+        <member name="F:EmojiTools.EnumEmojiComponent.Component">
+            <summary>
+            修飾のために使う非絵文字 
+            </summary>
+        </member>
+        <member name="F:EmojiTools.EnumEmojiComponent.FullyQualified">
+            <summary>
+            完全修飾の絵文字
+            </summary>
+        </member>
+        <member name="F:EmojiTools.EnumEmojiComponent.MinimallyQualified">
+            <summary>
+            修飾が最小限の絵文字
+            </summary>
+        </member>
+        <member name="F:EmojiTools.EnumEmojiComponent.UnQualified">
+            <summary>
+            修飾されていない絵文字
+            </summary>
+        </member>
+        <member name="T:EmojiTools.EmojiTool">
+            <summary>
+            絵文字用のメソッド各種
+            </summary>
+        </member>
+        <member name="M:EmojiTools.EmojiTool.IsContainsEmoji(System.String)">
+            <summary>
+            絵文字を含むか判定する
+            </summary>
+            <param name="text">判定する文字列</param>
+            <returns>trueなら絵文字を含む</returns>
+        </member>
+        <member name="M:EmojiTools.EmojiTool.IsContainsEmoji(System.String[])">
+            <summary>
+            絵文字を含むか判定する
+            </summary>
+            <param name="texts">1文字毎に格納した文字列配列</param>
+            <returns>trueなら絵文字を含む</returns>
+        </member>
+        <member name="M:EmojiTools.EmojiTool.ChangeEmoji(System.String,System.Boolean)">
+            <summary>
+            絵文字の一部を通常の文字に変更する
+            </summary>
+            <param name="text">編集する文字列</param>
+            <param name="addspace">変更時先頭に空白を付与するか否か</param>
+            <returns>絵文字を変更した文字列</returns>
+        </member>
+        <member name="M:EmojiTools.EmojiTool.ChangeEmoji(System.String[],System.Boolean)">
+            <summary>
+            絵文字の一部を通常の文字に変更する
+            </summary>
+            <param name="texts">1文字毎に格納した文字列配列</param>
+            <param name="addspace">変更時先頭に空白を付与するか否か</param>
+            <returns>絵文字を変更した文字列</returns>
+        </member>
+        <member name="M:EmojiTools.EmojiTool.ChangeEmojiArray(System.String[],System.Boolean)">
+            <summary>
+            絵文字の一部を通常の文字に変更する
+            </summary>
+            <param name="texts">1文字毎に格納した文字列配列</param>
+            <param name="addspace">変更時先頭に空白を付与するか否か</param>
+            <returns>絵文字を変更した文字列配列</returns>
+        </member>
+        <member name="M:EmojiTools.EmojiTool.StripEmoji(System.String)">
+            <summary>
+            絵文字を除去する
+            </summary>
+            <param name="text">編集する文字列</param>
+            <returns>絵文字を除去した文字列</returns>
+        </member>
+        <member name="M:EmojiTools.EmojiTool.StripEmoji(System.String[])">
+            <summary>
+            絵文字を除去する
+            </summary>
+            <param name="texts">1文字毎に格納した文字列配列</param>
+            <returns>絵文字を除去した文字列</returns>
+        </member>
+        <member name="M:EmojiTools.EmojiTool.StripEmojiArray(System.String[])">
+            <summary>
+            絵文字を除去する
+            </summary>
+            <param name="texts">1文字毎に格納した文字列配列</param>
+            <returns>絵文字を除去した文字列配列</returns>
+        </member>
+        <member name="M:EmojiTools.EmojiTool.IsEmoji(System.String)">
+            <summary>
+            絵文字か否かを判定する
+            </summary>
+            <param name="singleCharStr">絵文字1文字分のString</param>
+            <returns>trueなら絵文字</returns>
+        </member>
+        <member name="M:EmojiTools.EmojiTool.GetEmojiName(System.String)">
+            <summary>
+            絵文字名称を取得する
+            </summary>
+            <param name="singleCharStr">絵文字1文字分のString</param>
+            <returns>絵文字の名称と追加説明。見つからない時は長さゼロの文字列</returns>
+        </member>
+        <member name="M:EmojiTools.EmojiTool.GetEmojiType(System.String)">
+            <summary>
+            絵文字のタイプを取得する
+            </summary>
+            <param name="singleCharStr">絵文字1文字分のString</param>
+            <returns>タイプ</returns>
+        </member>
+        <member name="M:EmojiTools.EmojiTool.ToStringArray(System.String)">
+            <summary>
+            文字列を1文字毎に切り分けてstring[] に変換する
+            </summary>
+            <param name="text">変換対象文字列</param>
+            <returns>変換したstring[]のオブジェクト</returns>
+        </member>
+    </members>
+</doc>

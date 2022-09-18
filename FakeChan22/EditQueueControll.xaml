@@ -1,0 +1,54 @@
+﻿<Window x:Class="FakeChan22.EditQueueControll"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FakeChan22"
+        mc:Ignorable="d"
+        Title="キュー制御設定" Height="243" Width="638" Closing="Window_Closing" Loaded="Window_Loaded">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Button Content="保存"  Grid.Column="3" Grid.Row="0" Margin="2,2,2,2" HorizontalAlignment="Right"  Click="Button_Click"  />
+
+        <Label Content="モード5" Grid.Column="0" Grid.Row="1" Margin="2,2,2,2" />
+        <TextBox x:Name="TextBoxMode5"  Grid.Column="1" Grid.Row="1" Margin="2,2,2,2" Text="" Width="30" VerticalAlignment="Center" HorizontalContentAlignment="Right" LostFocus="TextBoxMode5_LostFocus"/>
+        <Label Content=" モード4がこの回数継続するとモード5に移行します ※最新5コメントを残して他のコメントを削除します" Grid.Column="2" Grid.Row="1" Margin="2,2,2,2" />
+
+        <Label Content="モード4" Grid.Column="0" Grid.Row="2" Margin="2,2,2,2" />
+        <TextBox x:Name="TextBoxMode4"  Grid.Column="1" Grid.Row="2" Margin="2,2,2,2" Text="" Width="30" VerticalAlignment="Center" HorizontalContentAlignment="Right" LostFocus="TextBoxMode4_LostFocus"/>
+        <Label Content=" キュー内メッセージ数がこの値を超えるとモード4に移行します ※コメントを『(省略』に変更" Grid.Column="2" Grid.Row="2" Margin="2,2,2,2" />
+
+        <Label Content="モード3" Grid.Column="0" Grid.Row="3" Margin="2,2,2,2" />
+        <TextBox x:Name="TextBoxMode3"  Grid.Column="1" Grid.Row="3" Margin="2,2,2,2" Text="" Width="30" VerticalAlignment="Center" HorizontalContentAlignment="Right" LostFocus="TextBoxMode3_LostFocus" />
+        <Label Content=" キュー内メッセージ数がこの値を超えるとモード3に移行します ※話速 1.8倍、12文字目以降切捨て" Grid.Column="3" Grid.Row="3" Margin="2,2,2,2" />
+
+        <Label Content="モード2" Grid.Column="0" Grid.Row="4" Margin="2,2,2,2" />
+        <TextBox x:Name="TextBoxMode2"  Grid.Column="1" Grid.Row="4" Margin="2,2,2,2" Text="" Width="30"  VerticalAlignment="Center" HorizontalContentAlignment="Right" LostFocus="TextBoxMode2_LostFocus" />
+        <Label Content=" キュー内メッセージ数がこの値を超えるとモード2に移行します ※話速 1.8倍" Grid.Column="2" Grid.Row="4" Margin="2,2,2,2" />
+
+        <Label Content="モード1" Grid.Column="0" Grid.Row="5" Margin="2,2,2,2" />
+        <TextBox x:Name="TextBoxMode1"  Grid.Column="1" Grid.Row="5" Margin="2,2,2,2" Text="" Width="30"  VerticalAlignment="Center" HorizontalContentAlignment="Right" LostFocus="TextBoxMode1_LostFocus" />
+        <Label Content=" キュー内メッセージ数がこの値を超えるとモード1に移行します ※話速 1.5倍" Grid.Column="2" Grid.Row="5" Margin="2,2,2,2" />
+
+        <Label Content="モード0" Grid.Column="0" Grid.Row="6" Margin="2,2,2,2" />
+        <Label x:Name="LabelMode0" Content=""  Grid.Column="1" Grid.Row="6" Margin="2,2,2,2" HorizontalContentAlignment="Right" />
+        <Label Content=" キュー内メッセージ数がこの値以下ならモード0（通常）です" Grid.Column="2" Grid.Row="6" Margin="2,2,2,2" />
+
+
+    </Grid>
+</Window>
