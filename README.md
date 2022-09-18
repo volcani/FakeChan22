@@ -1,4 +1,4 @@
-# 偽装ちゃん(FakeChan)の後継の偽装ちゃん22(FakeChan22)
+# 偽装ちゃん22(FakeChan22) - 偽装ちゃん(FakeChan)の後継
 
 機能は大体同じですがもう少し細かい設定が出来るようにします。AssistantSeikaが必須なのは変わりません。
 
