@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.ServiceModel.Channels;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,8 +19,6 @@ namespace FakeChan22.Tasks
         object lockObj = new object();
         string CommentFilename = @"comment.xml";
 
-        BlockingCollection<XmlElement> CommQue = null;
-
         XmlDocument LogXmlDocument;
         XmlElement LogDocumentRoot;
 
@@ -31,11 +30,11 @@ namespace FakeChan22.Tasks
 
         public SubTaskCommentGen()
         {
-            CommQue = new BlockingCollection<XmlElement>();
         }
 
         public void TaskStart(string xmlpath)
         {
+
             CommentSavePath = xmlpath;
 
             LogXmlDocument = new XmlDocument();
@@ -47,7 +46,7 @@ namespace FakeChan22.Tasks
 
             try
             {
-                LogXmlDocument.Save(CommentSavePath + CommentFilename);
+                LogXmlDocument.Save(CommentSavePath + @"\" + CommentFilename);
             }
             catch (Exception)
             {
@@ -72,28 +71,26 @@ namespace FakeChan22.Tasks
             comment.SetAttribute("owner", "0");
             comment.InnerText = commentText;
             LogDocumentRoot.AppendChild(comment);
-            CommQue.Add(comment);
 
             CommentNumberCount++;
 
-            lock(lockObj)
+            int cnt = LogDocumentRoot.ChildNodes.Count;
+
+            if (500 < cnt)
             {
-                int cnt = LogDocumentRoot.ChildNodes.Count;
+                LogDocumentRoot.RemoveChild(LogDocumentRoot.FirstChild);
+            }
 
-                if (500 < cnt)
-                {
-                    LogDocumentRoot.RemoveChild(LogDocumentRoot.FirstChild);
-                }
-
+            Task.Run(() => {
                 try
                 {
-                    LogXmlDocument.Save(CommentSavePath + CommentFilename);
+                    LogXmlDocument.Save(CommentSavePath + @"\" + CommentFilename);
                 }
                 catch (Exception)
                 {
                     //
                 }
-            }
+            });
         }
 
     }

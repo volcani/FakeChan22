@@ -17,8 +17,6 @@ namespace FakeChan22.Tasks
 {
     public class TaskTalks
     {
-        static SemaphoreSlim semaphore;
-
         MessageQueueWrapper messQueue;
         FakeChanConfig config;
         Random r = new Random();
@@ -36,7 +34,6 @@ namespace FakeChan22.Tasks
             config = cnfg;
 
             api = new ScAPIs();
-            semaphore = new SemaphoreSlim(1,1);
 
             KickTalker = new DispatcherTimer();
             KickTalker.Tick += new EventHandler(KickTalker_Tick);
@@ -49,9 +46,9 @@ namespace FakeChan22.Tasks
 
         public void AsyncTalk(MessageData talk)
         {
-            int cid = 0;
-            string text = "";
-            string cname = "";
+            int cid;
+            string text;
+            string cname;
             Dictionary<string, decimal> eff;
             Dictionary<string, decimal> emo;
 
@@ -74,12 +71,12 @@ namespace FakeChan22.Tasks
                 if (!backgroundTalker.IsCompleted) return;
             }
 
-            MessageData item;
 
             backgroundTalker = Task.Run(() => {
 
                 messQueue.IsSyncTaking = true;
-                
+
+                MessageData item;
                 while ((item = messQueue.TakeQueue()) != null)
                 {
                     int cid;

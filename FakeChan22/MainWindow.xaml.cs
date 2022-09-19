@@ -22,6 +22,7 @@ using System.Runtime.Serialization.Json;
 using System.Text.RegularExpressions;
 using System.Runtime.Serialization;
 using System.Xml;
+using System.Reflection;
 
 namespace FakeChan22
 {
@@ -94,6 +95,10 @@ namespace FakeChan22
             TextBoxWinTitle.Text = config.fakeChan22WindowTitle;
 
             // comment.xml 生成パス設定
+            if ((config.commentXmGenlPath == "") || (config.commentXmGenlPath == @".\"))
+            {
+                config.commentXmGenlPath = Directory.GetParent(Assembly.GetExecutingAssembly().Location).FullName;
+            }
             TextBoxCommentXmlPath.Text = config.commentXmGenlPath;
         }
 
