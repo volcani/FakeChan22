@@ -18,7 +18,7 @@ namespace FakeChan22.Tasks
         ListenerConfigClipboard listenerConfigClipboard;
         TaskClipboard taskClipboard;
 
-        TaskSyncTalk talkTask;
+        TaskTalks talkTask;
 
         public TaskManager(ref List<ListenerConfig> list, ref MessageQueueWrapper que, ref FakeChanConfig cfg)
         {
@@ -27,7 +27,7 @@ namespace FakeChan22.Tasks
             config = cfg;
 
             // キュー＆発声タスク
-            talkTask = new TaskSyncTalk(ref messQue, ref config);
+            talkTask = new TaskTalks(ref messQue, ref config);
 
             // 受信タスク
             foreach (var item in list)

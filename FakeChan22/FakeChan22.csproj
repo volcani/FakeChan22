@@ -102,7 +102,7 @@
     <Compile Include="Tasks\TaskBase.cs" />
     <Compile Include="Tasks\TaskIpc.cs" />
     <Compile Include="Tasks\TaskManager.cs" />
-    <Compile Include="Tasks\TaskSyncTalk.cs" />
+    <Compile Include="Tasks\TaskTalks.cs" />
     <Page Include="EditListenerConfig.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

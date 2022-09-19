@@ -11,7 +11,7 @@ using System.Windows.Threading;
 
 namespace FakeChan22.Tasks
 {
-    public class TaskSyncTalk
+    public class TaskTalks
     {
         MessageQueueWrapper messQueue;
         FakeChanConfig config;
@@ -23,7 +23,7 @@ namespace FakeChan22.Tasks
 
         bool IsEntered = false;
 
-        public TaskSyncTalk(ref MessageQueueWrapper que, ref FakeChanConfig cnfg)
+        public TaskTalks(ref MessageQueueWrapper que, ref FakeChanConfig cnfg)
         {
             messQueue = que;
             config = cnfg;
