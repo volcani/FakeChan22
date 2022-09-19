@@ -166,6 +166,9 @@ namespace FakeChan22
             // クリップボード用設定
             taskManager.ClipboardTask.OnSetClipboardChain += SetClipboardListener;
             taskManager.ClipboardTask.OnRemoveClipboardChain += RemoveClipboardListener;
+
+            taskManager.TaskBoot();
+
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
