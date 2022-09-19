@@ -47,6 +47,7 @@ namespace FakeChan22
         private void TextBoxMode5_LostFocus(object sender, RoutedEventArgs e)
         {
             var tb = sender as TextBox;
+            int bklimit = queueParam.Mode4QueueLimit;
 
             try
             {
@@ -54,64 +55,101 @@ namespace FakeChan22
             }
             catch (Exception)
             {
-                tb.Text = queueParam.Mode5QueueLimit.ToString();
+                queueParam.Mode5QueueLimit = bklimit;
             }
+
+            tb.Text = queueParam.Mode5QueueLimit.ToString();
         }
 
         private void TextBoxMode4_LostFocus(object sender, RoutedEventArgs e)
         {
             var tb = sender as TextBox;
+            int bklimit = queueParam.Mode4QueueLimit;
 
             try
             {
-                queueParam.Mode4QueueLimit = int.Parse(tb.Text);
+                int limit = int.Parse(tb.Text);
+
+                if (limit > queueParam.Mode3QueueLimit)
+                {
+                    queueParam.Mode4QueueLimit = limit;
+                }
             }
             catch (Exception)
             {
-                tb.Text = queueParam.Mode4QueueLimit.ToString();
+                queueParam.Mode4QueueLimit = bklimit;
             }
+
+            tb.Text = queueParam.Mode4QueueLimit.ToString();
         }
 
         private void TextBoxMode3_LostFocus(object sender, RoutedEventArgs e)
         {
             var tb = sender as TextBox;
+            int bklimit = queueParam.Mode3QueueLimit;
 
             try
             {
-                queueParam.Mode3QueueLimit = int.Parse(tb.Text);
+                int limit = int.Parse(tb.Text);
+
+                if ((limit > queueParam.Mode2QueueLimit) && (limit < queueParam.Mode4QueueLimit))
+                {
+                    queueParam.Mode3QueueLimit = limit;
+                }
             }
             catch (Exception)
             {
-                tb.Text = queueParam.Mode3QueueLimit.ToString();
+                queueParam.Mode3QueueLimit = bklimit;
             }
+
+            tb.Text = queueParam.Mode3QueueLimit.ToString();
         }
 
         private void TextBoxMode2_LostFocus(object sender, RoutedEventArgs e)
         {
             var tb = sender as TextBox;
+            int bklimit = queueParam.Mode2QueueLimit;
 
             try
             {
-                queueParam.Mode2QueueLimit = int.Parse(tb.Text);
+                int limit = int.Parse(tb.Text);
+
+                if ((limit > queueParam.Mode1QueueLimit) && (limit < queueParam.Mode3QueueLimit))
+                {
+                    queueParam.Mode2QueueLimit = limit;
+                }
             }
             catch (Exception)
             {
-                tb.Text = queueParam.Mode2QueueLimit.ToString();
+                queueParam.Mode2QueueLimit = bklimit;
             }
+
+            tb.Text = queueParam.Mode2QueueLimit.ToString();
         }
 
         private void TextBoxMode1_LostFocus(object sender, RoutedEventArgs e)
         {
             var tb = sender as TextBox;
+            int bklimit = queueParam.Mode1QueueLimit;
 
             try
             {
-                queueParam.Mode1QueueLimit = int.Parse(tb.Text);
+                int limit = int.Parse(tb.Text);
+
+                if (limit < queueParam.Mode2QueueLimit)
+                {
+                    queueParam.Mode1QueueLimit = limit;
+                }
+
             }
             catch (Exception)
             {
-                tb.Text = queueParam.Mode1QueueLimit.ToString();
+                queueParam.Mode1QueueLimit = bklimit;
             }
+
+            tb.Text = queueParam.Mode1QueueLimit.ToString();
+
+            queueParam.Mode0QueueLimit = queueParam.Mode1QueueLimit - 1;
 
             LabelMode0.Content = queueParam.Mode0QueueLimit;
         }
