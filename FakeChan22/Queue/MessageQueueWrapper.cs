@@ -12,7 +12,9 @@ namespace FakeChan22
         BlockingCollection<MessageData> MessQue = null;
 
         public delegate void CallEventHandlerAddQueError(MessageData talk);
+        public delegate void CallEventHandlerTakeQueError();
         public event CallEventHandlerAddQueError OnAddQueueError;
+        public event CallEventHandlerTakeQueError OnTakeQueueError;
 
         public bool IsSyncTaking { get; set; }
 
@@ -37,6 +39,15 @@ namespace FakeChan22
             if (!f) OnAddQueueError?.Invoke(item);
 
             return f;
+        }
+        public MessageData TakeQueue()
+        {
+            MessageData item = null;
+            bool f = MessQue.TryTake(out item);
+
+            if (!f) OnTakeQueueError?.Invoke();
+
+            return item;
         }
 
         public ref BlockingCollection<MessageData> QueueRef()

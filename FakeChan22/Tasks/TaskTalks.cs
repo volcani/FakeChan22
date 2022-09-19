@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Markup.Localizer;
 using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -13,6 +14,8 @@ namespace FakeChan22.Tasks
 {
     public class TaskTalks
     {
+        object lockObj = new object();
+
         MessageQueueWrapper messQueue;
         FakeChanConfig config;
         Random r = new Random();
@@ -53,30 +56,83 @@ namespace FakeChan22.Tasks
 
         private void KickTalker_Tick(object sender, EventArgs e)
         {
+
             if ((!IsEntered)&& (messQueue.count != 0))
             {
-                IsEntered = true;
-
                 Task.Run(() =>
                 {
+                    if (IsEntered)
+                    {
+                        Console.WriteLine("Skip background entry");
+                        return;
+                    }
+
+                    Console.WriteLine("Entry backhround");
+                    lock (lockObj)
+                    {
+                        IsEntered = true;
+                    }
+
                     messQueue.IsSyncTaking = true;
 
                     int cid = 0;
                     string text = "";
                     string cname = "";
+                    string sname = "";
                     Dictionary<string, decimal> eff;
                     Dictionary<string, decimal> emo;
+                    int mode5count = 0;
 
                     foreach (var item in messQueue.QueueRef().GetConsumingEnumerable())
                     {
+                        if (messQueue.count > config.queueParam.Mode4QueueLimit)
+                        {
+                            mode5count++;
+                            if (mode5count == config.queueParam.Mode5QueueLimit)
+                            {
+                                messQueue.ClearQueue();
+                                Console.WriteLine("Clear Queue");
+                                break;
+                            }
+                        }
+
+                        sname = item.LsnrCfg.ServiceName;
+
                         (cid, cname, text, eff, emo) = ParseSpeakerAndParams(item);
+
+                        switch(config.queueParam.QueueMode(messQueue.count))
+                        {
+                            case 1:
+                                eff["speed"] = eff["speed"] * 1.5m; 
+                                break;
+
+                            case 2:
+                                eff["speed"] = eff["speed"] * 1.8m;
+                                break;
+
+                            case 3:
+                                eff["speed"] = eff["speed"] * 1.8m;
+                                text = text.Substring(0, 12);
+                                break;
+
+                            case 4:
+                                eff["speed"] = eff["speed"] * 1.8m;
+                                text = "(省略";
+                                break;
+
+                            case 0:
+                            default:
+                                break;
+                        }
+
+                        item.Message = text;
 
                         // 発声
                         try
                         {
-                            CommentGen.AddComment(item.Message, item.LsnrCfg.ServiceName, "", string.Format(@"{0}:{1}", cid, cname));
+                            CommentGen.AddComment(text, sname, "", string.Format(@"{0}:{1}", cid, cname));
 
-                            api.Talk(cid, item.Message, "", eff, emo);
+                            api.Talk(cid, text, "", eff, emo);
                         }
                         catch(Exception)
                         {
@@ -84,9 +140,15 @@ namespace FakeChan22.Tasks
                         }
 
                     }
+
                     messQueue.IsSyncTaking = false;
 
-                    IsEntered = false;
+                    lock (lockObj)
+                    {
+                        IsEntered = false;
+                    }
+                    Console.WriteLine("Exit backhround");
+
                 });
             }
         }
@@ -122,7 +184,6 @@ namespace FakeChan22.Tasks
 
             // 置換処理
             parsedText = ReplaceText.ParseText(sepText, replist);
-            talk.Message = parsedText;
 
             // 話者選定
             if ((sepMap != "") && (splist.SpeakerMaps.ContainsKey(sepMap)))
