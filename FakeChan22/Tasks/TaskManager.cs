@@ -12,13 +12,8 @@ namespace FakeChan22.Tasks
         Dictionary<ListenerConfig, TaskBase> tasks;
         MessageQueueWrapper messQue;
         FakeChanConfig config;
-        ScAPIs api = new ScAPIs();
-        Random r = new Random();
-
-        ListenerConfigClipboard listenerConfigClipboard;
-        TaskClipboard taskClipboard;
-
         TaskTalks talkTask;
+        TaskClipboard taskClipboard;
 
         public TaskManager(ref List<ListenerConfig> list, ref MessageQueueWrapper que, ref FakeChanConfig cfg)
         {
@@ -50,8 +45,8 @@ namespace FakeChan22.Tasks
                         break;
 
                     case ListenerType.clipboard:
-                        listenerConfigClipboard = item as ListenerConfigClipboard;
-                        taskClipboard = new TaskClipboard(ref listenerConfigClipboard, ref que);
+                        var lsnrClip = item as ListenerConfigClipboard;
+                        taskClipboard = new TaskClipboard(ref lsnrClip, ref que);
                         tasks.Add(item, taskClipboard);
                         break;
                 }
