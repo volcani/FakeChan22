@@ -21,6 +21,7 @@ using System.Security.Policy;
 using System.Runtime.Serialization.Json;
 using System.Text.RegularExpressions;
 using System.Runtime.Serialization;
+using System.Xml;
 
 namespace FakeChan22
 {
@@ -167,6 +168,7 @@ namespace FakeChan22
             taskManager.ClipboardTask.OnSetClipboardChain += SetClipboardListener;
             taskManager.ClipboardTask.OnRemoveClipboardChain += RemoveClipboardListener;
 
+            taskManager.OnLogging += Logging;
             taskManager.TaskBoot();
 
         }
@@ -337,7 +339,11 @@ namespace FakeChan22
             RemoveClipboardFormatListener(WinHelper.Handle);
         }
 
-
+        public void Logging(string logtext)
+        {
+            TextBoxStatu.AppendText(logtext + Environment.NewLine);
+            TextBoxStatu.ScrollToEnd();
+        }
 
         ///// イベントハンドラ
 

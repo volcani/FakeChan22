@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Documents;
+using static FakeChan22.Tasks.TaskBase;
 
 namespace FakeChan22.Tasks
 {
@@ -15,6 +16,9 @@ namespace FakeChan22.Tasks
         TaskTalks talkTask;
         TaskClipboard taskClipboard;
 
+        public delegate void CallEventHandlerLogging(string logtext);
+        public event CallEventHandlerLogging OnLogging;
+
         public TaskManager(ref List<ListenerConfig> list, ref MessageQueueWrapper que, ref FakeChanConfig cfg)
         {
             tasks = new Dictionary<ListenerConfig, TaskBase>();
@@ -23,6 +27,7 @@ namespace FakeChan22.Tasks
 
             // キュー＆発声タスク
             talkTask = new TaskTalks(ref messQue, ref config);
+            talkTask.OnLogging += Logging;
 
             // 受信タスク
             foreach (var item in list)
@@ -52,6 +57,7 @@ namespace FakeChan22.Tasks
                 }
 
                 tasks[item].OnCallAsyncTalk += talkTask.AsyncTalk;
+                tasks[item].OnLogging += Logging;
             }
 
         }
@@ -90,5 +96,9 @@ namespace FakeChan22.Tasks
             }
         }
 
+        private void Logging(string logText)
+        {
+            OnLogging?.Invoke(logText);
+        }
     }
 }

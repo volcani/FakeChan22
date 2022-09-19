@@ -47,11 +47,15 @@ namespace FakeChan22
         private void TextBoxMode5_LostFocus(object sender, RoutedEventArgs e)
         {
             var tb = sender as TextBox;
-            int bklimit = queueParam.Mode4QueueLimit;
+            int bklimit = queueParam.Mode5QueueLimit;
 
             try
             {
-                queueParam.Mode5QueueLimit = int.Parse(tb.Text);
+                int limit = int.Parse(tb.Text);
+                if (limit > queueParam.Mode4QueueLimit)
+                {
+                    queueParam.Mode5QueueLimit = limit;
+                }
             }
             catch (Exception)
             {
@@ -70,7 +74,7 @@ namespace FakeChan22
             {
                 int limit = int.Parse(tb.Text);
 
-                if (limit > queueParam.Mode3QueueLimit)
+                if ((limit > queueParam.Mode3QueueLimit) && (limit < queueParam.Mode5QueueLimit))
                 {
                     queueParam.Mode4QueueLimit = limit;
                 }

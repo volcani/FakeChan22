@@ -11,11 +11,6 @@ namespace FakeChan22
     {
         BlockingCollection<MessageData> MessQue = null;
 
-        public delegate void CallEventHandlerAddQueError(MessageData talk);
-        public delegate void CallEventHandlerTakeQueError();
-        public event CallEventHandlerAddQueError OnAddQueueError;
-        public event CallEventHandlerTakeQueError OnTakeQueueError;
-
         public bool IsSyncTaking { get; set; }
 
         public int NowtaskId { get; set; }
@@ -28,24 +23,24 @@ namespace FakeChan22
 
         public void ClearQueue()
         {
-            BlockingCollection<MessageData>[] t = { MessQue };
-            BlockingCollection<MessageData>.TryTakeFromAny(t, out MessageData item);
+            while (MessQue.Count > 0)
+            {
+                _ = MessQue.TryTake(out MessageData item);
+            }
         }
 
         public bool AddQueue(MessageData item)
         {
-            bool f = MessQue.TryAdd(item, 1000);
-
-            if (!f) OnAddQueueError?.Invoke(item);
-
-            return f;
+            return MessQue.TryAdd(item, 1000);
         }
         public MessageData TakeQueue()
         {
-            MessageData item = null;
-            bool f = MessQue.TryTake(out item);
+            MessageData item;
 
-            if (!f) OnTakeQueueError?.Invoke();
+            if (!MessQue.TryTake(out item))
+            {
+                item = null;
+            }
 
             return item;
         }

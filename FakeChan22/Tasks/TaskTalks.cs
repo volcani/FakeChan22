@@ -4,7 +4,10 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Web.UI.WebControls;
+using System.Windows;
 using System.Windows.Markup.Localizer;
 using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
@@ -14,17 +17,18 @@ namespace FakeChan22.Tasks
 {
     public class TaskTalks
     {
-        object lockObj = new object();
+        static SemaphoreSlim semaphore;
 
         MessageQueueWrapper messQueue;
         FakeChanConfig config;
         Random r = new Random();
         DispatcherTimer KickTalker;
         SubTaskCommentGen CommentGen;
-
         ScAPIs api;
+        Task backgroundTalker;
 
-        bool IsEntered = false;
+        public delegate void CallEventHandlerLogging(string logText);
+        public event CallEventHandlerLogging OnLogging;
 
         public TaskTalks(ref MessageQueueWrapper que, ref FakeChanConfig cnfg)
         {
@@ -32,9 +36,11 @@ namespace FakeChan22.Tasks
             config = cnfg;
 
             api = new ScAPIs();
+            semaphore = new SemaphoreSlim(1,1);
+
             KickTalker = new DispatcherTimer();
             KickTalker.Tick += new EventHandler(KickTalker_Tick);
-            KickTalker.Interval = new TimeSpan(0, 0, 1);
+            KickTalker.Interval = new TimeSpan(0, 0, 0, 1, 0);
             KickTalker.Start();
 
             CommentGen = new SubTaskCommentGen();
@@ -54,103 +60,87 @@ namespace FakeChan22.Tasks
             api.TalkAsync(cid, text, eff, emo);
         }
 
+        private void Logging(string logText)
+        {
+            OnLogging?.Invoke(logText);
+        }
+
         private void KickTalker_Tick(object sender, EventArgs e)
         {
+            if (messQueue.count == 0) return;
 
-            if ((!IsEntered)&& (messQueue.count != 0))
+            if (backgroundTalker != null)
             {
-                Task.Run(() =>
+                if (!backgroundTalker.IsCompleted) return;
+            }
+
+            MessageData item;
+
+            backgroundTalker = Task.Run(() => {
+
+                messQueue.IsSyncTaking = true;
+                
+                while ((item = messQueue.TakeQueue()) != null)
                 {
-                    if (IsEntered)
-                    {
-                        Console.WriteLine("Skip background entry");
-                        return;
-                    }
-
-                    Console.WriteLine("Entry backhround");
-                    lock (lockObj)
-                    {
-                        IsEntered = true;
-                    }
-
-                    messQueue.IsSyncTaking = true;
-
-                    int cid = 0;
-                    string text = "";
-                    string cname = "";
-                    string sname = "";
+                    int cid;
+                    string text;
+                    string cname;
+                    string sname;
                     Dictionary<string, decimal> eff;
                     Dictionary<string, decimal> emo;
-                    int mode5count = 0;
 
-                    foreach (var item in messQueue.QueueRef().GetConsumingEnumerable())
+                    sname = item.LsnrCfg.ServiceName;
+                    (cid, cname, text, eff, emo) = ParseSpeakerAndParams(item);
+
+                    switch (config.queueParam.QueueMode(messQueue.count))
                     {
-                        if (messQueue.count > config.queueParam.Mode4QueueLimit)
-                        {
-                            mode5count++;
-                            if (mode5count == config.queueParam.Mode5QueueLimit)
-                            {
-                                messQueue.ClearQueue();
-                                Console.WriteLine("Clear Queue");
-                                break;
-                            }
-                        }
+                        case 1:
+                            eff["speed"] = eff["speed"] * 1.3m;
+                            break;
 
-                        sname = item.LsnrCfg.ServiceName;
+                        case 2:
+                            eff["speed"] = eff["speed"] * 1.5m;
+                            break;
 
-                        (cid, cname, text, eff, emo) = ParseSpeakerAndParams(item);
+                        case 3:
+                            eff["speed"] = eff["speed"] * 1.7m;
+                            text = text.Length > 24 ? text.Substring(0, 24) + "(以下略" : text;
+                            break;
 
-                        switch(config.queueParam.QueueMode(messQueue.count))
-                        {
-                            case 1:
-                                eff["speed"] = eff["speed"] * 1.5m; 
-                                break;
+                        case 4:
+                            eff["speed"] = eff["speed"] * 1.9m;
+                            text = text.Length > 12 ? text.Substring(0, 12) + "(以下略" : text;
+                            break;
 
-                            case 2:
-                                eff["speed"] = eff["speed"] * 1.8m;
-                                break;
+                        case 5:
+                            messQueue.ClearQueue();
+                            eff["speed"] = eff["speed"] * 1.7m;
+                            text = "キュークリアします";
+                            break;
 
-                            case 3:
-                                eff["speed"] = eff["speed"] * 1.8m;
-                                text = text.Substring(0, 12);
-                                break;
-
-                            case 4:
-                                eff["speed"] = eff["speed"] * 1.8m;
-                                text = "(省略";
-                                break;
-
-                            case 0:
-                            default:
-                                break;
-                        }
-
-                        item.Message = text;
-
-                        // 発声
-                        try
-                        {
-                            CommentGen.AddComment(text, sname, "", string.Format(@"{0}:{1}", cid, cname));
-
-                            api.Talk(cid, text, "", eff, emo);
-                        }
-                        catch(Exception)
-                        {
-                            //
-                        }
-
+                        case 0:
+                        default:
+                            break;
                     }
 
-                    messQueue.IsSyncTaking = false;
+                    item.Message = text;
 
-                    lock (lockObj)
+                    try
                     {
-                        IsEntered = false;
-                    }
-                    Console.WriteLine("Exit backhround");
+                        CommentGen.AddComment(text, sname, "", string.Format(@"{0}:{1}", cid, cname));
 
-                });
-            }
+                        api.Talk(cid, text, "", eff, emo);
+                    }
+                    catch (Exception)
+                    {
+                        //
+                    }
+                }
+
+                messQueue.IsSyncTaking = false;
+            });
+
+
         }
 
         private (int cid, string spkrName, string text, Dictionary<string,decimal> eff, Dictionary<string, decimal> emo) ParseSpeakerAndParams(MessageData talk)

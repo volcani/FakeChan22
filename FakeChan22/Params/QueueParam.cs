@@ -31,7 +31,7 @@ namespace FakeChan22
 
         public QueueParam()
         {
-            Mode5QueueLimit = 3;
+            Mode5QueueLimit = 30;
             Mode4QueueLimit = 21;
             Mode3QueueLimit = 16;
             Mode2QueueLimit = 10;
@@ -41,7 +41,8 @@ namespace FakeChan22
 
         public int QueueMode(int queCount)
         {
-                 if (queCount > Mode4QueueLimit) return 4;
+                 if (queCount > Mode5QueueLimit) return 5;
+            else if (queCount > Mode4QueueLimit) return 4;
             else if (queCount > Mode3QueueLimit) return 3;
             else if (queCount > Mode2QueueLimit) return 2;
             else if (queCount > Mode1QueueLimit) return 1;

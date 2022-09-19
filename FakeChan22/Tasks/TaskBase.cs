@@ -15,7 +15,9 @@ namespace FakeChan22.Tasks
         public MessageQueueWrapper MessQueue = null;
 
         public delegate void CallEventHandlerCallTalk(MessageData talk);
+        public delegate void CallEventHandlerLogging(string logtext);
         public event CallEventHandlerCallTalk OnCallAsyncTalk;
+        public event CallEventHandlerLogging OnLogging;
 
         internal void AsyncTalk(MessageData talk)
         {
@@ -25,6 +27,11 @@ namespace FakeChan22.Tasks
         internal void SyncTalk(MessageData talk)
         {
             MessQueue.AddQueue(talk);
+        }
+
+        internal void Logging(string logText)
+        {
+            OnLogging?.Invoke(logText);
         }
 
         public virtual void TaskStart()
