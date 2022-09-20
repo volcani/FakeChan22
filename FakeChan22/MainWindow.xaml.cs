@@ -433,8 +433,27 @@ namespace FakeChan22
         private void ButtonListenerUpd_Click(object sender, RoutedEventArgs e)
         {
             if (ComboBoxListenerConfigLists.SelectedIndex == -1) return;
+            
+            var lsnrType = (ComboBoxListenerConfigLists.SelectedItem as ListenerConfig).LsnrType;
+            ListenerConfig Lsner = null;
+            switch (lsnrType)
+            {
+                case ListenerType.ipc:
+                    Lsner = ComboBoxListenerConfigLists.SelectedItem as ListenerConfigIpc;
+                    break;
 
-            ListenerConfig Lsner = ComboBoxListenerConfigLists.SelectedItem as ListenerConfig;
+                case ListenerType.socket:
+                    Lsner = ComboBoxListenerConfigLists.SelectedItem as ListenerConfigSocket;
+                    break;
+
+                case ListenerType.http:
+                    Lsner = ComboBoxListenerConfigLists.SelectedItem as ListenerConfigHttp;
+                    break;
+
+                case ListenerType.clipboard:
+                    Lsner = ComboBoxListenerConfigLists.SelectedItem as ListenerConfigClipboard;
+                    break;
+            }
 
             Window wd = new EditListenerConfig(ref Lsner, ref config.speakerLists, ref config.replaceDefinitionLists);
             wd.ShowDialog();
@@ -469,5 +488,15 @@ namespace FakeChan22
 
         }
 
+        private void ButtonResetListenerConfig_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("全リスナ設定を初期化します","初期化", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                config.listenerConfigLists.Clear();
+
+                MessageBox.Show("初期化しました。再度立ち上げてください。", "初期化");
+                Application.Current.Shutdown();
+            }
+        }
     }
 }

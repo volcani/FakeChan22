@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FakeChan22"
         mc:Ignorable="d"
-        Title="偽装ちゃん22 x.x.x" Height="279" Width="534" Loaded="Window_Loaded" Closing="Window_Closing">
+        Title="偽装ちゃん22 x.x.x" Height="313" Width="548" Loaded="Window_Loaded" Closing="Window_Closing">
     <TabControl>
-        
+
         <TabItem Header="設定">
 
             <StackPanel Margin="2,2,2,2" >
@@ -24,6 +24,7 @@
                     </Grid.ColumnDefinitions>
 
                     <Grid.RowDefinitions>
+                        <RowDefinition />
                         <RowDefinition />
                         <RowDefinition />
                         <RowDefinition />
@@ -62,11 +63,14 @@
                     <TextBox x:Name="TextBoxCommentXmlPath" Text="" Grid.Column="1" Grid.Row="6" VerticalAlignment="Center" HorizontalAlignment="Stretch" IsReadOnly="True"/>
                     <Button Content="編集"  Grid.Column="3" Grid.Row="6" Margin="2,2,2,2" Click="ButtonCommentUpd_Click" />
 
+                    <Label Content="リスナ初期化" Grid.Column="0" Grid.Row="7"  Margin="2,2,2,2"/>
+                    <Button Content="全リスナ初期化"  Grid.Column="1" Grid.Row="7" Margin="2,2,2,2" Click="ButtonResetListenerConfig_Click" />
+
                 </Grid>
             </StackPanel>
 
         </TabItem>
-        
+
         <TabItem Header="情報">
             <TextBox x:Name="TextBoxStatus" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" IsReadOnly="True" VerticalScrollBarVisibility="Auto"/>
 
