@@ -5,6 +5,7 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using FakeChan22.Tasks;
+using System.Net.Sockets;
 
 namespace FakeChan22
 {
@@ -79,7 +80,7 @@ namespace FakeChan22
             int speed = -1;
             int tone = -1;
             string talktext = "";
-
+            string callback = "";
 
             string UrlPath = request.Url.AbsolutePath.ToUpper();
 
@@ -111,6 +112,10 @@ namespace FakeChan22
 
                     case "tone":
                         int.TryParse(s[1], out tone);
+                        break;
+
+                    case "callback":
+                        callback = s[1];
                         break;
 
                     default:
@@ -145,36 +150,61 @@ namespace FakeChan22
                         SyncTalk(talk);
                     }
 
-                    responseMessageBuff = Encoding.UTF8.GetBytes("{" + string.Format(@"""taskId"":{0}", talk.TaskId) + "}");
+                    if (callback != "") sb.AppendLine(string.Format(@"{0}(", callback));
+                    sb.Append("{" + string.Format(@"""taskId"":{0}", talk.TaskId) + "}");
+                    if (callback != "") sb.AppendLine(@");");
+                    responseMessageBuff = Encoding.UTF8.GetBytes(sb.ToString());
                     break;
 
                 case "/GETVOICELIST":
                     sb.Clear();
+                    if (callback != "") sb.AppendLine( string.Format(@"{0}(",callback));
                     sb.AppendLine(@"{ ""voiceList"":[");
-                    sb.Append(string.Join(",", lsnrCfg.SpeakerListDefault.Speakers.Select((v,i) => "{" + string.Format(listFmt, i, v.Name) + "}").ToArray()));
+                    sb.Append(string.Join(",", lsnrCfg.SpeakerListDefault.Speakers.Select((v, i) => "{" + string.Format(listFmt, i + 1, v.Name) + "}").ToArray()));
                     sb.AppendLine(@"] }");
+                    if (callback != "") sb.AppendLine(@")");
                     responseMessageBuff = Encoding.UTF8.GetBytes(sb.ToString());
                     Logging(@"HTTP, /GETVOICELIST");
                     break;
 
                 case "/GETTALKTASKCOUNT":
-                    responseMessageBuff = Encoding.UTF8.GetBytes("{" + string.Format(@"""talkTaskCount"":{0}", MessQueue.count) + "}");
+                    sb.Clear();
+                    if (callback != "") sb.AppendLine(string.Format(@"{0}(", callback));
+                    sb.Append("{" + string.Format(@"""talkTaskCount"":{0}", MessQueue.count) + "}");
+                    if (callback != "") sb.AppendLine(@")");
+                    responseMessageBuff = Encoding.UTF8.GetBytes(sb.ToString());
                     break;
 
                 case "/GETNOWTASKID":
-                    responseMessageBuff = Encoding.UTF8.GetBytes("{" + string.Format(@"""nowTaskId"":{0}", MessQueue.NowtaskId) + "}");
+                    sb.Clear();
+                    if (callback != "") sb.AppendLine(string.Format(@"{0}(", callback));
+                    sb.Append("{" + string.Format(@"""nowTaskId"":{0}", MessQueue.NowtaskId) + "}");
+                    if (callback != "") sb.AppendLine(@")");
+                    responseMessageBuff = Encoding.UTF8.GetBytes(sb.ToString());
                     break;
 
                 case "/GETNOWPLAYING":
-                    responseMessageBuff = Encoding.UTF8.GetBytes("{" + string.Format(@"""nowPlaying"":{0}", MessQueue.IsSyncTaking) + "}");
+                    sb.Clear();
+                    if (callback != "") sb.AppendLine(string.Format(@"{0}(", callback));
+                    sb.Append("{" + string.Format(@"""nowPlaying"":{0}", MessQueue.IsSyncTaking) + "}");
+                    if (callback != "") sb.AppendLine(@")");
+                    responseMessageBuff = Encoding.UTF8.GetBytes(sb.ToString());
                     break;
 
                 case "/CLEAR":
-                    responseMessageBuff = Encoding.UTF8.GetBytes(@"{}");
+                    sb.Clear();
+                    if (callback != "") sb.AppendLine(string.Format(@"{0}(", callback));
+                    sb.Append(@"{}");
+                    if (callback != "") sb.AppendLine(@")");
+                    responseMessageBuff = Encoding.UTF8.GetBytes(sb.ToString());
                     break;
 
                 default:
-                    responseMessageBuff = Encoding.UTF8.GetBytes(@"{ ""Message"":""content not found.""}");
+                    sb.Clear();
+                    if (callback != "") sb.AppendLine(string.Format(@"{0}(", callback));
+                    sb.Append(@"{ ""Message"":""content not found.""}");
+                    if (callback != "") sb.AppendLine(@")");
+                    responseMessageBuff = Encoding.UTF8.GetBytes(sb.ToString());
                     response.StatusCode = 404;
                     break;
             }
