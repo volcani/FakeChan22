@@ -160,7 +160,7 @@ namespace FakeChan22
                     sb.Clear();
                     if (callback != "") sb.AppendLine( string.Format(@"{0}(",callback));
                     sb.AppendLine(@"{ ""voiceList"":[");
-                    sb.Append(string.Join(",", lsnrCfg.SpeakerListDefault.Speakers.Select((v, i) => "{" + string.Format(listFmt, i + 1, v.Name) + "}").ToArray()));
+                    sb.Append(string.Join(",", lsnrCfg.SpeakerListDefault.ValidSpeakers.Select((v, i) => "{" + string.Format(listFmt, i, v.Value.Name) + "}").ToArray()));
                     sb.AppendLine(@"] }");
                     if (callback != "") sb.AppendLine(@")");
                     responseMessageBuff = Encoding.UTF8.GetBytes(sb.ToString());
