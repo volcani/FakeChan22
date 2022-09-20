@@ -4,7 +4,7 @@ using System.Xml;
 
 namespace FakeChan22.Tasks
 {
-    class SubTaskCommentGen
+    public class SubTaskCommentGen
     {
         object lockObj = new object();
         string CommentFilename = @"comment.xml";

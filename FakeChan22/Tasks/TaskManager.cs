@@ -7,11 +7,27 @@ namespace FakeChan22.Tasks
         Dictionary<ListenerConfig, TaskBase> tasks;
         MessageQueueWrapper messQue;
         FakeChanConfig config;
-        TaskTalks talkTask;
+        SubTaskTalks talkTask;
         TaskClipboard taskClipboard;
 
         public delegate void CallEventHandlerLogging(string logtext);
         public event CallEventHandlerLogging OnLogging;
+
+        public TaskClipboard ClipboardTask
+        {
+            get
+            {
+                return taskClipboard;
+            }
+        }
+
+        public SubTaskCommentGen CommenGenTask
+        {
+            get
+            {
+                return talkTask.CommentGenSubTask;
+            }
+        }
 
         public TaskManager(ref List<ListenerConfig> list, ref MessageQueueWrapper que, ref FakeChanConfig cfg)
         {
@@ -20,7 +36,7 @@ namespace FakeChan22.Tasks
             config = cfg;
 
             // キュー＆発声タスク
-            talkTask = new TaskTalks(ref messQue, ref config);
+            talkTask = new SubTaskTalks(ref messQue, ref config);
             talkTask.OnLogging += Logging;
 
             // 受信タスク
@@ -79,14 +95,6 @@ namespace FakeChan22.Tasks
                 tasks[lsnr].TaskStop();
 
                 if (lsnr.IsEnable) tasks[lsnr].TaskStart();
-            }
-        }
-
-        public TaskClipboard ClipboardTask
-        {
-            get
-            {
-                return taskClipboard;
             }
         }
 

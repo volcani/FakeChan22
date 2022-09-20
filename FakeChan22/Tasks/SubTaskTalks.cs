@@ -1,25 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Threading;
+using System.Runtime.Remoting.Contexts;
+using System.Text.RegularExpressions;
 
 namespace FakeChan22.Tasks
 {
-    public class TaskTalks
+    public class SubTaskTalks
     {
         MessageQueueWrapper messQueue;
         FakeChanConfig config;
         Random r = new Random();
         DispatcherTimer KickTalker;
+        DispatcherTimer KickLogQue;
         SubTaskCommentGen CommentGen;
         ScAPIs api;
         Task backgroundTalker;
+        BlockingCollection<string> logQue = new BlockingCollection<string>();
 
         public delegate void CallEventHandlerLogging(string logText);
         public event CallEventHandlerLogging OnLogging;
 
-        public TaskTalks(ref MessageQueueWrapper que, ref FakeChanConfig cnfg)
+        public SubTaskCommentGen CommentGenSubTask
+        {
+            get
+            {
+                return CommentGen;
+            }
+        }
+
+        public SubTaskTalks(ref MessageQueueWrapper que, ref FakeChanConfig cnfg)
         {
             messQueue = que;
             config = cnfg;
@@ -31,8 +44,35 @@ namespace FakeChan22.Tasks
             KickTalker.Interval = new TimeSpan(0, 0, 0, 1, 0);
             KickTalker.Start();
 
+            KickLogQue = new DispatcherTimer();
+            KickLogQue.Tick += new EventHandler(Logging);
+            KickLogQue.Interval = new TimeSpan(0, 0, 0, 1, 0);
+            KickLogQue.Start();
+
             CommentGen = new SubTaskCommentGen();
             CommentGen.TaskStart(config.commentXmGenlPath);
+        }
+
+        private void Logging(object sender, EventArgs e)
+        {
+            if (logQue.Count!=0)
+            {
+                try
+                {
+                    string txt = logQue.Take();
+
+                    OnLogging?.Invoke(string.Format(@"{0} {1}", DateTime.Now, txt));
+                }
+                catch(Exception)
+                {
+                    //
+                }
+            }
+        }
+
+        private void Log(string logText)
+        {
+            logQue.Add(logText);
         }
 
         public void AsyncTalk(MessageData talk)
@@ -46,11 +86,6 @@ namespace FakeChan22.Tasks
             (cid, cname, text, eff, emo) = ParseSpeakerAndParams(talk);
 
             api.TalkAsync(cid, text, eff, emo);
-        }
-
-        private void Logging(string logText)
-        {
-            OnLogging?.Invoke(logText);
         }
 
         private void KickTalker_Tick(object sender, EventArgs e)
@@ -70,17 +105,22 @@ namespace FakeChan22.Tasks
                 MessageData item;
                 while ((item = messQueue.TakeQueue()) != null)
                 {
+                    int mode;
                     int cid;
                     string text;
+                    string orgtext;
                     string cname;
                     string sname;
                     Dictionary<string, decimal> eff;
                     Dictionary<string, decimal> emo;
 
                     sname = item.LsnrCfg.ServiceName;
+                    orgtext = Regex.Replace(item.OrgMessage, @"(\r\n|\r|\n)", "");
                     (cid, cname, text, eff, emo) = ParseSpeakerAndParams(item);
+                    text = Regex.Replace(text, @"(\r\n|\r|\n)", "");
 
-                    switch (config.queueParam.QueueMode(messQueue.count))
+                    mode = config.queueParam.QueueMode(messQueue.count);
+                    switch (mode)
                     {
                         case 1:
                             eff["speed"] = eff["speed"] * 1.3m;
@@ -116,7 +156,7 @@ namespace FakeChan22.Tasks
                     try
                     {
                         CommentGen.AddComment(text, sname, "", string.Format(@"{0}:{1}", cid, cname));
-
+                        Log(string.Format(@"{0}, {1}, mode{2}, [{3}]", sname, cid, mode,text));
                         api.Talk(cid, text, "", eff, emo);
                     }
                     catch (Exception)

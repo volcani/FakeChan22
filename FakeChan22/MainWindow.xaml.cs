@@ -23,6 +23,7 @@ using System.Text.RegularExpressions;
 using System.Runtime.Serialization;
 using System.Xml;
 using System.Reflection;
+using System.Windows.Forms.VisualStyles;
 
 namespace FakeChan22
 {
@@ -346,8 +347,16 @@ namespace FakeChan22
 
         public void Logging(string logtext)
         {
-            TextBoxStatu.AppendText(logtext + Environment.NewLine);
-            TextBoxStatu.ScrollToEnd();
+            try
+            {
+                TextBoxStatus.AppendText(logtext + Environment.NewLine);
+                TextBoxStatus.ScrollToEnd();
+            }
+            catch(Exception)
+            {
+                TextBoxStatus.Clear();
+                TextBoxStatus.AppendText("-- Truncate log and create new log" + Environment.NewLine);
+            }
         }
 
         ///// イベントハンドラ
@@ -442,18 +451,24 @@ namespace FakeChan22
 
         private void ButtonCommentUpd_Click(object sender, RoutedEventArgs e)
         {
-            var dlg = new System.Windows.Forms.FolderBrowserDialog();
+            var dlg = new System.Windows.Forms.SaveFileDialog();
 
-            dlg.ShowDialog();
+            dlg.InitialDirectory = config.commentXmGenlPath;
+            dlg.Title = "comment.xml 生成フォルダ";
+            dlg.Filter = "コメントxml|comment.xml";
 
-            if (Directory.Exists(dlg.SelectedPath))
+            if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                TextBoxCommentXmlPath.Text = dlg.SelectedPath;
-                config.commentXmGenlPath  = dlg.SelectedPath;
+                if (Directory.Exists(Directory.GetParent(dlg.FileName).FullName))
+                {
+                    config.commentXmGenlPath = Directory.GetParent(dlg.FileName).FullName;
+                    TextBoxCommentXmlPath.Text = config.commentXmGenlPath;
 
-                //CommentGen.StopSaveTask();
-                //CommentGen.StartSaveTask(string.Format(@"{0}\\comment.xml", TextBoxCommentXmlPath.Text));
+                    taskManager.CommenGenTask.TaskStop();
+                    taskManager.CommenGenTask.TaskStart(config.commentXmGenlPath);
+                }
             }
+
         }
 
     }
