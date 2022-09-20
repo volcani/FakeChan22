@@ -104,8 +104,11 @@ namespace FakeChan22.Tasks
 
             backgroundTalker = Task.Run(() => {
 
+                if (messQueue.count == 0) return;
+                if (messQueue.IsSyncTaking) return;
+
                 messQueue.IsSyncTaking = true;
-                int taskid = 1;
+
                 MessageData item;
                 while ((item = messQueue.TakeQueue()) != null)
                 {
@@ -118,7 +121,7 @@ namespace FakeChan22.Tasks
                     Dictionary<string, decimal> eff;
                     Dictionary<string, decimal> emo;
 
-                    messQueue.NowtaskId = taskid;
+                    messQueue.NowtaskId = item.TaskId;
 
                     sname = item.LsnrCfg.ServiceName;
                     orgtext = Regex.Replace(item.OrgMessage, @"(\r\n|\r|\n)", "");
@@ -170,7 +173,7 @@ namespace FakeChan22.Tasks
                         //
                     }
 
-                    taskid++;
+                    messQueue.NowtaskId = 0;
                 }
 
                 messQueue.IsSyncTaking = false;

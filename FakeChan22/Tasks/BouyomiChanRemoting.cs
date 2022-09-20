@@ -23,7 +23,7 @@ namespace FNF.Utility
         public int taskId = 0;
 
         public int TalkTaskCount { get { return MessQue.count; } }
-        public int NowTaskId { get { return taskId; } }
+        public int NowTaskId { get { return MessQue.NowtaskId; } }
         public bool NowPlaying { get { return MessQue.IsSyncTaking; } }
         public bool Pause { get; set; }
 

@@ -33,7 +33,7 @@ namespace FakeChan22
             catch (Exception e)
             {
                 Logging(String.Format(@"CLIPBOARD, {0}", e.Message));
-                throw new Exception(string.Format(@"クリップボードリスナ起動でエラー : {0}", e.Message));
+                //throw new Exception(string.Format(@"クリップボードリスナ起動でエラー : {0}", e.Message));
             }
         }
 

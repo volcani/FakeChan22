@@ -37,7 +37,7 @@ namespace FakeChan22
             catch (Exception e)
             {
                 Logging(String.Format(@"SOCKET, {0}", e.Message));
-                throw new Exception(string.Format(@"Socketリスナ起動でエラー : {0}", e.Message));
+                //throw new Exception(string.Format(@"Socketリスナ起動でエラー : {0}", e.Message));
             }
         }
 
@@ -108,7 +108,7 @@ namespace FakeChan22
                             break;
 
                         case 0x0120: // 音声再生状態の取得
-                            byte data2 = MessQueue.count == 0 ? (byte)0 : (byte)1;
+                            byte data2 = MessQueue.IsSyncTaking ? (byte)1 : (byte)0;
                             using (BinaryWriter bw = new BinaryWriter(ns))
                             {
                                 bw.Write(data2);

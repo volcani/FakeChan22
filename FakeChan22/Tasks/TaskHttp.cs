@@ -41,7 +41,7 @@ namespace FakeChan22
             catch (Exception e)
             {
                 Logging(String.Format(@"HTTP, {0}", e.Message));
-                throw new Exception(string.Format(@"Httpリスナ起動でエラー : {0}", e.Message));
+                //throw new Exception(string.Format(@"Httpリスナ起動でエラー : {0}", e.Message));
             }
         }
 
@@ -166,7 +166,7 @@ namespace FakeChan22
                     break;
 
                 case "/GETNOWPLAYING":
-                    responseMessageBuff = Encoding.UTF8.GetBytes("{" + string.Format(@"""nowPlaying"":{0}", MessQueue.count != 0) + "}");
+                    responseMessageBuff = Encoding.UTF8.GetBytes("{" + string.Format(@"""nowPlaying"":{0}", MessQueue.IsSyncTaking) + "}");
                     break;
 
                 case "/CLEAR":

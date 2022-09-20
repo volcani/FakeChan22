@@ -53,7 +53,7 @@ namespace FakeChan22.Tasks
             catch (Exception e)
             {
                 Logging(String.Format(@"IPC, {0}", e.Message));
-                throw new Exception(string.Format(@"IPCリスナ起動でエラー : {0}",e.Message));
+                //throw new Exception(string.Format(@"IPCリスナ起動でエラー : {0}",e.Message));
             }
         }
 
@@ -72,11 +72,6 @@ namespace FakeChan22.Tasks
                     //
                 }
             }
-        }
-
-        public void SetTaskId(int Id)
-        {
-            ShareIpcObject.taskId = Id;
         }
 
         private void IPCAddTalkTask01(string TalkText)
@@ -101,8 +96,8 @@ namespace FakeChan22.Tasks
                 CompatVType= vType,
                 TaskId = MessQueue.count + 1
             };
-
-            if(LsnrCfg.IsAsync)
+            
+            if (LsnrCfg.IsAsync)
             {
                 AsyncTalk(talk);
             }
