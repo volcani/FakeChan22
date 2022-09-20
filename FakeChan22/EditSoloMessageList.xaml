@@ -1,0 +1,25 @@
+﻿<Window x:Class="FakeChan22.EditSoloMessageList"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FakeChan22"
+        mc:Ignorable="d"
+        Title="呟き定義編集" Height="450" Width="800" Loaded="Window_Loaded" Closing="Window_Closing">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50*"/>
+            <ColumnDefinition Width="50*"/>
+        </Grid.ColumnDefinitions>
+
+        <TreeView x:Name="TreeViewSoloSpeachMessages" Grid.Row="0" Grid.Column="0" >
+        </TreeView>
+        
+        <StackPanel x:Name="StackPanelEdit" Grid.Row="0" Grid.Column="0"/>
+        
+    </Grid>
+</Window>

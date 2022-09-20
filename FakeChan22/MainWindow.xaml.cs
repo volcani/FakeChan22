@@ -418,6 +418,12 @@ namespace FakeChan22
             }
         }
 
+        private void ButtonSoloSpeechUpd_Click(object sender, RoutedEventArgs e)
+        {
+            Window wd = new EditSoloMessageList(ref config);
+            wd.ShowDialog();
+        }
+
         private void ButtonQueueUpd_Click(object sender, RoutedEventArgs e)
         {
             Window wd = new EditQueueControll(ref config.queueParam);

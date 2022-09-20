@@ -68,6 +68,9 @@
       <DependentUpon>EditListenerConfig.xaml</DependentUpon>
     </Compile>
     <Compile Include="Configs\FakeChanConfig.cs" />
+    <Compile Include="EditSoloMessageList.xaml.cs">
+      <DependentUpon>EditSoloMessageList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Params\Avator.cs" />
     <Compile Include="Params\AvatorParamSpec.cs" />
     <Compile Include="ConnectAs\IScAPIs.cs" />
@@ -78,6 +81,7 @@
     <Compile Include="EditReplaceList.xaml.cs">
       <DependentUpon>EditReplaceList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Params\SoloSpeachDefinition.cs" />
     <Compile Include="Plugins\JudgeTextLang.cs" />
     <Compile Include="Params\ListenerConfig.cs" />
     <Compile Include="Params\ListenerConfigClipboard.cs" />
@@ -112,6 +116,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="EditReplaceList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EditSoloMessageList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

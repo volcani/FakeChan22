@@ -52,15 +52,15 @@
                     <Label Content="キュー制御" Grid.Column="0" Grid.Row="3"  Margin="2,2,2,2"/>
                     <Button Content="編集"  Grid.Column="1" Grid.Row="3" Width="40" HorizontalAlignment="Left"  Margin="2,2,2,2" Click="ButtonQueueUpd_Click" />
 
+                    <Label Content="呟き制御" Grid.Column="0" Grid.Row="4"  Margin="2,2,2,2"/>
+                    <Button Content="編集"  Grid.Column="1" Grid.Row="4" Width="40" HorizontalAlignment="Left"  Margin="2,2,2,2"  IsEnabled="False" Click="ButtonSoloSpeechUpd_Click" />
+
                     <Label Content="タイトル" Grid.Column="0" Grid.Row="5"  Margin="2,2,2,2"/>
                     <TextBox x:Name="TextBoxWinTitle" Text="" Grid.Column="1" Grid.Row="5"  Margin="2,2,2,2" VerticalAlignment="Center" TextChanged="TextBoxWinTitle_TextChanged"/>
 
-                    <Label Content="コメジェネ" Grid.Column="0" Grid.Row="6"  Margin="2,2,2,2"/>
-                    <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="7" Margin="2,2,2,2" VerticalAlignment="Center">
-                        <Label Content="comment.xml生成フォルダ" />
-                        <TextBox x:Name="TextBoxCommentXmlPath" Text="" Width="240" Grid.Column="1" Grid.Row="6" VerticalAlignment="Center" IsReadOnly="True"/>
-                        <Button Content="編集"  Grid.Column="3" Grid.Row="6" Width="40" Margin="2,2,2,2" Click="ButtonCommentUpd_Click" />
-                    </StackPanel>
+                    <Label Content="コメントパス" Grid.Column="0" Grid.Row="6"  Margin="2,2,2,2"/>
+                    <TextBox x:Name="TextBoxCommentXmlPath" Text="" Grid.Column="1" Grid.Row="6" VerticalAlignment="Center" HorizontalAlignment="Stretch" IsReadOnly="True"/>
+                    <Button Content="編集"  Grid.Column="3" Grid.Row="6" Margin="2,2,2,2" Click="ButtonCommentUpd_Click" />
 
                 </Grid>
             </StackPanel>
