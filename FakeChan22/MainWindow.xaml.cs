@@ -1,29 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using FakeChan22.Tasks;
 using System.Runtime.InteropServices;
-using System.Collections;
-using System.Security.Policy;
 using System.Runtime.Serialization.Json;
-using System.Text.RegularExpressions;
-using System.Runtime.Serialization;
-using System.Xml;
 using System.Reflection;
-using System.Windows.Forms.VisualStyles;
 
 namespace FakeChan22
 {
@@ -168,9 +152,15 @@ namespace FakeChan22
             }
             ComboBoxListenerConfigLists.SelectedIndex = 0;
 
+            // キュー設定補正
+            if (config.queueParam.Mode5QueueLimit < config.queueParam.Mode4QueueLimit)
+            {
+                config.queueParam.Mode5QueueLimit = config.queueParam.Mode4QueueLimit + 10;
+            }
+
+            // バックグラウンドタスク管理
             taskManager = new TaskManager(ref config.listenerConfigLists, ref messageQueue, ref config);
 
-            // クリップボード用設定
             taskManager.ClipboardTask.OnSetClipboardChain += SetClipboardListener;
             taskManager.ClipboardTask.OnRemoveClipboardChain += RemoveClipboardListener;
 
@@ -344,6 +334,8 @@ namespace FakeChan22
         {
             RemoveClipboardFormatListener(WinHelper.Handle);
         }
+
+        // ログ
 
         public void Logging(string logtext)
         {
