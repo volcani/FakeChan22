@@ -1,8 +1,5 @@
 ﻿using FakeChan22.Tasks;
 using System;
-using System.IO;
-using System.Net;
-using System.Net.Sockets;
 
 namespace FakeChan22
 {

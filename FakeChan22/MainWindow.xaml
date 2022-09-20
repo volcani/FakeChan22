@@ -67,9 +67,11 @@
 
         </TabItem>
         
+        <!--
         <TabItem Header="情報">
             <TextBox x:Name="TextBoxStatu" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" IsReadOnly="True" VerticalScrollBarVisibility="Auto"/>
 
         </TabItem>
+        -->
     </TabControl>
 </Window>

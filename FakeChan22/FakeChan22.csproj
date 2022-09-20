@@ -67,7 +67,7 @@
     <Compile Include="EditListenerConfig.xaml.cs">
       <DependentUpon>EditListenerConfig.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FakeChanConfig.cs" />
+    <Compile Include="Configs\FakeChanConfig.cs" />
     <Compile Include="Params\Avator.cs" />
     <Compile Include="Params\AvatorParamSpec.cs" />
     <Compile Include="ConnectAs\IScAPIs.cs" />
