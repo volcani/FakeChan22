@@ -80,12 +80,16 @@ namespace FakeChan22.Tasks
             int cid;
             string text;
             string cname;
+            string sname;
             Dictionary<string, decimal> eff;
             Dictionary<string, decimal> emo;
+
+            sname = talk.LsnrCfg.ServiceName;
 
             (cid, cname, text, eff, emo) = ParseSpeakerAndParams(talk);
 
             api.TalkAsync(cid, text, eff, emo);
+            Log(string.Format(@"{0}, {1}, async, [{2}]", sname, cid, text));
         }
 
         private void KickTalker_Tick(object sender, EventArgs e)
