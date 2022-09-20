@@ -6,9 +6,9 @@ namespace FakeChan22
     [DataContract]
     public class ListenerConfigSocket : ListenerConfig
     {
-        public string Host { get; private set; }
+        [DataMember] public string Host { get; private set; }
 
-        public int Port { get; private set; }
+        [DataMember] public int Port { get; private set; }
 
         public ListenerConfigSocket(string host, int port)
         {
