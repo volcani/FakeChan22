@@ -339,16 +339,18 @@ namespace FakeChan22
 
         public void Logging(string logtext)
         {
-            try
-            {
-                TextBoxStatus.AppendText(logtext + Environment.NewLine);
-                TextBoxStatus.ScrollToEnd();
-            }
-            catch(Exception)
-            {
-                TextBoxStatus.Clear();
-                TextBoxStatus.AppendText("-- Truncate log and create new log" + Environment.NewLine);
-            }
+            Dispatcher.Invoke(() => {
+                try
+                {
+                    TextBoxStatus.AppendText(logtext + Environment.NewLine);
+                    TextBoxStatus.ScrollToEnd();
+                }
+                catch (Exception)
+                {
+                    TextBoxStatus.Clear();
+                    TextBoxStatus.AppendText("-- Truncate log and create new log" + Environment.NewLine);
+                }
+            });
         }
 
         ///// イベントハンドラ
