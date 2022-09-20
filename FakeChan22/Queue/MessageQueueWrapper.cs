@@ -14,6 +14,7 @@ namespace FakeChan22
         {
             MessQue = new BlockingCollection<MessageData>();
             ClearQueue();
+            IsSyncTaking = false;
         }
 
         public void ClearQueue()
