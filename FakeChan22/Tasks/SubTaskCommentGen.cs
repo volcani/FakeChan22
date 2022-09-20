@@ -6,7 +6,6 @@ namespace FakeChan22.Tasks
 {
     public class SubTaskCommentGen
     {
-        object lockObj = new object();
         string CommentFilename = @"comment.xml";
 
         XmlDocument LogXmlDocument;

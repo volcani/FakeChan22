@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.Remoting.Contexts;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace FakeChan22.Tasks
 {
@@ -77,6 +80,7 @@ namespace FakeChan22.Tasks
             foreach (var item in tasks)
             {
                 item.Value.TaskStop();
+                Logging(String.Format(@"{0}, 処理停止", item.Key.LabelName));
             }
         }
 
@@ -84,7 +88,11 @@ namespace FakeChan22.Tasks
         {
             foreach (var item in tasks)
             {
-                if(item.Key.IsEnable) item.Value.TaskStart();
+                if (item.Key.IsEnable)
+                {
+                    item.Value.TaskStart();
+                    Logging(String.Format(@"{0}, 処理開始", item.Key.LabelName));
+                }
             }
         }
 
@@ -93,14 +101,19 @@ namespace FakeChan22.Tasks
             if(tasks.ContainsKey(lsnr))
             {
                 tasks[lsnr].TaskStop();
+                Logging(String.Format(@"{0}, 処理停止", lsnr.LabelName));
 
-                if (lsnr.IsEnable) tasks[lsnr].TaskStart();
+                if (lsnr.IsEnable)
+                {
+                    tasks[lsnr].TaskStart();
+                    Logging(String.Format(@"{0}, 処理開始", lsnr.LabelName));
+                }
             }
         }
 
         private void Logging(string logText)
         {
-            OnLogging?.Invoke(logText);
+            OnLogging?.Invoke(string.Format(@"{0} TASKMGR, {1}", DateTime.Now, logText));
         }
     }
 }

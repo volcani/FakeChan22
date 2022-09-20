@@ -52,6 +52,7 @@ namespace FakeChan22.Tasks
             }
             catch (Exception e)
             {
+                Logging(String.Format(@"IPC, {0}", e.Message));
                 throw new Exception(string.Format(@"IPCリスナ起動でエラー : {0}",e.Message));
             }
         }

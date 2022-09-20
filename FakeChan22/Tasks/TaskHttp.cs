@@ -40,6 +40,7 @@ namespace FakeChan22
             }
             catch (Exception e)
             {
+                Logging(String.Format(@"HTTP, {0}", e.Message));
                 throw new Exception(string.Format(@"Httpリスナ起動でエラー : {0}", e.Message));
             }
         }
@@ -153,6 +154,7 @@ namespace FakeChan22
                     sb.Append(string.Join(",", lsnrCfg.SpeakerListDefault.Speakers.Select((v,i) => "{" + string.Format(listFmt, i, v.Name) + "}").ToArray()));
                     sb.AppendLine(@"] }");
                     responseMessageBuff = Encoding.UTF8.GetBytes(sb.ToString());
+                    Logging(@"HTTP, /GETVOICELIST");
                     break;
 
                 case "/GETTALKTASKCOUNT":

@@ -36,6 +36,7 @@ namespace FakeChan22
             }
             catch (Exception e)
             {
+                Logging(String.Format(@"SOCKET, {0}", e.Message));
                 throw new Exception(string.Format(@"Socketリスナ起動でエラー : {0}", e.Message));
             }
         }

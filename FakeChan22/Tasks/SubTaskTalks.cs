@@ -61,7 +61,7 @@ namespace FakeChan22.Tasks
                 {
                     string txt = logQue.Take();
 
-                    OnLogging?.Invoke(string.Format(@"{0} {1}", DateTime.Now, txt));
+                    OnLogging?.Invoke(string.Format(@"ASCALL, {0}", txt));
                 }
                 catch(Exception)
                 {
@@ -156,8 +156,8 @@ namespace FakeChan22.Tasks
                     try
                     {
                         CommentGen.AddComment(text, sname, "", string.Format(@"{0}:{1}", cid, cname));
-                        Log(string.Format(@"{0}, {1}, mode{2}, [{3}]", sname, cid, mode,text));
                         api.Talk(cid, text, "", eff, emo);
+                        Log(string.Format(@"{0}, {1}, mode{2}, [{3}]", sname, cid, mode, text));
                     }
                     catch (Exception)
                     {
