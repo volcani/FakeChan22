@@ -45,7 +45,8 @@ namespace FakeChan22
             CheckBoxTransApplauseWords.IsChecked = Replaces.IsReplaceApplauseWord;
 
             CheckBoxTransEmoji.IsChecked = Replaces.IsReplaceEmoji;
-            CheckBoxRemovalEmoji.IsChecked = Replaces.IsRemovalEmojiAfterReplace;
+            CheckBoxRemovalEmoji.IsChecked = Replaces.IsRemovalEmojiBeforeReplace;
+            CheckBoxRemovalEmojiafter.IsChecked = Replaces.IsRemovalEmojiAfterReplace;
 
             CheckBoxTransZen2Han.IsChecked = Replaces.IsReplaceZentoHan1;
             CheckBoxTransZen2HanNum.IsChecked = Replaces.IsReplaceZentoHan2;
@@ -270,6 +271,13 @@ namespace FakeChan22
         {
             var cb = sender as CheckBox;
 
+            Replaces.IsRemovalEmojiBeforeReplace = (bool)cb.IsChecked;
+        }
+
+        private void CheckBoxRemovalEmojiafter_Click(object sender, RoutedEventArgs e)
+        {
+            var cb = sender as CheckBox;
+
             Replaces.IsRemovalEmojiAfterReplace = (bool)cb.IsChecked;
         }
 
@@ -277,5 +285,6 @@ namespace FakeChan22
         {
             Close();
         }
+
     }
 }

@@ -41,8 +41,9 @@ namespace FakeChan22
 
         [DataMember] public bool IsReplaceEmoji { get; set; }
 
-        [DataMember] public bool IsRemovalEmojiAfterReplace { get; set; }
+        [DataMember] public bool IsRemovalEmojiBeforeReplace { get; set; }
 
+        [DataMember] public bool IsRemovalEmojiAfterReplace { get; set; }
 
         private int cutLength;
         

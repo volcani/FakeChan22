@@ -74,7 +74,7 @@ namespace FakeChan22
                 s = EmojiTool.ChangeEmoji(s);
             }
 
-            if (defs.IsRemovalEmojiAfterReplace)
+            if (defs.IsRemovalEmojiBeforeReplace)
             {
                 s = EmojiTool.StripEmoji(s);
             }
@@ -104,6 +104,11 @@ namespace FakeChan22
 
             //after
 
+            if (defs.IsRemovalEmojiAfterReplace)
+            {
+                s = EmojiTool.StripEmoji(s);
+            }
+            
             if (s.Length > defs.CutLength)
             {
                 s = s.Substring(0, defs.CutLength) + defs.AppendStr;
