@@ -64,7 +64,7 @@
                     <Button Content="編集"  Grid.Column="3" Grid.Row="6" Margin="2,2,2,2" Click="ButtonCommentUpd_Click" />
 
                     <Label Content="リスナ初期化" Grid.Column="0" Grid.Row="7"  Margin="2,2,2,2"/>
-                    <Button Content="全リスナ初期化"  Grid.Column="1" Grid.Row="7" Margin="2,2,2,2" Click="ButtonResetListenerConfig_Click" />
+                    <Button Content="全リスナ設定初期化"  Grid.Column="1" Grid.Row="7" Margin="2,2,2,2" Click="ButtonResetListenerConfig_Click" />
 
                 </Grid>
             </StackPanel>
