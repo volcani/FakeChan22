@@ -60,7 +60,7 @@
                     <TextBox x:Name="TextBoxWinTitle" Text="" Grid.Column="1" Grid.Row="5"  Margin="2,2,2,2" VerticalAlignment="Center" TextChanged="TextBoxWinTitle_TextChanged"/>
 
                     <Label Content="コメントパス" Grid.Column="0" Grid.Row="6"  Margin="2,2,2,2"/>
-                    <TextBox x:Name="TextBoxCommentXmlPath" Text="" Grid.Column="1" Grid.Row="6" VerticalAlignment="Center" HorizontalAlignment="Stretch" IsReadOnly="True"/>
+                    <TextBox x:Name="TextBoxCommentXmlPath" Text="" Grid.Column="1" Grid.Row="6"  Margin="2,2,2,2" VerticalAlignment="Center" HorizontalAlignment="Stretch" IsReadOnly="True"/>
                     <Button Content="編集"  Grid.Column="3" Grid.Row="6" Margin="2,2,2,2" Click="ButtonCommentUpd_Click" />
 
                     <Label Content="リスナ初期化" Grid.Column="0" Grid.Row="7"  Margin="2,2,2,2"/>
