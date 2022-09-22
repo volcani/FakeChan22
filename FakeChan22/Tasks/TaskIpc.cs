@@ -49,6 +49,7 @@ namespace FakeChan22.Tasks
                 IpcCh.IsSecured = false;
                 ChannelServices.RegisterChannel(IpcCh, false);
                 RemotingServices.Marshal(ShareIpcObject, LsnrCfg.Name, typeof(FNF.Utility.BouyomiChanRemoting));
+                IsRunning = true;
             }
             catch (Exception e)
             {
@@ -72,6 +73,8 @@ namespace FakeChan22.Tasks
                     //
                 }
             }
+
+            IsRunning = false;
         }
 
         private void IPCAddTalkTask01(string TalkText)

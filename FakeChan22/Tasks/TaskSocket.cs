@@ -33,6 +33,7 @@ namespace FakeChan22
                 tcpIpListener = new TcpListener(IPAddress.Parse(lsnrCfg.Host), lsnrCfg.Port);
                 tcpIpListener.Start();
                 tcpIpListener.BeginAcceptTcpClient(new AsyncCallback(AcceptData), tcpIpListener);
+                IsRunning = true;
             }
             catch (Exception e)
             {
@@ -47,10 +48,12 @@ namespace FakeChan22
             {
                 tcpIpListener?.Stop();
             }
-            catch(Exception)
+            catch (Exception)
             {
                 //
             }
+
+            IsRunning = false;
         }
 
         private void AcceptData(IAsyncResult result)
@@ -63,7 +66,7 @@ namespace FakeChan22
             {
                 client = listener.EndAcceptTcpClient(result);
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return;
             }

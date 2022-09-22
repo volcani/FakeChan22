@@ -79,8 +79,19 @@ namespace FakeChan22.Tasks
         {
             foreach (var item in tasks)
             {
-                item.Value.TaskStop();
-                Logging(String.Format(@"{0}, 処理停止", item.Key.LabelName));
+                if (item.Key.IsEnable)
+                {
+                    item.Value.TaskStop();
+
+                    if(item.Value.IsRunning)
+                    {
+                        Logging(String.Format(@"{0}, 処理停止", item.Key.LabelName));
+                    }
+                    else
+                    {
+                        Logging(String.Format(@"{0}, 処理停止（念のための呼び出し）", item.Key.LabelName));
+                    }
+                }
             }
         }
 
@@ -101,7 +112,15 @@ namespace FakeChan22.Tasks
             if(tasks.ContainsKey(lsnr))
             {
                 tasks[lsnr].TaskStop();
-                Logging(String.Format(@"{0}, 処理停止", lsnr.LabelName));
+
+                if (tasks[lsnr].IsRunning)
+                {
+                    Logging(String.Format(@"{0}, 処理停止", lsnr.LabelName));
+                }
+                else
+                {
+                    Logging(String.Format(@"{0}, 処理停止（念のための呼び出し）", lsnr.LabelName));
+                }
 
                 if (lsnr.IsEnable)
                 {

@@ -1,8 +1,12 @@
-﻿namespace FakeChan22.Tasks
+﻿using System.Runtime.Serialization;
+
+namespace FakeChan22.Tasks
 {
     public class TaskBase
     {
         public bool based = true;
+
+        public bool IsRunning { get; set; } = false;
 
         public MessageQueueWrapper MessQueue = null;
 

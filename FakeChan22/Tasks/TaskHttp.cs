@@ -38,6 +38,7 @@ namespace FakeChan22
                 httpListener.Prefixes.Add(string.Format(@"http://{0}:{1}/", lsnrCfg.Host, lsnrCfg.Port));
                 httpListener.Start();
                 httpListener.BeginGetContext(new AsyncCallback(AcceptRequest), httpListener);
+                IsRunning = true;
             }
             catch (Exception e)
             {
@@ -52,10 +53,12 @@ namespace FakeChan22
             {
                 httpListener?.Stop();
             }
-            catch(Exception)
+            catch (Exception)
             {
                 //
             }
+
+            IsRunning = false;
         }
 
         private void AcceptRequest(IAsyncResult result)

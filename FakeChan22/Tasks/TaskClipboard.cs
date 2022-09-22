@@ -29,6 +29,7 @@ namespace FakeChan22
             try
             {
                 OnSetClipboardChain?.Invoke();
+                IsRunning = true;
             }
             catch (Exception e)
             {
@@ -43,10 +44,12 @@ namespace FakeChan22
             {
                 OnRemoveClipboardChain?.Invoke();
             }
-            catch(Exception)
+            catch (Exception)
             {
                 //
             }
+
+            IsRunning = false;
         }
 
         public void AcceptData(string talkText)
