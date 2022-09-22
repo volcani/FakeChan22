@@ -19,7 +19,7 @@ namespace FakeChan22
 
         [DataMember] public string fakeChan22WindowTitle = "偽装ちゃん22";
 
-        [DataMember] public string versionStr = "1.0.3";
+        [DataMember] public string versionStr = "1.0.4";
 
         [DataMember] public string commentXmGenlPath = @".\";
 

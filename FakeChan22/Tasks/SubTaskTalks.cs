@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Windows.Threading;
 using System.Runtime.Remoting.Contexts;
 using System.Text.RegularExpressions;
+using System.Windows.Input;
+using System.Windows.Forms;
 
 namespace FakeChan22.Tasks
 {
@@ -220,6 +222,16 @@ namespace FakeChan22.Tasks
                 // テキスト先頭に話者の識別子が定義されている場合はその話者とする
                 cid = splist.SpeakerMaps[sepMap].Cid;
                 spkrname = splist.SpeakerMaps[sepMap].Name;
+                splistIndex = 0;
+                for (int i = 0; i < splist.SpeakerMaps.Count; i++)
+                {
+                    // 暫定修正
+                    if (splist.ValidSpeakers[i].Equals(splist.SpeakerMaps[sepMap]))
+                    {
+                        splistIndex = i;
+                        break;
+                    }
+                }
             }
             else
             {

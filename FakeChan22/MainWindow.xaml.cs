@@ -8,6 +8,8 @@ using FakeChan22.Tasks;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Json;
 using System.Reflection;
+using System.Configuration;
+using System.Web.Configuration;
 
 namespace FakeChan22
 {
@@ -127,9 +129,18 @@ namespace FakeChan22
 
                 CreateNewSpeakerList();
             }
+            else
+            {
+                // 念のため、話者のマップ再構築実行
+                foreach(var item in config.speakerLists)
+                {
+                    item.MakeValidObjects();
+                }
+            }
+
             ComboBoxSpeakerLists.SelectedIndex = 0;
 
-            // 定義リストが無ければ初期設定を1つ作成する
+            // 置換リストが無ければ初期設定を1つ作成する
             if (config.replaceDefinitionLists.Count == 0)
             {
                 config.replaceDefinitionLists.Add(new ReplaceDefinitionList());
