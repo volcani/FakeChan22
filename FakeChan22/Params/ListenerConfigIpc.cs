@@ -11,12 +11,12 @@ namespace FakeChan22
 
         [DataMember] public string ObjURI { get; private set; }
 
-        public ListenerConfigIpc(string channelName)
+        public ListenerConfigIpc(string channelName, string serviceName = "IPC")
         {
             ChannelName = channelName;
             ObjURI = "Remoting";
             LabelName = String.Format(@"{0}/{1}", channelName, ObjURI);
-            ServiceName = "IPC";
+            ServiceName = serviceName;
             LsnrType = ListenerType.ipc;
         }
     }
