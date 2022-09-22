@@ -194,6 +194,8 @@ namespace FakeChan22.Tasks
             int splistIndex = -1;
             SpeakerList splist = null;
             ReplaceDefinitionList replist = null;
+            Dictionary<string, decimal> eff = null;
+            Dictionary<string, decimal> emo = null;
 
             // 話者のキーとテキストを分離
             (sepMap, sepText) = ReplaceText.SeparateMapKey(talk.OrgMessage);
@@ -222,16 +224,10 @@ namespace FakeChan22.Tasks
                 // テキスト先頭に話者の識別子が定義されている場合はその話者とする
                 cid = splist.SpeakerMaps[sepMap].Cid;
                 spkrname = splist.SpeakerMaps[sepMap].Name;
-                splistIndex = 0;
-                for (int i = 0; i < splist.SpeakerMaps.Count; i++)
-                {
-                    // 暫定修正
-                    if (splist.ValidSpeakers[i].Equals(splist.SpeakerMaps[sepMap]))
-                    {
-                        splistIndex = i;
-                        break;
-                    }
-                }
+
+                // 音声パラメタ
+                eff = splist.SpeakerMaps[sepMap].Effects.ToDictionary(k => k.ParamName, v => v.Value);
+                emo = splist.SpeakerMaps[sepMap].Emotions.ToDictionary(k => k.ParamName, v => v.Value);
             }
             else
             {
@@ -257,11 +253,11 @@ namespace FakeChan22.Tasks
                     cid = splist.ValidSpeakers[splistIndex].Cid;
                     spkrname = splist.ValidSpeakers[splistIndex].Name;
                 }
-            }
 
-            // 音声パラメタ
-            var eff = splist.ValidSpeakers[splistIndex].Effects.ToDictionary(k => k.ParamName, v => v.Value);
-            var emo = splist.ValidSpeakers[splistIndex].Emotions.ToDictionary(k => k.ParamName, v => v.Value);
+                // 音声パラメタ
+                eff = splist.ValidSpeakers[splistIndex].Effects.ToDictionary(k => k.ParamName, v => v.Value);
+                emo = splist.ValidSpeakers[splistIndex].Emotions.ToDictionary(k => k.ParamName, v => v.Value);
+            }
 
             return (cid, spkrname, parsedText, eff, emo);
         }
