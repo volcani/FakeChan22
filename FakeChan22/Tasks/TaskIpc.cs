@@ -48,7 +48,7 @@ namespace FakeChan22.Tasks
 
                 IpcCh.IsSecured = false;
                 ChannelServices.RegisterChannel(IpcCh, false);
-                RemotingServices.Marshal(ShareIpcObject, LsnrCfg.Name, typeof(FNF.Utility.BouyomiChanRemoting));
+                RemotingServices.Marshal(ShareIpcObject, LsnrCfg.ObjURI, typeof(FNF.Utility.BouyomiChanRemoting));
                 IsRunning = true;
             }
             catch (Exception e)
