@@ -18,6 +18,8 @@ namespace FakeChan22
     /// </summary>
     public partial class MainWindow : Window
     {
+        private string versionStr = "1.0.4";
+
         /// <summary>
         /// アプリ全体の設定格納
         /// </summary>
@@ -65,6 +67,8 @@ namespace FakeChan22
             {
                 config = new FakeChanConfig();
             }
+
+            config.versionStr = this.versionStr;
 
             InitializeComponent();
 

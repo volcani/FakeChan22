@@ -11,7 +11,7 @@ namespace FakeChan22
 
         [DataMember] public List<ReplaceDefinitionList> replaceDefinitionLists = new List<ReplaceDefinitionList>();
 
-        [DataMember] public List<SoloSpeachDefinition> soloSpeechDefinition = new List<SoloSpeachDefinition>();
+        [DataMember] public SoloSpeechDefinitionList SoloSpeechList = new SoloSpeechDefinitionList();
 
         [DataMember] public QueueParam queueParam = new QueueParam();
 
@@ -19,7 +19,7 @@ namespace FakeChan22
 
         [DataMember] public string fakeChan22WindowTitle = "偽装ちゃん22";
 
-        [DataMember] public string versionStr = "1.0.4";
+        [DataMember] public string versionStr = "0.0.0";
 
         [DataMember] public string commentXmGenlPath = @".\";
 
