@@ -5,10 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FakeChan22"
         mc:Ignorable="d"
-        Title="リスナインタフェース設定" Height="367" Width="593" Loaded="Window_Loaded" Closing="Window_Closing">
+        Title="リスナインタフェース設定" Height="389" Width="600" Loaded="Window_Loaded" Closing="Window_Closing">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
@@ -16,60 +15,89 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <Label Content="リスナ名" Grid.Column="0" Grid.Row="0" Margin="2,2,2,2" />
-        <Label x:Name="LabelListenerName" Content="" Grid.Column="2" Grid.Row="0" Margin="2,2,2,2" />
-        <Button Content="保存"  Grid.Column="3" Grid.Row="0" Margin="2,2,2,2" HorizontalAlignment="Right" Click="Button_Click"  />
+        <Label x:Name="LabelListenerName" Content="" Grid.Column="1" Grid.Row="0" Margin="2,2,2,2" />
+        <Button Content="保存"  Grid.Column="2" Grid.Row="0" Margin="2,2,30,2" HorizontalAlignment="Right" Click="Button_Click"  />
 
-        <Label Content="リスナ利用" Grid.Column="0" Grid.Row="1" Margin="2,2,2,2" />
-        <CheckBox x:Name="CheckBoxIsEnable" Content=""  Grid.Column="1" Grid.Row="1" Margin="2,2,2,2" VerticalAlignment="Center" HorizontalContentAlignment="Center" Click="CheckBoxIsEnable_Click" />
-        <Label Content="このリスナでメッセージを受信する" Grid.Column="2" Grid.Row="1" Margin="2,2,2,2" />
+        <ScrollViewer Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Margin="2,2,2,2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" >
 
-        <Label Content="非同期の音声再生" Grid.Column="0" Grid.Row="2" Margin="2,2,2,2" />
-        <CheckBox x:Name="CheckBoxIsAsync" Content=""  Grid.Column="1" Grid.Row="2" Margin="2,2,2,2" VerticalAlignment="Center" HorizontalContentAlignment="Center" Checked="CheckBoxIsAsync_Checked" />
-        <Label Content="キューを使わず非同期に音声再生を実行する" Grid.Column="2" Grid.Row="2" Margin="2,2,2,2" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-        <Label Content="話者のランダム選択" Grid.Column="0" Grid.Row="3" Margin="2,2,2,2" />
-        <CheckBox x:Name="CheckBoxIsRandom" Content=""  Grid.Column="1" Grid.Row="3" Margin="2,2,2,2" VerticalAlignment="Center" HorizontalContentAlignment="Center" Click="CheckBoxIsRandom_Click" />
-        <Label Content="発声する話者を話者リストの範囲でランダムに話者を選択する" Grid.Column="2" Grid.Row="3" Margin="2,2,2,2" />
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-        <Label Content="非日本語判定" Grid.Column="0" Grid.Row="4" Margin="2,2,2,2"/>
-        <CheckBox x:Name="CheckBoxIsNoJapanese" Content=""  Grid.Column="1" Grid.Row="4" Margin="2,2,2,2" VerticalAlignment="Center" HorizontalContentAlignment="Center" Click="CheckBoxIsNoJapanese_Click" />
-        <StackPanel Grid.Column="2" Grid.Row="4" Margin="2,2,2,2" Orientation="Horizontal">
-            <Label Content="非日本語文字割合が"/>
-            <TextBox x:Name="TextBoxCharRate" Margin="2,2,2,2" Width="40" VerticalContentAlignment="Center" VerticalAlignment="Center" LostFocus="TextBoxCharRate_LostFocus"/>
-            <Label Content="％よりも大きい(0 ～ 99.99)" Margin="2,2,2,2" />
-        </StackPanel>
+                <Label Content="リスナ利用" Grid.Column="0" Grid.Row="1" Margin="2,2,2,2" />
+                <CheckBox x:Name="CheckBoxIsEnable" Content=""  Grid.Column="1" Grid.Row="1" Margin="2,2,2,2" VerticalAlignment="Center" HorizontalContentAlignment="Center" Click="CheckBoxIsEnable_Click" />
+                <Label Content="このリスナでメッセージを受信する" Grid.Column="2" Grid.Row="1" Margin="2,2,2,2" />
+
+                <Label Content="非同期の音声再生" Grid.Column="0" Grid.Row="2" Margin="2,2,2,2" />
+                <CheckBox x:Name="CheckBoxIsAsync" Content=""  Grid.Column="1" Grid.Row="2" Margin="2,2,2,2" VerticalAlignment="Center" HorizontalContentAlignment="Center" Checked="CheckBoxIsAsync_Checked" />
+                <Label Content="キューを使わず非同期に音声再生を実行する" Grid.Column="2" Grid.Row="2" Margin="2,2,2,2" />
+
+                <Label Content="話者のランダム選択" Grid.Column="0" Grid.Row="3" Margin="2,2,2,2" />
+                <CheckBox x:Name="CheckBoxIsRandom" Content=""  Grid.Column="1" Grid.Row="3" Margin="2,2,2,2" VerticalAlignment="Center" HorizontalContentAlignment="Center" Click="CheckBoxIsRandom_Click" />
+                <Label Content="発声する話者を話者リストの範囲でランダムに話者を選択する" Grid.Column="2" Grid.Row="3" Margin="2,2,2,2" />
+
+                <Label Content="非日本語判定" Grid.Column="0" Grid.Row="4" Margin="2,2,2,2"/>
+                <CheckBox x:Name="CheckBoxIsNoJapanese" Content=""  Grid.Column="1" Grid.Row="4" Margin="2,2,2,2" VerticalAlignment="Center" HorizontalContentAlignment="Center" Click="CheckBoxIsNoJapanese_Click" />
+                <StackPanel Grid.Column="2" Grid.Row="4" Margin="2,2,2,2" Orientation="Horizontal">
+                    <Label Content="非日本語文字割合が"/>
+                    <TextBox x:Name="TextBoxCharRate" Margin="2,2,2,2" Width="40" VerticalContentAlignment="Center" VerticalAlignment="Center" LostFocus="TextBoxCharRate_LostFocus"/>
+                    <Label Content="％よりも大きい(0 ～ 99.99)" Margin="2,2,2,2" />
+                </StackPanel>
 
 
-        <Label Content="話者リスト（通常時）" Grid.Column="0" Grid.Row="5" Margin="2,2,2,2"/>
-        <ComboBox x:Name="ComboBoxSpeakerList" Grid.Column="2" Grid.Row="5" Margin="2,2,2,2" DisplayMemberPath="Listname" VerticalAlignment="Center" SelectedIndex="0" />
+                <Label Content="話者リスト（通常時）" Grid.Column="0" Grid.Row="5" Margin="2,2,2,2"/>
+                <ComboBox x:Name="ComboBoxSpeakerList" Grid.Column="2" Grid.Row="5" Margin="2,2,2,2" DisplayMemberPath="Listname" VerticalAlignment="Center" SelectedIndex="0" />
 
-        <Label Content="置換リスト（通常時）" Grid.Column="0" Grid.Row="6" Margin="2,2,2,2"/>
-        <ComboBox x:Name="ComboBoxReplaceTextList" Grid.Column="2" Grid.Row="6" Margin="2,2,2,2" DisplayMemberPath="Listname" VerticalAlignment="Center" SelectedIndex="0"/>
+                <Label Content="置換リスト（通常時）" Grid.Column="0" Grid.Row="6" Margin="2,2,2,2"/>
+                <ComboBox x:Name="ComboBoxReplaceTextList" Grid.Column="2" Grid.Row="6" Margin="2,2,2,2" DisplayMemberPath="Listname" VerticalAlignment="Center" SelectedIndex="0"/>
 
-        <Label Content="話者リスト（非日本語時）" Grid.Column="0" Grid.Row="7" Margin="2,2,2,2"/>
-        <ComboBox x:Name="ComboBoxSpeakerListNoJapanese" Grid.Column="2" Grid.Row="7" Margin="2,2,2,2" DisplayMemberPath="Listname" VerticalAlignment="Center" SelectedIndex="0" />
+                <Label Content="話者リスト（非日本語時）" Grid.Column="0" Grid.Row="7" Margin="2,2,2,2"/>
+                <ComboBox x:Name="ComboBoxSpeakerListNoJapanese" Grid.Column="2" Grid.Row="7" Margin="2,2,2,2" DisplayMemberPath="Listname" VerticalAlignment="Center" SelectedIndex="0" />
 
-        <Label Content="置換リスト（非日本語時）" Grid.Column="0" Grid.Row="8" Margin="2,2,2,2"/>
-        <ComboBox x:Name="ComboBoxReplaceTextListNoJapanese" Grid.Column="2" Grid.Row="8" Margin="2,2,2,2" DisplayMemberPath="Listname" VerticalAlignment="Center" SelectedIndex="0"/>
+                <Label Content="置換リスト（非日本語時）" Grid.Column="0" Grid.Row="8" Margin="2,2,2,2"/>
+                <ComboBox x:Name="ComboBoxReplaceTextListNoJapanese" Grid.Column="2" Grid.Row="8" Margin="2,2,2,2" DisplayMemberPath="Listname" VerticalAlignment="Center" SelectedIndex="0"/>
 
-        <Label Content="サービス名" Grid.Column="0" Grid.Row="9" Margin="2,2,2,2"/>
-        <StackPanel Grid.Column="2" Grid.Row="9" Margin="2,2,2,8" Orientation="Horizontal">
-            <TextBox x:Name="TextBoxServiceName" Margin="2,2,2,2" Width="150" VerticalContentAlignment="Center" VerticalAlignment="Center" LostFocus="ServiceName_LostFocus"/>
-            <Label Content="コメジェネで使用するサービス名です"/>
-        </StackPanel>
+                <Label Content="サービス名" Grid.Column="0" Grid.Row="9" Margin="2,2,2,2"/>
+                <StackPanel Grid.Column="2" Grid.Row="9" Margin="2,2,2,8" Orientation="Horizontal">
+                    <TextBox x:Name="TextBoxServiceName" Margin="2,2,2,2" Width="150" VerticalContentAlignment="Center" VerticalAlignment="Center" LostFocus="ServiceName_LostFocus"/>
+                    <Label Content="コメジェネで使用するサービス名です"/>
+                </StackPanel>
 
+                <Label x:Name="LabelExtentSetting" Content="" Grid.Column="0" Grid.Row="10" Margin="2,2,2,2"/>
+                <Grid x:Name="GridExtentSetting"  Grid.Column="2" Grid.Row="10" Margin="2,2,2,2" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                    </Grid.RowDefinitions>
+                </Grid>
+
+            </Grid>
+
+        </ScrollViewer>
 
     </Grid>
 </Window>

@@ -1,9 +1,13 @@
-﻿using System;
+﻿using FakeChan22.Plugins;
+using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+//using System.Web.UI.WebControls;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -44,6 +48,7 @@ namespace FakeChan22
             ComboBoxReplaceTextListNoJapanese.ItemsSource = null;
             ComboBoxReplaceTextListNoJapanese.ItemsSource = RepList;
 
+            ExtentPropertiesRendar();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -155,6 +160,116 @@ namespace FakeChan22
             else
             {
                 LsnrCfg.ServiceName = tb.Text;
+            }
+        }
+
+        // 拡張プロパティの入力欄生成
+        private void ExtentPropertiesRendar()
+        {
+            if (LsnrCfg.LsnrType != Tasks.ListenerType.twitter) return;
+
+            Grid grid = GridExtentSetting;
+            var items = LsnrCfg.GetType();
+            var rowindex = 0;
+
+            LabelExtentSetting.Content = LsnrCfg.LsnrType.ToString();
+
+            foreach(var item in items.GetProperties())
+            {
+                var propertyAttribute = GuiItemAttribute.Get(item);
+
+                if (propertyAttribute == null) continue;
+
+                grid.RowDefinitions.Add(new RowDefinition());
+
+                UIElement component = null;
+                Label lbh = new Label();
+
+                lbh.Content = propertyAttribute.ParamName;
+                lbh.Margin = new Thickness(2, 2, 2, 2);
+                lbh.VerticalAlignment = VerticalAlignment.Center;
+                grid.Children.Add(lbh);
+                Grid.SetColumn(lbh, 0);
+                Grid.SetRow(lbh, rowindex);
+
+                if (item.PropertyType != typeof(bool))
+                {
+                    Label lbt = new Label();
+                    lbt.Content = propertyAttribute.Description;
+                    lbt.Margin = new Thickness(2, 2, 2, 2);
+                    lbt.VerticalAlignment = VerticalAlignment.Center;
+                    grid.Children.Add(lbt);
+                    Grid.SetColumn(lbt, 2);
+                    Grid.SetRow(lbt, rowindex);
+                }
+
+                switch (item.GetValue(LsnrCfg))
+                {
+                    case bool flag:
+                        component = new CheckBox();
+                        (component as CheckBox).IsChecked = flag;
+                        (component as CheckBox).Content = propertyAttribute.Description;
+                        (component as CheckBox).Margin = new Thickness(2, 2, 2, 2);
+                        (component as CheckBox).VerticalAlignment = VerticalAlignment.Center;
+                        (component as CheckBox).LostFocus += (object sender, RoutedEventArgs e) => {
+                            var cb = sender as CheckBox;
+                            item.SetValue(LsnrCfg, (bool)cb.IsChecked);
+                        };
+                        break;
+
+                    case string str:
+                        component = new TextBox();
+                        (component as TextBox).Text = str;
+                        (component as TextBox).Margin = new Thickness(2, 2, 2, 2);
+                        (component as TextBox).VerticalAlignment = VerticalAlignment.Center;
+                        (component as TextBox).LostFocus += (object sender, RoutedEventArgs e) => {
+                            var tb = sender as TextBox;
+                            item.SetValue(LsnrCfg, tb.Text);
+                        };
+                        break;
+
+                    case int numInt:
+                        component = new TextBox();
+                        (component as TextBox).Text = numInt.ToString();
+                        (component as TextBox).Margin = new Thickness(2, 2, 2, 2);
+                        (component as TextBox).VerticalAlignment = VerticalAlignment.Center;
+                        (component as TextBox).LostFocus += (object sender, RoutedEventArgs e) => {
+                            var tb = sender as TextBox;
+                            if(int.TryParse(tb.Text, out int i))
+                            {
+                                item.SetValue(LsnrCfg, i);
+                            }
+                            else
+                            {
+                                tb.Undo();
+                            }
+                        };
+                        break;
+
+                    case double numDouble:
+                        component = new TextBox();
+                        (component as TextBox).Text = numDouble.ToString();
+                        (component as TextBox).Margin = new Thickness(2, 2, 2, 2);
+                        (component as TextBox).VerticalAlignment = VerticalAlignment.Center;
+                        (component as TextBox).LostFocus += (object sender, RoutedEventArgs e) => {
+                            var tb = sender as TextBox;
+                            if (double.TryParse(tb.Text, out double d))
+                            {
+                                item.SetValue(LsnrCfg, d);
+                            }
+                            else
+                            {
+                                tb.Undo();
+                            }
+                        };
+                        break;
+                }
+
+                grid.Children.Add(component);
+                Grid.SetColumn(component, 1);
+                Grid.SetRow(component, rowindex);
+
+                rowindex++;
             }
         }
     }

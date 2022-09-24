@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FakeChan22"
         mc:Ignorable="d"
-        Title="偽装ちゃん22 x.x.x" Height="313" Width="548" Loaded="Window_Loaded" Closing="Window_Closing">
+        Title="偽装ちゃん22 x.x.x" Height="313" Width="548" Loaded="Window_Loaded" Closing="Window_Closing" Icon="/Resource/icon.ico">
     <TabControl>
 
         <TabItem Header="設定">

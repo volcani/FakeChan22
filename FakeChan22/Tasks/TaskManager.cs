@@ -62,6 +62,11 @@ namespace FakeChan22.Tasks
                         tasks.Add(item, new TaskHttp(ref lsnrHttp, ref que));
                         break;
 
+                    case ListenerType.twitter:
+                        var lsnrTwitter = item as ListenerConfigTwitter;
+                        tasks.Add(item, new TaskTwitter(ref lsnrTwitter, ref que));
+                        break;
+
                     case ListenerType.clipboard:
                         var lsnrClip = item as ListenerConfigClipboard;
                         taskClipboard = new TaskClipboard(ref lsnrClip, ref que);

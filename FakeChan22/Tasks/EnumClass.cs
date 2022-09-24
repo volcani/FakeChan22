@@ -6,6 +6,7 @@
         ipc,
         socket,
         http,
-        clipboard
+        clipboard,
+        twitter
     }
 }

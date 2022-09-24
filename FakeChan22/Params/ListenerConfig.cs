@@ -7,6 +7,7 @@ namespace FakeChan22
     [KnownType(typeof(ListenerConfigSocket))]
     [KnownType(typeof(ListenerConfigHttp))]
     [KnownType(typeof(ListenerConfigClipboard))]
+    [KnownType(typeof(ListenerConfigTwitter))]
     [DataContract]
     public class ListenerConfig
     {
@@ -17,6 +18,7 @@ namespace FakeChan22
         [DataMember] public int SpeakerListDefaultIndex { get; set; }
 
         [DataMember] public ReplaceDefinitionList ReplaceListDefault { get; set; }
+
         [DataMember] public int ReplaceListDefaultIndex { get; set; }
 
         [DataMember] public bool IsNoJapanese { get; set; }
@@ -28,6 +30,7 @@ namespace FakeChan22
         [DataMember] public int SpeakerListNoJapaneseJudgeIndex { get; set; }
 
         [DataMember] public ReplaceDefinitionList ReplaceListNoJapaneseJudge { get; set; }
+
         [DataMember] public int ReplaceListNoJapaneseJudgeIndex { get; set; }
 
         [DataMember] public string ServiceName { get; set; }

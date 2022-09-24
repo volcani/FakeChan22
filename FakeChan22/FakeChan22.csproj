@@ -34,10 +34,19 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resource\icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CoreTweet, Version=1.0.0.483, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CoreTweet.1.0.0.483\lib\net45\CoreTweet.dll</HintPath>
+    </Reference>
     <Reference Include="EmojiTools, Version=1.0.0.3, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\EmojiTools.dll</HintPath>
+      <HintPath>Resource\EmojiTools.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -82,9 +91,11 @@
     <Compile Include="EditReplaceList.xaml.cs">
       <DependentUpon>EditReplaceList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Params\ListenerConfigTwitter.cs" />
     <Compile Include="Params\SoloSpeechDefinition.cs" />
     <Compile Include="Params\SoloSpeechDefinitionList.cs" />
     <Compile Include="Params\SoloSpeechMessage.cs" />
+    <Compile Include="Plugins\GuiItemStringAttribute.cs" />
     <Compile Include="Plugins\JudgeTextLang.cs" />
     <Compile Include="Params\ListenerConfig.cs" />
     <Compile Include="Params\ListenerConfigClipboard.cs" />
@@ -103,6 +114,7 @@
     <Compile Include="Tasks\BouyomiChanRemoting.cs" />
     <Compile Include="Tasks\SubTaskCommentGen.cs" />
     <Compile Include="Tasks\EnumClass.cs" />
+    <Compile Include="Tasks\TaskTwitter.cs" />
     <Compile Include="Tasks\TaskHttp.cs" />
     <Compile Include="Tasks\TaskClipboard.cs" />
     <Compile Include="Tasks\TaskSocket.cs" />
@@ -163,6 +175,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -171,12 +184,19 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Content Include="EmojiTools.dll">
+    <Content Include="README.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Resource Include="EmojiTools.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resource\EmojiTools.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resource\icon.ico" />
+    <Resource Include="Resource\EmojiTools.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

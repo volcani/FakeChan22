@@ -16,7 +16,7 @@ namespace FakeChan22
     /// </summary>
     public partial class MainWindow : Window
     {
-        private string versionStr = "1.0.5";
+        private string versionStr = "1.0.8";
 
         /// <summary>
         /// アプリ全体の設定格納
@@ -164,6 +164,7 @@ namespace FakeChan22
                 config.listenerConfigLists.Add(new ListenerConfigHttp("127.0.0.1", 50082) { SpeakerListDefault = config.speakerLists[0], ReplaceListDefault = config.replaceDefinitionLists[0], SpeakerListNoJapaneseJudge = config.speakerLists[0], ReplaceListNoJapaneseJudge = config.replaceDefinitionLists[0] });
                 config.listenerConfigLists.Add(new ListenerConfigHttp("127.0.0.1", 50083) { SpeakerListDefault = config.speakerLists[0], ReplaceListDefault = config.replaceDefinitionLists[0], SpeakerListNoJapaneseJudge = config.speakerLists[0], ReplaceListNoJapaneseJudge = config.replaceDefinitionLists[0] });
                 config.listenerConfigLists.Add(new ListenerConfigClipboard() { SpeakerListDefault = config.speakerLists[0], ReplaceListDefault = config.replaceDefinitionLists[0], SpeakerListNoJapaneseJudge = config.speakerLists[0], ReplaceListNoJapaneseJudge = config.replaceDefinitionLists[0] });
+                config.listenerConfigLists.Add(new ListenerConfigTwitter() { SpeakerListDefault = config.speakerLists[0], ReplaceListDefault = config.replaceDefinitionLists[0], SpeakerListNoJapaneseJudge = config.speakerLists[0], ReplaceListNoJapaneseJudge = config.replaceDefinitionLists[0] });
             }
             ComboBoxListenerConfigLists.SelectedIndex = 0;
 
@@ -482,6 +483,10 @@ namespace FakeChan22
 
                 case ListenerType.http:
                     Lsner = ComboBoxListenerConfigLists.SelectedItem as ListenerConfigHttp;
+                    break;
+
+                case ListenerType.twitter:
+                    Lsner = ComboBoxListenerConfigLists.SelectedItem as ListenerConfigTwitter;
                     break;
 
                 case ListenerType.clipboard:
