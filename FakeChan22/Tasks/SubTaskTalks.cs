@@ -93,8 +93,8 @@ namespace FakeChan22.Tasks
 
             (cid, cname, text, eff, emo) = ParseSpeakerAndParams(talk);
 
-            api.TalkAsync(cid, text, eff, emo);
             Log(string.Format(@"{0}, {1}, async, [{2}]", sname, cid, text));
+            api.TalkAsync(cid, text, eff, emo);
         }
 
         private void KickTalker_Tick(object sender, EventArgs e)
@@ -116,8 +116,8 @@ namespace FakeChan22.Tasks
                         var eff = spkrs[idx1].Effects.ToDictionary(k => k.ParamName, v => v.Value);
                         var emo = spkrs[idx1].Emotions.ToDictionary(k => k.ParamName, v => v.Value);
 
-                        api.TalkAsync(cid, text, eff, emo);
                         Log(string.Format(@"SOLO, {0}, past {1}sec, [{2}]", cid, SoloTimeCount, text));
+                        api.TalkAsync(cid, text, eff, emo);
                     });
                 }
 
@@ -194,8 +194,8 @@ namespace FakeChan22.Tasks
                     try
                     {
                         CommentGen.AddComment(text, sname, "", string.Format(@"{0}:{1}", cid, cname));
-                        api.Talk(cid, text, "", eff, emo);
                         Log(string.Format(@"{0}, {1}, mode{2}, [{3}]", sname, cid, mode, text));
+                        api.Talk(cid, text, "", eff, emo);
                     }
                     catch (Exception)
                     {
