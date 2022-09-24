@@ -33,6 +33,20 @@ namespace FakeChan22
             }
         }
 
+        private string uniqId;
+        [DataMember]
+        public string UniqId
+        {
+            get
+            {
+                return uniqId;
+            }
+            set
+            {
+                uniqId = value;
+            }
+        }
+
         public SpeakerList()
         {
             Speakers = new List<Speaker>();
@@ -40,6 +54,7 @@ namespace FakeChan22
             SpeakerMaps = new Dictionary<string, Speaker>();
 
             listname = "話者リスト - " + DateTime.Now.ToString();
+            UniqId = Guid.NewGuid().ToString();
         }
 
         public void MakeValidObjects()

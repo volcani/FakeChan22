@@ -9,7 +9,7 @@ namespace FakeChan22
     {
         [DataMember] public List<ReplaceDefinition> Definitions;
 
-        [DataMember] private string listname;
+        private string listname;
         [DataMember]
         public string Listname
         {
@@ -24,6 +24,20 @@ namespace FakeChan22
                 if (value.Length == 0) throw new ArgumentException("length");
 
                 listname = value;
+            }
+        }
+
+        private string uniqId;
+        [DataMember]
+        public string UniqId
+        {
+            get
+            {
+                return uniqId;
+            }
+            set
+            {
+                uniqId = value;
             }
         }
 
@@ -68,6 +82,7 @@ namespace FakeChan22
         public ReplaceDefinitionList()
         {
             Listname = "置換リスト - " + DateTime.Now.ToString();
+            UniqId = Guid.NewGuid().ToString();
 
             Definitions = new List<ReplaceDefinition>();
 
