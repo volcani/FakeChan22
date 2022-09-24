@@ -16,7 +16,7 @@ namespace FakeChan22
     /// </summary>
     public partial class MainWindow : Window
     {
-        private string versionStr = "1.0.8";
+        private string versionStr = "1.0.10";
 
         /// <summary>
         /// アプリ全体の設定格納
