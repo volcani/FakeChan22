@@ -42,11 +42,7 @@ namespace FakeChan22
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-
-            //var target = (KeyValuePair<int, SoloSpeechDefinition>)ListBoxSoloSpeechMessages.SelectedItem;
-
-            //ComboBoxUseSpeakerList.SelectedItem = target.Value.speakerList;
-            //ComboBoxUseSpeakerList.Items.Refresh();
+            ListBoxSoloSpeechMessages.SelectedIndex = 0;
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -161,7 +157,7 @@ namespace FakeChan22
             TextBoxUpdatePastTime.Text = target.Key.ToString();
 
             ComboBoxUseSpeakerList.SelectedItem = target.Value.speakerList;
-            //ComboBoxUseSpeakerList.Items.Refresh();
+            ComboBoxUseSpeakerList.Items.Refresh();
         }
 
         private void ComboBoxUseSpeakerList_SelectionChanged(object sender, SelectionChangedEventArgs e)
