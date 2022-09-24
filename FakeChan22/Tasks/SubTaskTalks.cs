@@ -8,6 +8,7 @@ using System.Runtime.Remoting.Contexts;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
 using System.Windows.Forms;
+using System.Security.Policy;
 
 namespace FakeChan22.Tasks
 {
@@ -25,6 +26,8 @@ namespace FakeChan22.Tasks
 
         public delegate void CallEventHandlerLogging(string logText);
         public event CallEventHandlerLogging OnLogging;
+
+        private int SoloTimeCount = 0;
 
         public SubTaskCommentGen CommentGenSubTask
         {
@@ -86,7 +89,7 @@ namespace FakeChan22.Tasks
             Dictionary<string, decimal> eff;
             Dictionary<string, decimal> emo;
 
-            sname = talk.LsnrCfg.ServiceName;
+            sname = talk.LsnrCfg == null ? "----" : talk.LsnrCfg.ServiceName;
 
             (cid, cname, text, eff, emo) = ParseSpeakerAndParams(talk);
 
@@ -96,13 +99,36 @@ namespace FakeChan22.Tasks
 
         private void KickTalker_Tick(object sender, EventArgs e)
         {
-            if (messQueue.count == 0) return;
+            SoloTimeCount++;
+            if (SoloTimeCount > 172800) SoloTimeCount = 0;
 
-            if (backgroundTalker != null)
+            if (messQueue.count == 0)
             {
-                if (!backgroundTalker.IsCompleted) return;
+                if ((config.SoloSpeechList.IsUse) && (config.SoloSpeechList.SpeechDefinitions.ContainsKey(SoloTimeCount)))
+                {
+                    Task.Run(() => {
+                        var messs = config.SoloSpeechList.SpeechDefinitions[SoloTimeCount].Messages.Where(v => v.IsUse).ToList();
+                        var spkrs = config.SoloSpeechList.SpeechDefinitions[SoloTimeCount].speakerList.ValidSpeakers;
+                        var idx1 = r.Next(0, spkrs.Count);
+                        var text = messs.Count == 0 ? "" : messs[r.Next(0, messs.Count)].Message;
+
+                        var cid = spkrs[idx1].Cid;
+                        var eff = spkrs[idx1].Effects.ToDictionary(k => k.ParamName, v => v.Value);
+                        var emo = spkrs[idx1].Emotions.ToDictionary(k => k.ParamName, v => v.Value);
+
+                        api.TalkAsync(cid, text, eff, emo);
+                        Log(string.Format(@"SOLO, {0}, past {1}sec, [{2}]", cid, SoloTimeCount, text));
+                    });
+                }
+
+                if ((config.SoloSpeechList.SpeechDefinitions.Count != 0) && (config.SoloSpeechList.SpeechDefinitions.Max(k => k.Key) < SoloTimeCount)) SoloTimeCount = 0;
+
+                return;
             }
 
+            SoloTimeCount = 0;
+
+            if ((backgroundTalker != null) && (!backgroundTalker.IsCompleted)) return;
 
             backgroundTalker = Task.Run(() => {
 
@@ -125,7 +151,8 @@ namespace FakeChan22.Tasks
 
                     messQueue.NowtaskId = item.TaskId;
 
-                    sname = item.LsnrCfg.ServiceName;
+                    sname = item.LsnrCfg == null ? "----" : item.LsnrCfg.ServiceName;
+
                     orgtext = Regex.Replace(item.OrgMessage, @"(\r\n|\r|\n)", "");
                     (cid, cname, text, eff, emo) = ParseSpeakerAndParams(item);
                     text = Regex.Replace(text, @"(\r\n|\r|\n)", "");

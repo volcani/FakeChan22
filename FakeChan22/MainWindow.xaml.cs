@@ -8,8 +8,6 @@ using FakeChan22.Tasks;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Json;
 using System.Reflection;
-using System.Configuration;
-using System.Web.Configuration;
 
 namespace FakeChan22
 {
@@ -18,7 +16,7 @@ namespace FakeChan22
     /// </summary>
     public partial class MainWindow : Window
     {
-        private string versionStr = "1.0.4";
+        private string versionStr = "1.0.5";
 
         /// <summary>
         /// アプリ全体の設定格納
@@ -171,6 +169,12 @@ namespace FakeChan22
             if (config.queueParam.Mode5QueueLimit < config.queueParam.Mode4QueueLimit)
             {
                 config.queueParam.Mode5QueueLimit = config.queueParam.Mode4QueueLimit + 10;
+            }
+
+            // 呟き定義情報が読み込めていないなら補正(旧版対応) 
+            if (config.SoloSpeechList == null)
+            {
+                config.SoloSpeechList = new Params.SoloSpeechDefinitionList();
             }
 
             // バックグラウンドタスク管理

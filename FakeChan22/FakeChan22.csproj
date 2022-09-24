@@ -41,7 +41,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
-    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Data" />
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Runtime.Serialization" />
@@ -83,7 +82,9 @@
     <Compile Include="EditReplaceList.xaml.cs">
       <DependentUpon>EditReplaceList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Params\SoloSpeachDefinition.cs" />
+    <Compile Include="Params\SoloSpeechDefinition.cs" />
+    <Compile Include="Params\SoloSpeechDefinitionList.cs" />
+    <Compile Include="Params\SoloSpeechMessage.cs" />
     <Compile Include="Plugins\JudgeTextLang.cs" />
     <Compile Include="Params\ListenerConfig.cs" />
     <Compile Include="Params\ListenerConfigClipboard.cs" />

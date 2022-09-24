@@ -8,18 +8,67 @@
         Title="呟き定義編集" Height="450" Width="800" Loaded="Window_Loaded" Closing="Window_Closing">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="7*"/>
+            <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="50*"/>
-            <ColumnDefinition Width="50*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+
+            <ColumnDefinition Width="10"/>
+
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+
         </Grid.ColumnDefinitions>
 
-        <TreeView x:Name="TreeViewSoloSpeachMessages" Grid.Row="0" Grid.Column="0" >
-        </TreeView>
-        
-        <StackPanel x:Name="StackPanelEdit" Grid.Row="0" Grid.Column="0"/>
-        
+        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
+            <TextBox x:Name="TextBoxPastTime" Width="70"  Margin="2,2,2,2" VerticalAlignment="Center" LostFocus="TextBoxPastTime_LostFocus" />
+            <Button Content="登録" Margin="2,2,0,2" VerticalAlignment="Center" Click="ButtonCreate_Click"/>
+            <Label Content="※60～172,800秒" Margin="2,2,0,2" VerticalAlignment="Center"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="削除" Margin="2,2,2,2" VerticalAlignment="Center" Click="ButtonRemove_Click" />
+        </StackPanel>
+
+        <ListBox x:Name="ListBoxSoloSpeechMessages" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="2,2,2,2" SelectedIndex="0" DisplayMemberPath="Value.Title" SelectionChanged="ListBoxSoloSpeechMessages_SelectionChanged"/>
+
+        <CheckBox x:Name="CheckBoxUseSoloSpeech" Content="呟き機能を利用する" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="2,2,2,2" IsChecked="False" Click="CheckBoxUseSoloSpeech_Click"/>
+
+
+        <StackPanel Grid.Row="0" Grid.Column="3" Margin="2,2,2,2" Orientation="Horizontal">
+            <TextBox x:Name="TextBoxUpdatePastTime" Width="70"  Margin="2,2,2,2" VerticalAlignment="Center" LostFocus="TextBoxPastTime_LostFocus" />
+            <Button Content="変更" Margin="2,2,0,2" VerticalAlignment="Center" Click="ButtonUpdate_Click"/>
+            <Label Content="※60～172,800秒" Margin="2,2,0,2" VerticalAlignment="Center"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="0" Grid.Column="5" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="保存" Margin="2,2,2,2" VerticalAlignment="Center" Click="ButtonSave_Click" />
+        </StackPanel>
+
+        <DataGrid x:Name="DataGridMessages" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="3" Margin="4,2,2,2" AutoGenerateColumns="False" ScrollViewer.CanContentScroll="True" IsManipulationEnabled="True" >
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="適用" CanUserResize="False" CanUserReorder="False" >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding IsUse, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTextColumn Header="dummy" IsReadOnly="True" Visibility="Hidden" CanUserSort="False" CanUserReorder="False"/>
+                <DataGridTextColumn Header="呟くメッセージ" Binding="{Binding Message}" Width="45*" CanUserSort="False" CanUserReorder="False"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="3" Orientation="Horizontal">
+            <Label Content="適用する話者リスト" Margin="2,2,2,2" VerticalAlignment="Center"/>
+            <ComboBox x:Name="ComboBoxUseSpeakerList" Margin="2,2,2,2" VerticalAlignment="Center" DisplayMemberPath="Listname"  SelectedIndex="0" SelectionChanged="ComboBoxUseSpeakerList_SelectionChanged"/>
+        </StackPanel>
+
     </Grid>
 </Window>
