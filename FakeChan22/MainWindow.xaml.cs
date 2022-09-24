@@ -60,6 +60,8 @@ namespace FakeChan22
                 MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(Properties.Settings.Default.UserDatas));
                 config = (FakeChanConfig)uds.ReadObject(ms);
                 ms.Close();
+
+                config.RebuildObjects();
             }
             else
             {
