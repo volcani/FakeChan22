@@ -256,6 +256,17 @@ namespace FakeChan22
                 }
             }
 
+            if (ans) return ans;
+
+            foreach(var item in config.SoloSpeechList.SpeechDefinitions)
+            {
+                if(item.Value.speakerList.Equals(ss))
+                {
+                    ans = true;
+                    break;
+                }
+            }
+
             return ans;
         }
 
