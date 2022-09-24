@@ -93,7 +93,7 @@ namespace FakeChan22.Tasks
 
             (cid, cname, text, eff, emo) = ParseSpeakerAndParams(talk);
 
-            Log(string.Format(@"{0}, {1}, async, [{2}]", sname, cid, text));
+            Log(string.Format(@"{0}, {1}, async, [{2}]", sname, cid, talk.OrgMessage));
             api.TalkAsync(cid, text, eff, emo);
         }
 
@@ -193,8 +193,8 @@ namespace FakeChan22.Tasks
 
                     try
                     {
-                        CommentGen.AddComment(text, sname, "", string.Format(@"{0}:{1}", cid, cname));
-                        Log(string.Format(@"{0}, {1}, mode{2}, [{3}]", sname, cid, mode, text));
+                        CommentGen.AddComment(item.OrgMessage, sname, "", string.Format(@"{0}:{1}", cid, cname));
+                        Log(string.Format(@"{0}, {1}, mode{2}, [{3}]", sname, cid, mode, item.OrgMessage));
                         api.Talk(cid, text, "", eff, emo);
                     }
                     catch (Exception)
