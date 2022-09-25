@@ -537,5 +537,10 @@ namespace FakeChan22
                 Application.Current.Shutdown();
             }
         }
+
+        private void ButtonLogClear_Click(object sender, RoutedEventArgs e)
+        {
+            TextBoxStatus.Clear();
+        }
     }
 }

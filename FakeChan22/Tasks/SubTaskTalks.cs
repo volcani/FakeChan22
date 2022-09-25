@@ -66,7 +66,7 @@ namespace FakeChan22.Tasks
                 {
                     string txt = logQue.Take();
 
-                    OnLogging?.Invoke(string.Format(@"ASCALL, {0}", txt));
+                    OnLogging?.Invoke(string.Format(@"TALK, {0}", txt));
                 }
                 catch(Exception)
                 {

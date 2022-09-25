@@ -90,11 +90,11 @@ namespace FakeChan22.Tasks
 
                     if(item.Value.IsRunning)
                     {
-                        Logging(String.Format(@"{0}, 処理停止", item.Key.LabelName));
+                        LoggingTM(String.Format(@"{0}, 処理停止", item.Key.LabelName));
                     }
                     else
                     {
-                        Logging(String.Format(@"{0}, 処理停止（念のための呼び出し）", item.Key.LabelName));
+                        LoggingTM(String.Format(@"{0}, 処理停止（念のための呼び出し）", item.Key.LabelName));
                     }
                 }
             }
@@ -107,7 +107,7 @@ namespace FakeChan22.Tasks
                 if (item.Key.IsEnable)
                 {
                     item.Value.TaskStart();
-                    Logging(String.Format(@"{0}, 処理開始", item.Key.LabelName));
+                    LoggingTM(String.Format(@"{0}, 処理開始", item.Key.LabelName));
                 }
             }
         }
@@ -120,24 +120,28 @@ namespace FakeChan22.Tasks
 
                 if (tasks[lsnr].IsRunning)
                 {
-                    Logging(String.Format(@"{0}, 処理停止", lsnr.LabelName));
+                    LoggingTM(String.Format(@"{0}, 処理停止", lsnr.LabelName));
                 }
                 else
                 {
-                    Logging(String.Format(@"{0}, 処理停止（念のための呼び出し）", lsnr.LabelName));
+                    LoggingTM(String.Format(@"{0}, 処理停止（念のための呼び出し）", lsnr.LabelName));
                 }
 
                 if (lsnr.IsEnable)
                 {
                     tasks[lsnr].TaskStart();
-                    Logging(String.Format(@"{0}, 処理開始", lsnr.LabelName));
+                    LoggingTM(String.Format(@"{0}, 処理開始", lsnr.LabelName));
                 }
             }
         }
 
         private void Logging(string logText)
         {
-            OnLogging?.Invoke(string.Format(@"{0} TASKMGR, {1}", DateTime.Now, logText));
+            OnLogging?.Invoke(string.Format(@"{0} {1}", DateTime.Now, logText));
+        }
+        private void LoggingTM(string logText)
+        {
+            OnLogging?.Invoke(string.Format(@"{0} TMGR, {1}", DateTime.Now, logText));
         }
     }
 }
