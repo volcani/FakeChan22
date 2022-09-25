@@ -8,6 +8,7 @@ using FakeChan22.Tasks;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Json;
 using System.Reflection;
+using System.Collections.Generic;
 
 namespace FakeChan22
 {
@@ -16,7 +17,7 @@ namespace FakeChan22
     /// </summary>
     public partial class MainWindow : Window
     {
-        private string versionStr = "1.0.10";
+        private string versionStr = "1.0.11";
 
         /// <summary>
         /// アプリ全体の設定格納
@@ -60,13 +61,15 @@ namespace FakeChan22
                 MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(Properties.Settings.Default.UserDatas));
                 config = (FakeChanConfig)uds.ReadObject(ms);
                 ms.Close();
-
-                config.RebuildObjects();
             }
             else
             {
                 config = new FakeChanConfig();
             }
+
+            config.RebuildReplaceDefinitionList();
+            config.RebuildSoloSpeechList();
+            config.RebuildQueueParam();
 
             config.versionStr = this.versionStr;
 
@@ -127,6 +130,7 @@ namespace FakeChan22
             }
 
             // 話者リストが無い時は強制的に作成させる
+            if (config.speakerLists == null) config.speakerLists = new List<SpeakerList>();
             if (config.speakerLists.Count == 0)
             {
                 MessageBox.Show("話者リストの登録がないので最初に作成してください", "初期設定処理");
@@ -142,43 +146,14 @@ namespace FakeChan22
                 }
             }
 
+            config.RebuildListenerConfig();
+            config.RebuildMappingObjects();
+
             ComboBoxSpeakerLists.SelectedIndex = 0;
 
-            // 置換リストが無ければ初期設定を1つ作成する
-            if (config.replaceDefinitionLists.Count == 0)
-            {
-                config.replaceDefinitionLists.Add(new ReplaceDefinitionList());
-            }
             ComboBoxRegexDefinitionLists.SelectedIndex = 0;
 
-            // リスナ設定が無ければ初期設定を作る
-            if (config.listenerConfigLists.Count == 0)
-            {
-                config.listenerConfigLists.Add(new ListenerConfigIpc("BouyomiChan") { SpeakerListDefault = config.speakerLists[0], ReplaceListDefault = config.replaceDefinitionLists[0], SpeakerListNoJapaneseJudge = config.speakerLists[0], ReplaceListNoJapaneseJudge = config.replaceDefinitionLists[0] });
-                config.listenerConfigLists.Add(new ListenerConfigSocket("127.0.0.1", 50001) { SpeakerListDefault = config.speakerLists[0], ReplaceListDefault = config.replaceDefinitionLists[0], SpeakerListNoJapaneseJudge = config.speakerLists[0], ReplaceListNoJapaneseJudge = config.replaceDefinitionLists[0] });
-                config.listenerConfigLists.Add(new ListenerConfigSocket("127.0.0.1", 50002) { SpeakerListDefault = config.speakerLists[0], ReplaceListDefault = config.replaceDefinitionLists[0], SpeakerListNoJapaneseJudge = config.speakerLists[0], ReplaceListNoJapaneseJudge = config.replaceDefinitionLists[0] });
-                config.listenerConfigLists.Add(new ListenerConfigSocket("127.0.0.1", 50003) { SpeakerListDefault = config.speakerLists[0], ReplaceListDefault = config.replaceDefinitionLists[0], SpeakerListNoJapaneseJudge = config.speakerLists[0], ReplaceListNoJapaneseJudge = config.replaceDefinitionLists[0] });
-                config.listenerConfigLists.Add(new ListenerConfigSocket("127.0.0.1", 50004) { SpeakerListDefault = config.speakerLists[0], ReplaceListDefault = config.replaceDefinitionLists[0], SpeakerListNoJapaneseJudge = config.speakerLists[0], ReplaceListNoJapaneseJudge = config.replaceDefinitionLists[0] });
-                config.listenerConfigLists.Add(new ListenerConfigHttp("127.0.0.1", 50080) { SpeakerListDefault = config.speakerLists[0], ReplaceListDefault = config.replaceDefinitionLists[0], SpeakerListNoJapaneseJudge = config.speakerLists[0], ReplaceListNoJapaneseJudge = config.replaceDefinitionLists[0] });
-                config.listenerConfigLists.Add(new ListenerConfigHttp("127.0.0.1", 50081) { SpeakerListDefault = config.speakerLists[0], ReplaceListDefault = config.replaceDefinitionLists[0], SpeakerListNoJapaneseJudge = config.speakerLists[0], ReplaceListNoJapaneseJudge = config.replaceDefinitionLists[0] });
-                config.listenerConfigLists.Add(new ListenerConfigHttp("127.0.0.1", 50082) { SpeakerListDefault = config.speakerLists[0], ReplaceListDefault = config.replaceDefinitionLists[0], SpeakerListNoJapaneseJudge = config.speakerLists[0], ReplaceListNoJapaneseJudge = config.replaceDefinitionLists[0] });
-                config.listenerConfigLists.Add(new ListenerConfigHttp("127.0.0.1", 50083) { SpeakerListDefault = config.speakerLists[0], ReplaceListDefault = config.replaceDefinitionLists[0], SpeakerListNoJapaneseJudge = config.speakerLists[0], ReplaceListNoJapaneseJudge = config.replaceDefinitionLists[0] });
-                config.listenerConfigLists.Add(new ListenerConfigClipboard() { SpeakerListDefault = config.speakerLists[0], ReplaceListDefault = config.replaceDefinitionLists[0], SpeakerListNoJapaneseJudge = config.speakerLists[0], ReplaceListNoJapaneseJudge = config.replaceDefinitionLists[0] });
-                config.listenerConfigLists.Add(new ListenerConfigTwitter() { SpeakerListDefault = config.speakerLists[0], ReplaceListDefault = config.replaceDefinitionLists[0], SpeakerListNoJapaneseJudge = config.speakerLists[0], ReplaceListNoJapaneseJudge = config.replaceDefinitionLists[0] });
-            }
             ComboBoxListenerConfigLists.SelectedIndex = 0;
-
-            // キュー設定補正
-            if (config.queueParam.Mode5QueueLimit < config.queueParam.Mode4QueueLimit)
-            {
-                config.queueParam.Mode5QueueLimit = config.queueParam.Mode4QueueLimit + 10;
-            }
-
-            // 呟き定義情報が読み込めていないなら補正(旧版対応) 
-            if (config.SoloSpeechList == null)
-            {
-                config.SoloSpeechList = new Params.SoloSpeechDefinitionList();
-            }
 
             // バックグラウンドタスク管理
             taskManager = new TaskManager(ref config.listenerConfigLists, ref messageQueue, ref config);
