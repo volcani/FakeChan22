@@ -2,6 +2,8 @@
 
 機能は大体同じですがもう少し細かい設定が出来るようにします。AssistantSeikaが必須なのは変わりません。
 
+![image](https://user-images.githubusercontent.com/22530106/192142882-3d7ae2e4-ba15-46a1-a407-dfd9d05569d2.png)
+
 ## まだ制作中です
 
 不具合はまだまだあるはずなので、Issuesにてご連絡いただければと。
