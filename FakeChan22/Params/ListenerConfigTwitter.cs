@@ -30,7 +30,7 @@ namespace FakeChan22
         [DataMember]
         public string SearchLang { get; set; } = "ja";
 
-        [GuiItem(ParamName = @"result_type", Description = "検索時対象ツイート")]
+        [GuiItem(ParamName = @"result__type", Description = "検索時対象ツイート")]
         [DataMember]
         public string SearchResultType { get; set; } = "recent";
 
@@ -38,7 +38,7 @@ namespace FakeChan22
         [DataMember]
         public int SearchCount { get; set; } = 100;
 
-        [GuiItem(ParamName = @"since_id", Description = "このIDは自動更新されます")]
+        [GuiItem(ParamName = @"since__id", Description = "このIDは自動更新されます")]
         [DataMember]
         public string SearchSinceID { get; set; } = "";
 
