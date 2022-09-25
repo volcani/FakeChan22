@@ -9,9 +9,9 @@ AssistantSeikaはこちらからダウンロードしてください。
 　 https://hgotoh.jp/wiki/doku.php/documents/voiceroid/assistantseika/assistantseika-001a
 
 
-■変更点等( Ver 1.0.8 → 1.0.10 )
+■変更点等( Ver 1.0.10 → 1.0.11 )
 
-- ログとコメジェネ出力に使うテキストを置換前のオリジナルテキストに変更した。
+- 呟き機能のないバージョンの保存データを、呟き機能のあるバージョンで復元しようとすると画面が出ないまま終了する不具合を修正。
 
 
 ■使用しているサードパーティ製品
