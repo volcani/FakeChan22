@@ -24,4 +24,5 @@
 
 ## その他
 
-マニュアルとか書く余裕がまだないので、[リリース](https://github.com/k896951/FakeChan22/releases)からバイナリをダウンロードして試してください。
+もう少し詳しい内容は https://hgotoh.jp/wiki/doku.php/documents/tools/tools-207 を参照してください。  
+ダウンロードは[リリース](https://github.com/k896951/FakeChan22/releases)からお願いします。
