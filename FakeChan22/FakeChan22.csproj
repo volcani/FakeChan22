@@ -81,8 +81,8 @@
     <Compile Include="EditSoloMessageList.xaml.cs">
       <DependentUpon>EditSoloMessageList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Params\Avator.cs" />
-    <Compile Include="Params\AvatorParamSpec.cs" />
+    <Compile Include="Params\Speaker\Avator.cs" />
+    <Compile Include="Params\Speaker\AvatorParamSpec.cs" />
     <Compile Include="ConnectAs\IScAPIs.cs" />
     <Compile Include="ConnectAs\ScAPIs.cs" />
     <Compile Include="EditQueueControll.xaml.cs">
@@ -91,37 +91,37 @@
     <Compile Include="EditReplaceList.xaml.cs">
       <DependentUpon>EditReplaceList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Params\ListenerConfigTwitter.cs" />
-    <Compile Include="Params\SoloSpeechDefinition.cs" />
-    <Compile Include="Params\SoloSpeechDefinitionList.cs" />
-    <Compile Include="Params\SoloSpeechMessage.cs" />
-    <Compile Include="Plugins\GuiItemStringAttribute.cs" />
+    <Compile Include="Tasks\TaskTwitter\ListenerConfigTwitter.cs" />
+    <Compile Include="Params\Solo\SoloSpeechDefinition.cs" />
+    <Compile Include="Params\Solo\SoloSpeechDefinitionList.cs" />
+    <Compile Include="Params\Solo\SoloSpeechMessage.cs" />
+    <Compile Include="Tasks\GuiItemStringAttribute.cs" />
     <Compile Include="Plugins\JudgeTextLang.cs" />
-    <Compile Include="Params\ListenerConfig.cs" />
-    <Compile Include="Params\ListenerConfigClipboard.cs" />
-    <Compile Include="Params\ListenerConfigHttp.cs" />
-    <Compile Include="Params\ListenerConfigIpc.cs" />
-    <Compile Include="Params\ListenerConfigSocket.cs" />
-    <Compile Include="Params\QueueParam.cs" />
-    <Compile Include="Params\ReplaceDefinition.cs" />
-    <Compile Include="Params\ReplaceDefinitionList.cs" />
+    <Compile Include="Tasks\ListenerConfig.cs" />
+    <Compile Include="Tasks\TaskClipboard\ListenerConfigClipboard.cs" />
+    <Compile Include="Tasks\TaskHttp\ListenerConfigHttp.cs" />
+    <Compile Include="Tasks\TaskIpc\ListenerConfigIpc.cs" />
+    <Compile Include="Tasks\TaskSocket\ListenerConfigSocket.cs" />
+    <Compile Include="Params\Queue\QueueParam.cs" />
+    <Compile Include="Params\Replace\ReplaceDefinition.cs" />
+    <Compile Include="Params\Replace\ReplaceDefinitionList.cs" />
     <Compile Include="Plugins\ReplaceText.cs" />
-    <Compile Include="Params\Speaker.cs" />
+    <Compile Include="Params\Speaker\Speaker.cs" />
     <Compile Include="EditSpeakerList.xaml.cs">
       <DependentUpon>EditSpeakerList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Params\SpeakerList.cs" />
-    <Compile Include="Tasks\BouyomiChanRemoting.cs" />
-    <Compile Include="Tasks\SubTaskCommentGen.cs" />
+    <Compile Include="Params\Speaker\SpeakerList.cs" />
+    <Compile Include="Tasks\TaskIpc\BouyomiChanRemoting.cs" />
+    <Compile Include="Tasks\TaskManager\SubTaskCommentGen.cs" />
     <Compile Include="Tasks\EnumClass.cs" />
-    <Compile Include="Tasks\TaskTwitter.cs" />
-    <Compile Include="Tasks\TaskHttp.cs" />
-    <Compile Include="Tasks\TaskClipboard.cs" />
-    <Compile Include="Tasks\TaskSocket.cs" />
+    <Compile Include="Tasks\TaskTwitter\TaskTwitter.cs" />
+    <Compile Include="Tasks\TaskHttp\TaskHttp.cs" />
+    <Compile Include="Tasks\TaskClipboard\TaskClipboard.cs" />
+    <Compile Include="Tasks\TaskSocket\TaskSocket.cs" />
     <Compile Include="Tasks\TaskBase.cs" />
-    <Compile Include="Tasks\TaskIpc.cs" />
-    <Compile Include="Tasks\TaskManager.cs" />
-    <Compile Include="Tasks\SubTaskTalks.cs" />
+    <Compile Include="Tasks\TaskIpc\TaskIpc.cs" />
+    <Compile Include="Tasks\TaskManager\TaskManager.cs" />
+    <Compile Include="Tasks\TaskManager\SubTaskTalks.cs" />
     <Page Include="EditListenerConfig.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -156,8 +156,8 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Queue\MessageData.cs" />
-    <Compile Include="Queue\MessageQueueWrapper.cs" />
+    <Compile Include="Params\Queue\MessageData.cs" />
+    <Compile Include="Params\Queue\MessageQueueWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

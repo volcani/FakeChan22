@@ -4,11 +4,10 @@ using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Threading;
-using System.Runtime.Remoting.Contexts;
 using System.Text.RegularExpressions;
-using System.Windows.Input;
-using System.Windows.Forms;
-using System.Security.Policy;
+using FakeChan22.Params;
+using FakeChan22.Plugins;
+using FakeChan22.Config;
 
 namespace FakeChan22.Tasks
 {
@@ -227,7 +226,6 @@ namespace FakeChan22.Tasks
             // 話者のキーとテキストを分離
             (sepMap, sepText) = ReplaceText.SeparateMapKey(talk.OrgMessage);
 
-            // 非日本語判定の実施判定
             splist = talk.LsnrCfg.SpeakerListDefault;
             replist = talk.LsnrCfg.ReplaceListDefault;
 

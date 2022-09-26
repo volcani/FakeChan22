@@ -1,7 +1,7 @@
-﻿using FakeChan22.Tasks;
+﻿using FakeChan22.Params;
 using System;
 
-namespace FakeChan22
+namespace FakeChan22.Tasks
 {
     public class TaskClipboard : TaskBase, IDisposable
     {

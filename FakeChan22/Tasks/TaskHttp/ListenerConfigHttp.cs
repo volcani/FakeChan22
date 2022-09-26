@@ -1,7 +1,6 @@
-﻿using FakeChan22.Tasks;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 
-namespace FakeChan22
+namespace FakeChan22.Tasks
 {
     [DataContract]
     public class ListenerConfigHttp : ListenerConfig

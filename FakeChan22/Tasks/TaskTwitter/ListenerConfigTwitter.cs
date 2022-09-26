@@ -1,11 +1,7 @@
-﻿using CoreTweet;
-using FakeChan22.Plugins;
-using FakeChan22.Tasks;
-using System;
-using System.ComponentModel;
+﻿using FakeChan22.Plugins;
 using System.Runtime.Serialization;
 
-namespace FakeChan22
+namespace FakeChan22.Tasks
 {
     [DataContract]
     public class ListenerConfigTwitter : ListenerConfig

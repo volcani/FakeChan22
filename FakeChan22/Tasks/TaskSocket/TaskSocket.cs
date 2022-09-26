@@ -1,10 +1,10 @@
-﻿using FakeChan22.Tasks;
+﻿using FakeChan22.Params;
 using System;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
 
-namespace FakeChan22
+namespace FakeChan22.Tasks
 {
     public class TaskSocket : TaskBase, IDisposable
     {

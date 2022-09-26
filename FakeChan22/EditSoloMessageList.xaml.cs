@@ -1,4 +1,5 @@
-﻿using FakeChan22.Params;
+﻿using FakeChan22.Config;
+using FakeChan22.Params;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

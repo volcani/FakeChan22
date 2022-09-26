@@ -4,10 +4,9 @@ using System.Web;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
-using FakeChan22.Tasks;
-using System.Net.Sockets;
+using FakeChan22.Params;
 
-namespace FakeChan22
+namespace FakeChan22.Tasks
 {
     public class TaskHttp : TaskBase, IDisposable
     {

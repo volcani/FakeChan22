@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace FakeChan22
+namespace FakeChan22.Params
 {
     [DataContract]
     public class QueueParam

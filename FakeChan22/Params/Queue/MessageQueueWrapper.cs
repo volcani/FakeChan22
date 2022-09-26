@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 
-namespace FakeChan22
+namespace FakeChan22.Params
 {
     public class MessageQueueWrapper
     {

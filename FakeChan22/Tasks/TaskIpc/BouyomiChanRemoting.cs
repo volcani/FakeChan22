@@ -1,4 +1,5 @@
 ﻿using System;
+using FakeChan22.Params;
 
 namespace FNF.Utility
 {
@@ -19,7 +20,7 @@ namespace FNF.Utility
         public event CallEventHandlerSimpleTask OnClearTalkTask;
         public event CallEventHandlerSimpleTask OnSkipTalkTask;
 
-        public FakeChan22.MessageQueueWrapper MessQue;
+        public MessageQueueWrapper MessQue;
         public int taskId = 0;
 
         public int TalkTaskCount { get { return MessQue.count; } }

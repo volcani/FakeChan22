@@ -1,18 +1,13 @@
 ﻿using System;
-using System.Linq;
-using System.Web;
 using System.Net;
-using System.Text;
 using System.Text.RegularExpressions;
-using FakeChan22.Tasks;
-using System.Net.Sockets;
 using CoreTweet;
-using Newtonsoft.Json.Linq;
 using System.Windows.Threading;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using FakeChan22.Params;
 
-namespace FakeChan22
+namespace FakeChan22.Tasks
 {
     public class TaskTwitter : TaskBase, IDisposable
     {
@@ -95,7 +90,7 @@ namespace FakeChan22
 
                     if (item.RetweetedStatus != null) continue;
 
-                    MessageData talk = new MessageData()
+                    var talk = new Params.MessageData()
                     {
                         LsnrCfg = lsnrCfg,
                         OrgMessage = Regex.Replace(item.Text, @"[\r\n]", ""),

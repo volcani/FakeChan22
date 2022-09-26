@@ -9,6 +9,8 @@ using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Json;
 using System.Reflection;
 using System.Collections.Generic;
+using FakeChan22.Params;
+using FakeChan22.Config;
 
 namespace FakeChan22
 {

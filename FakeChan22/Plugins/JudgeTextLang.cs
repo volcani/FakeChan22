@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace FakeChan22
+namespace FakeChan22.Plugins
 {
     public class JudgeTextLang
     {

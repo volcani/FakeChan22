@@ -4,7 +4,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using EmojiTools;
 
-namespace FakeChan22
+namespace FakeChan22.Plugins
 {
     public class ReplaceText
     {

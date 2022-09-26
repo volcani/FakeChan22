@@ -1,9 +1,10 @@
 ﻿using FakeChan22.Params;
+using FakeChan22.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace FakeChan22
+namespace FakeChan22.Config
 {
     [DataContract]
     public class FakeChanConfig
