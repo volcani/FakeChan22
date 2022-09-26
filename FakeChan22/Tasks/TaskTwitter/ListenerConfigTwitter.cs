@@ -40,7 +40,7 @@ namespace FakeChan22.Tasks
 
         [GuiItem(ParamName = "q", Description = "検索時キーワード")]
         [DataMember]
-        public string SearchQuery { get; set; } = @"#宝鐘マリン";
+        public string SearchQuery { get; set; } = @"偽装ちゃん22";
 
         public ListenerConfigTwitter()
         {
