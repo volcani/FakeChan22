@@ -1,17 +1,7 @@
 ﻿using FakeChan22.Params;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace FakeChan22
 {
@@ -20,9 +10,9 @@ namespace FakeChan22
     /// </summary>
     public partial class EditQueueControll : Window
     {
-        QueueParam queueParam;
+        MessageQueueParam queueParam;
 
-        public EditQueueControll(ref QueueParam cueuePms)
+        public EditQueueControll(ref MessageQueueParam cueuePms)
         {
             queueParam = cueuePms;
             this.DataContext = cueuePms;

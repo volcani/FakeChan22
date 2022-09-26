@@ -3,7 +3,7 @@
 namespace FakeChan22.Tasks
 {
     [DataContract]
-    public class ListenerConfigClipboard : ListenerConfig
+    public class ListenerConfigClipboard : ListenerConfigBase
     {
         public ListenerConfigClipboard()
         {

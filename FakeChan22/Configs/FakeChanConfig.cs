@@ -6,18 +6,24 @@ using System.Runtime.Serialization;
 
 namespace FakeChan22.Config
 {
+    [KnownType(typeof(ListenerConfigIpc))]
+    [KnownType(typeof(ListenerConfigSocket))]
+    [KnownType(typeof(ListenerConfigHttp))]
+    [KnownType(typeof(ListenerConfigClipboard))]
+    [KnownType(typeof(ListenerConfigTwitter))]
+
     [DataContract]
     public class FakeChanConfig
     {
-        [DataMember] public List<SpeakerList> speakerLists = new List<SpeakerList>();
+        [DataMember] public List<SpeakerFakeChanList> speakerLists = new List<SpeakerFakeChanList>();
 
         [DataMember] public List<ReplaceDefinitionList> replaceDefinitionLists = new List<ReplaceDefinitionList>();
 
-        [DataMember] public SoloSpeechDefinitionList SoloSpeechList = new SoloSpeechDefinitionList();
+        [DataMember] public SoloSpeechDefinitionList soloSpeechList = new SoloSpeechDefinitionList();
 
-        [DataMember] public List<ListenerConfig> listenerConfigLists = new List<ListenerConfig>();
+        [DataMember] public List<ListenerConfigBase> listenerConfigLists = new List<ListenerConfigBase>();
 
-        [DataMember] public QueueParam queueParam = new QueueParam();
+        [DataMember] public MessageQueueParam queueParam = new MessageQueueParam();
 
         [DataMember] public string fakeChan22WindowTitle = "偽装ちゃん22";
 
@@ -39,7 +45,7 @@ namespace FakeChan22.Config
             if ((replaceDefinitionLists == null) || (replaceDefinitionLists.Count == 0)) throw new Exception("[inner] 置換リストの作成が無い");
 
             // リスナ定義再構成
-            if (listenerConfigLists == null) listenerConfigLists = new List<ListenerConfig>();
+            if (listenerConfigLists == null) listenerConfigLists = new List<ListenerConfigBase>();
             if (listenerConfigLists.Count == 0)
             {
                 listenerConfigLists.Add(new ListenerConfigIpc("BouyomiChan") { SpeakerListDefault = speakerLists[0], ReplaceListDefault = replaceDefinitionLists[0], SpeakerListNoJapaneseJudge = speakerLists[0], ReplaceListNoJapaneseJudge = replaceDefinitionLists[0] });
@@ -80,14 +86,14 @@ namespace FakeChan22.Config
         public void RebuildSoloSpeechList()
         {
             // 呟き定義再構成
-            if (SoloSpeechList == null) SoloSpeechList = new SoloSpeechDefinitionList();
-            if (SoloSpeechList.SpeechDefinitions == null) SoloSpeechList.SpeechDefinitions = new Dictionary<int, SoloSpeechDefinition>();
+            if (soloSpeechList == null) soloSpeechList = new SoloSpeechDefinitionList();
+            if (soloSpeechList.SpeechDefinitions == null) soloSpeechList.SpeechDefinitions = new Dictionary<int, SoloSpeechDefinition>();
         }
 
         public void RebuildQueueParam()
         {
             // キュー制御再構成
-            if (queueParam == null) queueParam = new QueueParam();
+            if (queueParam == null) queueParam = new MessageQueueParam();
 
             // キュー設定補正
             if (queueParam.Mode5QueueLimit < queueParam.Mode4QueueLimit)
@@ -122,11 +128,11 @@ namespace FakeChan22.Config
             }
 
             // 呟き定義のオブジェクト再構成（旧保存形式にも対応）
-            foreach (var item in SoloSpeechList.SpeechDefinitions)
+            foreach (var item in soloSpeechList.SpeechDefinitions)
             {
-                guid = SoloSpeechList.SpeechDefinitions[item.Key].speakerList.UniqId;
-                name = SoloSpeechList.SpeechDefinitions[item.Key].speakerList.Listname;
-                SoloSpeechList.SpeechDefinitions[item.Key].speakerList = guid != null ? RebuildSpeakerListGuid(guid) : RebuildSpeakerListListname(name);
+                guid = soloSpeechList.SpeechDefinitions[item.Key].speakerList.UniqId;
+                name = soloSpeechList.SpeechDefinitions[item.Key].speakerList.Listname;
+                soloSpeechList.SpeechDefinitions[item.Key].speakerList = guid != null ? RebuildSpeakerListGuid(guid) : RebuildSpeakerListListname(name);
             }
 
             // 残りにguidを付与
@@ -143,11 +149,11 @@ namespace FakeChan22.Config
 
         }
 
-        private SpeakerList RebuildSpeakerListGuid(string guid)
+        private SpeakerFakeChanList RebuildSpeakerListGuid(string guid)
         {
             return speakerLists.Find(v => v.UniqId == guid);
         }
-        private SpeakerList RebuildSpeakerListListname(string name)
+        private SpeakerFakeChanList RebuildSpeakerListListname(string name)
         {
             var item = speakerLists.Find(v => v.Listname == name);
 

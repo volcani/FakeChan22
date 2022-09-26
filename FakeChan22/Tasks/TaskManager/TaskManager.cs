@@ -7,7 +7,7 @@ namespace FakeChan22.Tasks
 {
     public class TaskManager
     {
-        Dictionary<ListenerConfig, TaskBase> tasks;
+        Dictionary<ListenerConfigBase, TaskBase> tasks;
         MessageQueueWrapper messQue;
         FakeChanConfig config;
         SubTaskTalks talkTask;
@@ -32,9 +32,9 @@ namespace FakeChan22.Tasks
             }
         }
 
-        public TaskManager(ref List<ListenerConfig> list, ref MessageQueueWrapper que, ref FakeChanConfig cfg)
+        public TaskManager(ref List<ListenerConfigBase> list, ref MessageQueueWrapper que, ref FakeChanConfig cfg)
         {
-            tasks = new Dictionary<ListenerConfig, TaskBase>();
+            tasks = new Dictionary<ListenerConfigBase, TaskBase>();
             messQue = que;
             config = cfg;
 
@@ -112,7 +112,7 @@ namespace FakeChan22.Tasks
             }
         }
 
-        public void TaskReBoot(ref ListenerConfig lsnr)
+        public void TaskReBoot(ref ListenerConfigBase lsnr)
         {
             if(tasks.ContainsKey(lsnr))
             {

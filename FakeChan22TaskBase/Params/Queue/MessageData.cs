@@ -12,7 +12,7 @@
 
         public int CompatVType { get; set; }
 
-        public ListenerConfig LsnrCfg { get; set; }
+        public ListenerConfigBase LsnrCfg { get; set; }
 
         public string Message { get; set; }
 

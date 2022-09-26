@@ -132,7 +132,7 @@ namespace FakeChan22
             }
 
             // 話者リストが無い時は強制的に作成させる
-            if (config.speakerLists == null) config.speakerLists = new List<SpeakerList>();
+            if (config.speakerLists == null) config.speakerLists = new List<SpeakerFakeChanList>();
             if (config.speakerLists.Count == 0)
             {
                 MessageBox.Show("話者リストの登録がないので最初に作成してください", "初期設定処理");
@@ -186,7 +186,7 @@ namespace FakeChan22
         /// </summary>
         private void CreateNewSpeakerList()
         {
-            var ss = new SpeakerList();
+            var ss = new SpeakerFakeChanList();
             Window wd = new EditSpeakerList(ref ss);
 
             wd.ShowDialog();
@@ -201,7 +201,7 @@ namespace FakeChan22
         /// </summary>
         private void UpdateSpeakerList()
         {
-            var ss = ComboBoxSpeakerLists.SelectedItem as SpeakerList;
+            var ss = ComboBoxSpeakerLists.SelectedItem as SpeakerFakeChanList;
 
             Window wd = new EditSpeakerList(ref ss);
 
@@ -216,7 +216,7 @@ namespace FakeChan22
         /// </summary>
         /// <param name="ss">利用確認したい話者リスト</param>
         /// <returns>利用中の時はtrue</returns>
-        private bool IsUsedSpeakerList(ref SpeakerList ss)
+        private bool IsUsedSpeakerList(ref SpeakerFakeChanList ss)
         {
             bool ans = false;
 
@@ -236,7 +236,7 @@ namespace FakeChan22
 
             if (ans) return ans;
 
-            foreach(var item in config.SoloSpeechList.SpeechDefinitions)
+            foreach(var item in config.soloSpeechList.SpeechDefinitions)
             {
                 if(item.Value.speakerList.Equals(ss))
                 {
@@ -382,7 +382,7 @@ namespace FakeChan22
         {
             if (ComboBoxSpeakerLists.SelectedIndex == -1) return;
 
-            var ss = ComboBoxSpeakerLists.SelectedItem as SpeakerList;
+            var ss = ComboBoxSpeakerLists.SelectedItem as SpeakerFakeChanList;
 
             if(IsUsedSpeakerList(ref ss))
             {
@@ -446,8 +446,8 @@ namespace FakeChan22
         {
             if (ComboBoxListenerConfigLists.SelectedIndex == -1) return;
             
-            var lsnrType = (ComboBoxListenerConfigLists.SelectedItem as ListenerConfig).LsnrType;
-            ListenerConfig Lsner = null;
+            var lsnrType = (ComboBoxListenerConfigLists.SelectedItem as ListenerConfigBase).LsnrType;
+            ListenerConfigBase Lsner = null;
             switch (lsnrType)
             {
                 case ListenerType.ipc:

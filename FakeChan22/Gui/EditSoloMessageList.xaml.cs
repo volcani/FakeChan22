@@ -35,10 +35,10 @@ namespace FakeChan22
             ComboBoxUseSpeakerList.ItemsSource = cfg.speakerLists;
 
             ListBoxSoloSpeechMessages.ItemsSource = null;
-            ListBoxSoloSpeechMessages.ItemsSource = cfg.SoloSpeechList.SpeechDefinitions;
+            ListBoxSoloSpeechMessages.ItemsSource = cfg.soloSpeechList.SpeechDefinitions;
             ListBoxSoloSpeechMessages.Items.SortDescriptions.Add( new SortDescription("Key", ListSortDirection.Ascending));
 
-            CheckBoxUseSoloSpeech.IsChecked = cfg.SoloSpeechList.IsUse;
+            CheckBoxUseSoloSpeech.IsChecked = cfg.soloSpeechList.IsUse;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -48,7 +48,7 @@ namespace FakeChan22
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (cfg.SoloSpeechList.SpeechDefinitions.Count == 0) cfg.SoloSpeechList.IsUse = false;
+            if (cfg.soloSpeechList.SpeechDefinitions.Count == 0) cfg.soloSpeechList.IsUse = false;
         }
 
         private void TextBoxPastTime_LostFocus(object sender, RoutedEventArgs e)
@@ -78,10 +78,10 @@ namespace FakeChan22
 
             if(int.TryParse(TextBoxPastTime.Text, out time))
             {
-                if (!cfg.SoloSpeechList.SpeechDefinitions.ContainsKey(time))
+                if (!cfg.soloSpeechList.SpeechDefinitions.ContainsKey(time))
                 {
                     var sl = cfg.speakerLists[0];
-                    cfg.SoloSpeechList.SpeechDefinitions.Add(time, new SoloSpeechDefinition(time, ref sl));
+                    cfg.soloSpeechList.SpeechDefinitions.Add(time, new SoloSpeechDefinition(time, ref sl));
                     ListBoxSoloSpeechMessages.Items.Refresh();
                 }
                 else
@@ -103,14 +103,14 @@ namespace FakeChan22
             var target = (KeyValuePair<int, SoloSpeechDefinition>)ListBoxSoloSpeechMessages.SelectedItem;
             timeOld = target.Value.PastTime;
 
-            if (!cfg.SoloSpeechList.SpeechDefinitions.ContainsKey(timeNew))
+            if (!cfg.soloSpeechList.SpeechDefinitions.ContainsKey(timeNew))
             {
-                var item = cfg.SoloSpeechList.SpeechDefinitions[timeOld];
+                var item = cfg.soloSpeechList.SpeechDefinitions[timeOld];
 
                 item.PastTime = timeNew;
 
-                cfg.SoloSpeechList.SpeechDefinitions.Add(timeNew, item);
-                cfg.SoloSpeechList.SpeechDefinitions.Remove(timeOld);
+                cfg.soloSpeechList.SpeechDefinitions.Add(timeNew, item);
+                cfg.soloSpeechList.SpeechDefinitions.Remove(timeOld);
                 ListBoxSoloSpeechMessages.Items.Refresh();
             }
             else
@@ -126,7 +126,7 @@ namespace FakeChan22
             var target = (KeyValuePair<int, SoloSpeechDefinition>)ListBoxSoloSpeechMessages.SelectedItem;
             int idx = ListBoxSoloSpeechMessages.SelectedIndex;
 
-            cfg.SoloSpeechList.SpeechDefinitions.Remove(target.Key);
+            cfg.soloSpeechList.SpeechDefinitions.Remove(target.Key);
             ListBoxSoloSpeechMessages.Items.Refresh();
             if (ListBoxSoloSpeechMessages.Items.Count == idx)
             {
@@ -170,14 +170,14 @@ namespace FakeChan22
 
             var target = (KeyValuePair<int, SoloSpeechDefinition>)ListBoxSoloSpeechMessages.SelectedItem;
 
-            target.Value.speakerList = cb.SelectedItem as SpeakerList;
+            target.Value.speakerList = cb.SelectedItem as SpeakerFakeChanList;
 
         }
 
         private void CheckBoxUseSoloSpeech_Click(object sender, RoutedEventArgs e)
         {
             var cb = sender as CheckBox;
-            cfg.SoloSpeechList.IsUse = (bool)cb.IsChecked;
+            cfg.soloSpeechList.IsUse = (bool)cb.IsChecked;
         }
 
         private void ButtonSave_Click(object sender, RoutedEventArgs e)

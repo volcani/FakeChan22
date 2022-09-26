@@ -3,11 +3,11 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 
-namespace FakeChan22.Plugins
+namespace FakeChan22.Tasks
 {
     [DataContract]
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, Inherited = true, AllowMultiple = true)]
-    internal sealed class GuiItemAttribute : Attribute
+    public sealed class GuiItemAttribute : Attribute
     {
         [DataMember]
         public string ParamName { get; set; }

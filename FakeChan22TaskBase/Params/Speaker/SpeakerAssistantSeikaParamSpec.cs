@@ -3,7 +3,7 @@
 namespace FakeChan22
 {
     [DataContract]
-    public class AvatorParamSpec
+    public class SpeakerAssistantSeikaParamSpec
     {
         [DataMember] public string ParamName { get; set; }
 

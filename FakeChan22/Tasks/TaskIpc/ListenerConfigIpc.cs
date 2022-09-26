@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace FakeChan22.Tasks
 {
     [DataContract]
-    public class ListenerConfigIpc : ListenerConfig
+    public class ListenerConfigIpc : ListenerConfigBase
     {
         [DataMember] public string ChannelName { get; private set; }
 

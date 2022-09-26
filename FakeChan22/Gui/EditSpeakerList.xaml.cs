@@ -21,13 +21,13 @@ namespace FakeChan22
     /// </summary>
     public partial class EditSpeakerList : Window
     {
-        List<Avator> avatorList = new List<Avator>();
+        List<SpeakerAssistantSeika> avatorList = new List<SpeakerAssistantSeika>();
 
-        SpeakerList speakerList = null;
+        SpeakerFakeChanList speakerList = null;
 
         ScAPIs api = null;
 
-        public EditSpeakerList(ref SpeakerList spkrs)
+        public EditSpeakerList(ref SpeakerFakeChanList spkrs)
         {
             speakerList = spkrs;
 
@@ -40,7 +40,7 @@ namespace FakeChan22
 
             TextBoxListName.Text = speakerList.Listname;
 
-            avatorList = api.AvatorList2().Where(v => v.Value["isalias"] == "False").Select(v=> new Avator() { Cid = v.Key, Name = v.Value["name"], ProdName=v.Value["prod"] }).ToList();
+            avatorList = api.AvatorList2().Where(v => v.Value["isalias"] == "False").Select(v=> new SpeakerAssistantSeika() { Cid = v.Key, Name = v.Value["name"], ProdName=v.Value["prod"] }).ToList();
             ListBoxAvators.ItemsSource = null;
             ListBoxAvators.ItemsSource = avatorList;
             ListBoxAvators.DisplayMemberPath = "DispName";
@@ -65,12 +65,12 @@ namespace FakeChan22
 
             if(idx==-1) idx=0;
 
-            foreach (Avator av in avatorList)
+            foreach (SpeakerAssistantSeika av in avatorList)
             {
-                Speaker sp = new Speaker() { Apply = true, Cid = av.Cid, MacroName = "", Name = av.Name, ProdName = av.ProdName, Effects = null, Emotions = null };
+                SpeakerFakeChan sp = new SpeakerFakeChan() { Apply = true, Cid = av.Cid, MacroName = "", Name = av.Name, ProdName = av.ProdName, Effects = null, Emotions = null };
                 var prm = api.GetDefaultParams2(av.Cid);
-                var eft = prm["effect"].Select(v=>new AvatorParamSpec() { ParamName=v.Key, Value = v.Value["value"], Max_value = v.Value["max"], Min_value = v.Value["min"], Step = v.Value["step"] }).ToList();
-                var emo = prm["emotion"].Select(v => new AvatorParamSpec() { ParamName = v.Key, Value = v.Value["value"], Max_value = v.Value["max"], Min_value = v.Value["min"], Step = v.Value["step"] }).ToList();
+                var eft = prm["effect"].Select(v=>new SpeakerAssistantSeikaParamSpec() { ParamName=v.Key, Value = v.Value["value"], Max_value = v.Value["max"], Min_value = v.Value["min"], Step = v.Value["step"] }).ToList();
+                var emo = prm["emotion"].Select(v => new SpeakerAssistantSeikaParamSpec() { ParamName = v.Key, Value = v.Value["value"], Max_value = v.Value["max"], Min_value = v.Value["min"], Step = v.Value["step"] }).ToList();
 
                 sp.Effects = eft;
                 sp.Emotions = emo;
@@ -87,16 +87,16 @@ namespace FakeChan22
 
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
-            Avator av = ListBoxAvators.SelectedItem as Avator;
+            SpeakerAssistantSeika av = ListBoxAvators.SelectedItem as SpeakerAssistantSeika;
 
             if (av is null) return;
 
             DataGrid dg = DataGridAvators as DataGrid;
-            Speaker sp = new Speaker() { Apply = true, Cid = av.Cid, MacroName = "", Name = av.Name, ProdName = av.ProdName, Effects = null, Emotions = null };
+            SpeakerFakeChan sp = new SpeakerFakeChan() { Apply = true, Cid = av.Cid, MacroName = "", Name = av.Name, ProdName = av.ProdName, Effects = null, Emotions = null };
             int idx = dg.SelectedIndex;
             var prm = api.GetDefaultParams2(av.Cid);
-            var eft = prm["effect"].Select(v => new AvatorParamSpec() { ParamName = v.Key, Value = v.Value["value"], Max_value = v.Value["max"], Min_value = v.Value["min"], Step = v.Value["step"] }).ToList();
-            var emo = prm["emotion"].Select(v => new AvatorParamSpec() { ParamName = v.Key, Value = v.Value["value"], Max_value = v.Value["max"], Min_value = v.Value["min"], Step = v.Value["step"] }).ToList();
+            var eft = prm["effect"].Select(v => new SpeakerAssistantSeikaParamSpec() { ParamName = v.Key, Value = v.Value["value"], Max_value = v.Value["max"], Min_value = v.Value["min"], Step = v.Value["step"] }).ToList();
+            var emo = prm["emotion"].Select(v => new SpeakerAssistantSeikaParamSpec() { ParamName = v.Key, Value = v.Value["value"], Max_value = v.Value["max"], Min_value = v.Value["min"], Step = v.Value["step"] }).ToList();
 
             sp.Effects = eft;
             sp.Emotions = emo;
@@ -118,7 +118,7 @@ namespace FakeChan22
 
             if (idx == -1) return;
 
-            speakerList.Speakers.Remove(dg.SelectedItem as Speaker);
+            speakerList.Speakers.Remove(dg.SelectedItem as SpeakerFakeChan);
 
             dg.Items.Refresh();
             dg.SelectedIndex = dg.Items.Count > idx + 1 ? idx : idx - 1;
@@ -132,8 +132,8 @@ namespace FakeChan22
 
             if ((idx > 0) && (speakerList.Speakers.Count > idx))
             {
-                Speaker x1 = (dg.SelectedItem as Speaker);
-                Speaker x2 = x1.Clone();
+                SpeakerFakeChan x1 = (dg.SelectedItem as SpeakerFakeChan);
+                SpeakerFakeChan x2 = x1.Clone();
 
                 speakerList.Speakers.Insert(idx - 1, x2);
                 speakerList.Speakers.Remove(x1);
@@ -152,8 +152,8 @@ namespace FakeChan22
 
             if (speakerList.Speakers.Count > idx + 1)
             {
-                Speaker x1 = (dg.SelectedItem as Speaker);
-                Speaker x2 = x1.Clone();
+                SpeakerFakeChan x1 = (dg.SelectedItem as SpeakerFakeChan);
+                SpeakerFakeChan x2 = x1.Clone();
 
                 speakerList.Speakers.Remove(x1);
                 speakerList.Speakers.Insert(idx + 1, x2);
@@ -166,7 +166,7 @@ namespace FakeChan22
 
         private void DataGridAvators_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var spkr = (sender as DataGrid).SelectedItem as Speaker;
+            var spkr = (sender as DataGrid).SelectedItem as SpeakerFakeChan;
 
             if (spkr is null) return;
 
@@ -177,7 +177,7 @@ namespace FakeChan22
             MakeSliders(StackPanelEmotionParams.Children, spkr.Emotions);
         }
 
-        private void MakeSliders(UIElementCollection panel, List<AvatorParamSpec> @params)
+        private void MakeSliders(UIElementCollection panel, List<SpeakerAssistantSeikaParamSpec> @params)
         {
             foreach(var param in @params)
             {
@@ -281,7 +281,7 @@ namespace FakeChan22
             speakerList.MakeValidObjects();
 
             var (key, txt) = ReplaceText.SeparateMapKey(TextboxSampleText.Text);
-            var sp = DataGridAvators.SelectedItem as Speaker;
+            var sp = DataGridAvators.SelectedItem as SpeakerFakeChan;
 
             if ((key != "") && (speakerList.SpeakerMaps.ContainsKey(key)))
             {

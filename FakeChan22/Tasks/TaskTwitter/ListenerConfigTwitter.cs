@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace FakeChan22.Tasks
 {
     [DataContract]
-    public class ListenerConfigTwitter : ListenerConfig
+    public class ListenerConfigTwitter : ListenerConfigBase
     {
         [GuiItem(ParamName = "API Key",Description = "Developer Platform で取得したAPIキー")]
         [DataMember]

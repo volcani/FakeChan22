@@ -70,94 +70,78 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="App.xaml">
+    <Page Include="Gui\App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="EditListenerConfig.xaml.cs">
+    <Compile Include="Gui\EditListenerConfig.xaml.cs">
       <DependentUpon>EditListenerConfig.xaml</DependentUpon>
     </Compile>
     <Compile Include="Configs\FakeChanConfig.cs" />
-    <Compile Include="EditSoloMessageList.xaml.cs">
+    <Compile Include="Gui\EditSoloMessageList.xaml.cs">
       <DependentUpon>EditSoloMessageList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Params\Speaker\Avator.cs" />
-    <Compile Include="Params\Speaker\AvatorParamSpec.cs" />
     <Compile Include="ConnectAs\IScAPIs.cs" />
     <Compile Include="ConnectAs\ScAPIs.cs" />
-    <Compile Include="EditQueueControll.xaml.cs">
+    <Compile Include="Gui\EditQueueControll.xaml.cs">
       <DependentUpon>EditQueueControll.xaml</DependentUpon>
     </Compile>
-    <Compile Include="EditReplaceList.xaml.cs">
+    <Compile Include="Gui\EditReplaceList.xaml.cs">
       <DependentUpon>EditReplaceList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Tasks\TaskTwitter\ListenerConfigTwitter.cs" />
-    <Compile Include="Params\Solo\SoloSpeechDefinition.cs" />
-    <Compile Include="Params\Solo\SoloSpeechDefinitionList.cs" />
-    <Compile Include="Params\Solo\SoloSpeechMessage.cs" />
-    <Compile Include="Tasks\GuiItemStringAttribute.cs" />
     <Compile Include="Plugins\JudgeTextLang.cs" />
-    <Compile Include="Tasks\ListenerConfig.cs" />
     <Compile Include="Tasks\TaskClipboard\ListenerConfigClipboard.cs" />
     <Compile Include="Tasks\TaskHttp\ListenerConfigHttp.cs" />
     <Compile Include="Tasks\TaskIpc\ListenerConfigIpc.cs" />
     <Compile Include="Tasks\TaskSocket\ListenerConfigSocket.cs" />
-    <Compile Include="Params\Queue\QueueParam.cs" />
-    <Compile Include="Params\Replace\ReplaceDefinition.cs" />
-    <Compile Include="Params\Replace\ReplaceDefinitionList.cs" />
     <Compile Include="Plugins\ReplaceText.cs" />
-    <Compile Include="Params\Speaker\Speaker.cs" />
-    <Compile Include="EditSpeakerList.xaml.cs">
+    <Compile Include="Gui\EditSpeakerList.xaml.cs">
       <DependentUpon>EditSpeakerList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Params\Speaker\SpeakerList.cs" />
     <Compile Include="Tasks\TaskIpc\BouyomiChanRemoting.cs" />
     <Compile Include="Tasks\TaskManager\SubTaskCommentGen.cs" />
-    <Compile Include="Tasks\EnumClass.cs" />
     <Compile Include="Tasks\TaskTwitter\TaskTwitter.cs" />
     <Compile Include="Tasks\TaskHttp\TaskHttp.cs" />
     <Compile Include="Tasks\TaskClipboard\TaskClipboard.cs" />
     <Compile Include="Tasks\TaskSocket\TaskSocket.cs" />
-    <Compile Include="Tasks\TaskBase.cs" />
     <Compile Include="Tasks\TaskIpc\TaskIpc.cs" />
     <Compile Include="Tasks\TaskManager\TaskManager.cs" />
     <Compile Include="Tasks\TaskManager\SubTaskTalks.cs" />
-    <Page Include="EditListenerConfig.xaml">
+    <Page Include="Gui\EditListenerConfig.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="EditQueueControll.xaml">
+    <Page Include="Gui\EditQueueControll.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="EditReplaceList.xaml">
+    <Page Include="Gui\EditReplaceList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="EditSoloMessageList.xaml">
+    <Page Include="Gui\EditSoloMessageList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="Gui\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="App.xaml.cs">
+    <Compile Include="Gui\App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Gui\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="EditSpeakerList.xaml">
+    <Page Include="Gui\EditSpeakerList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Params\Queue\MessageData.cs" />
-    <Compile Include="Params\Queue\MessageQueueWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -182,7 +166,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="Gui\App.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="README.txt">
@@ -197,6 +181,12 @@
     <Resource Include="Resource\EmojiTools.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FakeChan22TaskBase\FakeChan22TaskBase.csproj">
+      <Project>{a9589335-7eb4-44cb-8db5-51ca27cc818c}</Project>
+      <Name>FakeChan22TaskBase</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

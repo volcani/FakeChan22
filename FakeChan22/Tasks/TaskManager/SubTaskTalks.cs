@@ -103,11 +103,11 @@ namespace FakeChan22.Tasks
 
             if (messQueue.count == 0)
             {
-                if ((config.SoloSpeechList.IsUse) && (config.SoloSpeechList.SpeechDefinitions.ContainsKey(SoloTimeCount)))
+                if ((config.soloSpeechList.IsUse) && (config.soloSpeechList.SpeechDefinitions.ContainsKey(SoloTimeCount)))
                 {
                     Task.Run(() => {
-                        var messs = config.SoloSpeechList.SpeechDefinitions[SoloTimeCount].Messages.Where(v => v.IsUse).ToList();
-                        var spkrs = config.SoloSpeechList.SpeechDefinitions[SoloTimeCount].speakerList.ValidSpeakers;
+                        var messs = config.soloSpeechList.SpeechDefinitions[SoloTimeCount].Messages.Where(v => v.IsUse).ToList();
+                        var spkrs = config.soloSpeechList.SpeechDefinitions[SoloTimeCount].speakerList.ValidSpeakers;
                         var idx1 = r.Next(0, spkrs.Count);
                         var text = messs.Count == 0 ? "" : messs[r.Next(0, messs.Count)].Message;
 
@@ -120,7 +120,7 @@ namespace FakeChan22.Tasks
                     });
                 }
 
-                if ((config.SoloSpeechList.SpeechDefinitions.Count != 0) && (config.SoloSpeechList.SpeechDefinitions.Max(k => k.Key) < SoloTimeCount)) SoloTimeCount = 0;
+                if ((config.soloSpeechList.SpeechDefinitions.Count != 0) && (config.soloSpeechList.SpeechDefinitions.Max(k => k.Key) < SoloTimeCount)) SoloTimeCount = 0;
 
                 return;
             }
@@ -218,7 +218,7 @@ namespace FakeChan22.Tasks
             string parsedText = "";
             string spkrname = "";
             int splistIndex = -1;
-            SpeakerList splist = null;
+            SpeakerFakeChanList splist = null;
             ReplaceDefinitionList replist = null;
             Dictionary<string, decimal> eff = null;
             Dictionary<string, decimal> emo = null;

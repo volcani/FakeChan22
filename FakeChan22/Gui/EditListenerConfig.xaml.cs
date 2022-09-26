@@ -1,21 +1,10 @@
-﻿using FakeChan22.Plugins;
+﻿using FakeChan22.Tasks;
 using System;
-using System.CodeDom;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 //using System.Web.UI.WebControls;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace FakeChan22
 {
@@ -24,11 +13,11 @@ namespace FakeChan22
     /// </summary>
     public partial class EditListenerConfig : Window
     {
-        ListenerConfig LsnrCfg = null;
-        List<SpeakerList> SpkrList = null;
+        ListenerConfigBase LsnrCfg = null;
+        List<SpeakerFakeChanList> SpkrList = null;
         List<ReplaceDefinitionList> RepList = null;
 
-        public EditListenerConfig(ref ListenerConfig lsnrCfg, ref List<SpeakerList> spkrLsts, ref List<ReplaceDefinitionList> repLsts)
+        public EditListenerConfig(ref ListenerConfigBase lsnrCfg, ref List<SpeakerFakeChanList> spkrLsts, ref List<ReplaceDefinitionList> repLsts)
         {
             LsnrCfg = lsnrCfg;
             SpkrList = spkrLsts;
@@ -78,9 +67,9 @@ namespace FakeChan22
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             LsnrCfg.SpeakerListDefaultIndex = ComboBoxSpeakerList.SelectedIndex;
-            LsnrCfg.SpeakerListDefault = ComboBoxSpeakerList.SelectedItem as SpeakerList;
+            LsnrCfg.SpeakerListDefault = ComboBoxSpeakerList.SelectedItem as SpeakerFakeChanList;
             LsnrCfg.SpeakerListNoJapaneseJudgeIndex = ComboBoxSpeakerListNoJapanese.SelectedIndex;
-            LsnrCfg.SpeakerListNoJapaneseJudge = ComboBoxSpeakerListNoJapanese.SelectedItem as SpeakerList;
+            LsnrCfg.SpeakerListNoJapaneseJudge = ComboBoxSpeakerListNoJapanese.SelectedItem as SpeakerFakeChanList;
             LsnrCfg.ReplaceListDefaultIndex = ComboBoxReplaceTextList.SelectedIndex;
             LsnrCfg.ReplaceListDefault = ComboBoxReplaceTextList.SelectedItem as ReplaceDefinitionList;
             LsnrCfg.ReplaceListNoJapaneseJudgeIndex = ComboBoxReplaceTextListNoJapanese.SelectedIndex;

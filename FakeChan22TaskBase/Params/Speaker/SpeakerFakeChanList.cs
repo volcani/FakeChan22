@@ -6,13 +6,13 @@ namespace FakeChan22
 {
     [DataContract]
 
-    public class SpeakerList
+    public class SpeakerFakeChanList
     {
-        [DataMember] public List<Speaker> Speakers;
+        [DataMember] public List<SpeakerFakeChan> Speakers;
 
-        [DataMember] public Dictionary<int, Speaker> ValidSpeakers;
+        [DataMember] public Dictionary<int, SpeakerFakeChan> ValidSpeakers;
 
-        [DataMember] public Dictionary<string, Speaker> SpeakerMaps;
+        [DataMember] public Dictionary<string, SpeakerFakeChan> SpeakerMaps;
 
         private static string[] CompatMacros = { "y","b","h","d","a","r","t","g"};
 
@@ -47,11 +47,11 @@ namespace FakeChan22
             }
         }
 
-        public SpeakerList()
+        public SpeakerFakeChanList()
         {
-            Speakers = new List<Speaker>();
-            ValidSpeakers = new Dictionary<int, Speaker>();
-            SpeakerMaps = new Dictionary<string, Speaker>();
+            Speakers = new List<SpeakerFakeChan>();
+            ValidSpeakers = new Dictionary<int, SpeakerFakeChan>();
+            SpeakerMaps = new Dictionary<string, SpeakerFakeChan>();
 
             listname = "話者リスト - " + DateTime.Now.ToString();
             UniqId = Guid.NewGuid().ToString();

@@ -17,7 +17,7 @@ namespace FakeChan22.Params
         private const int pastTimeMax = (2 * 24 * 60 * 60);
         public event PropertyChangedEventHandler PropertyChanged;
 
-        [DataMember] public SpeakerList speakerList;
+        [DataMember] public SpeakerFakeChanList speakerList;
 
         private bool isUse;
         [DataMember] public bool IsUse {
@@ -80,7 +80,7 @@ namespace FakeChan22.Params
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public SoloSpeechDefinition(int spchTime, ref SpeakerList speakerList)
+        public SoloSpeechDefinition(int spchTime, ref SpeakerFakeChanList speakerList)
         {
             IsUse = true;
             PastTime = spchTime;

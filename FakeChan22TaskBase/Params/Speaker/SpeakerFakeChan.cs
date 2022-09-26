@@ -7,7 +7,7 @@ namespace FakeChan22
 {
     [DataContract]
 
-    public class Speaker
+    public class SpeakerFakeChan
     {
         [DataMember] public bool Apply { get; set; }
 
@@ -42,13 +42,13 @@ namespace FakeChan22
             }
         }
 
-        [DataMember] public List<AvatorParamSpec> Effects { get; set; }
+        [DataMember] public List<SpeakerAssistantSeikaParamSpec> Effects { get; set; }
 
-        [DataMember] public List<AvatorParamSpec> Emotions { get; set; }
+        [DataMember] public List<SpeakerAssistantSeikaParamSpec> Emotions { get; set; }
 
-        public Speaker Clone()
+        public SpeakerFakeChan Clone()
         {
-            return (Speaker)MemberwiseClone();
+            return (SpeakerFakeChan)MemberwiseClone();
         }
 
     }

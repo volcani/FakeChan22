@@ -5,6 +5,8 @@ VisualStudioVersion = 17.3.32804.467
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeChan22", "FakeChan22\FakeChan22.csproj", "{F14247D6-98B5-46CA-BB66-BF9ED1BEF12C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeChan22TaskBase", "FakeChan22TaskBase\FakeChan22TaskBase.csproj", "{A9589335-7EB4-44CB-8DB5-51CA27CC818C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{F14247D6-98B5-46CA-BB66-BF9ED1BEF12C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F14247D6-98B5-46CA-BB66-BF9ED1BEF12C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F14247D6-98B5-46CA-BB66-BF9ED1BEF12C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9589335-7EB4-44CB-8DB5-51CA27CC818C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9589335-7EB4-44CB-8DB5-51CA27CC818C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9589335-7EB4-44CB-8DB5-51CA27CC818C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9589335-7EB4-44CB-8DB5-51CA27CC818C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

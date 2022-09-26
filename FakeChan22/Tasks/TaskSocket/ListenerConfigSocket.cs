@@ -3,7 +3,7 @@
 namespace FakeChan22.Tasks
 {
     [DataContract]
-    public class ListenerConfigSocket : ListenerConfig
+    public class ListenerConfigSocket : ListenerConfigBase
     {
         [DataMember] public string Host { get; private set; }
 

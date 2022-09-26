@@ -3,17 +3,13 @@ using System.Runtime.Serialization;
 
 namespace FakeChan22
 {
-    [KnownType(typeof(ListenerConfigIpc))]
-    [KnownType(typeof(ListenerConfigSocket))]
-    [KnownType(typeof(ListenerConfigHttp))]
-    [KnownType(typeof(ListenerConfigClipboard))]
-    [KnownType(typeof(ListenerConfigTwitter))]
+
     [DataContract]
-    public class ListenerConfig
+    public class ListenerConfigBase
     {
         [DataMember] public string LabelName { get; set; }
 
-        [DataMember] public SpeakerList SpeakerListDefault { get; set; }
+        [DataMember] public SpeakerFakeChanList SpeakerListDefault { get; set; }
 
         [DataMember] public int SpeakerListDefaultIndex { get; set; }
 
@@ -25,7 +21,7 @@ namespace FakeChan22
 
         [DataMember] public double NoJapaneseCharRate { get; set; }
 
-        [DataMember] public SpeakerList SpeakerListNoJapaneseJudge { get; set; }
+        [DataMember] public SpeakerFakeChanList SpeakerListNoJapaneseJudge { get; set; }
 
         [DataMember] public int SpeakerListNoJapaneseJudgeIndex { get; set; }
 
@@ -43,7 +39,7 @@ namespace FakeChan22
 
         [DataMember] public ListenerType LsnrType { get; set; }
 
-        public ListenerConfig()
+        public ListenerConfigBase()
         {
             SpeakerListDefault = null;
             ReplaceListDefault = null;

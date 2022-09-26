@@ -3,7 +3,7 @@
 namespace FakeChan22.Params
 {
     [DataContract]
-    public class QueueParam
+    public class MessageQueueParam
     {
         [DataMember]
         public int Mode5QueueLimit { get; set; }
@@ -24,7 +24,7 @@ namespace FakeChan22.Params
         public int Mode0QueueLimit { get; set; }
 
 
-        public QueueParam()
+        public MessageQueueParam()
         {
             Mode5QueueLimit = 30;
             Mode4QueueLimit = 21;

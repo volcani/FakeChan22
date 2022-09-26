@@ -15,17 +15,17 @@ namespace FakeChan22.Tasks
         public event CallEventHandlerCallTalk OnCallAsyncTalk;
         public event CallEventHandlerLogging OnLogging;
 
-        internal void AsyncTalk(MessageData talk)
+        public void AsyncTalk(MessageData talk)
         {
             OnCallAsyncTalk?.Invoke(talk);
         }
 
-        internal void SyncTalk(MessageData talk)
+        public void SyncTalk(MessageData talk)
         {
             MessQueue.AddQueue(talk);
         }
 
-        internal void Logging(string logText)
+        public void Logging(string logText)
         {
             OnLogging?.Invoke(logText);
         }
