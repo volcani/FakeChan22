@@ -1,16 +1,13 @@
-﻿using FakeChan22.Params;
+﻿using FakeChan22.Configs;
+using FakeChan22.Params;
 using FakeChan22.Tasks;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Runtime.Serialization;
 
 namespace FakeChan22.Config
 {
-    [KnownType(typeof(ListenerConfigIpc))]
-    [KnownType(typeof(ListenerConfigSocket))]
-    [KnownType(typeof(ListenerConfigHttp))]
-    [KnownType(typeof(ListenerConfigClipboard))]
-    [KnownType(typeof(ListenerConfigTwitter))]
 
     [DataContract]
     public class FakeChanConfig
@@ -36,7 +33,7 @@ namespace FakeChan22.Config
             //
         }
 
-        public void RebuildListenerConfig()
+        public void RebuildListenerConfig(FakeChanTypesCollector typeCollector)
         {
             // 話者リストが1つ以上作成されているなら継続
             if ((speakerLists == null) || (speakerLists.Count == 0)) throw new Exception("[inner] 話者リストの作成が無い");
@@ -57,23 +54,36 @@ namespace FakeChan22.Config
                 listenerConfigLists.Add(new ListenerConfigHttp("127.0.0.1", 50081) { SpeakerListDefault = speakerLists[0], ReplaceListDefault = replaceDefinitionLists[0], SpeakerListNoJapaneseJudge = speakerLists[0], ReplaceListNoJapaneseJudge = replaceDefinitionLists[0] });
                 listenerConfigLists.Add(new ListenerConfigHttp("127.0.0.1", 50082) { SpeakerListDefault = speakerLists[0], ReplaceListDefault = replaceDefinitionLists[0], SpeakerListNoJapaneseJudge = speakerLists[0], ReplaceListNoJapaneseJudge = replaceDefinitionLists[0] });
                 listenerConfigLists.Add(new ListenerConfigHttp("127.0.0.1", 50083) { SpeakerListDefault = speakerLists[0], ReplaceListDefault = replaceDefinitionLists[0], SpeakerListNoJapaneseJudge = speakerLists[0], ReplaceListNoJapaneseJudge = replaceDefinitionLists[0] });
+            }
+
+            // 旧リスナ定義に含まれていないリスナを追加する処理
+
+            if (listenerConfigLists.Find(v => v.GetType() == typeof(ListenerConfigClipboard)) == null)
+            {
                 listenerConfigLists.Add(new ListenerConfigClipboard() { SpeakerListDefault = speakerLists[0], ReplaceListDefault = replaceDefinitionLists[0], SpeakerListNoJapaneseJudge = speakerLists[0], ReplaceListNoJapaneseJudge = replaceDefinitionLists[0] });
+            }
+
+            if (listenerConfigLists.Find(v => v.GetType() == typeof(ListenerConfigTwitter)) == null)
+            {
                 listenerConfigLists.Add(new ListenerConfigTwitter() { SpeakerListDefault = speakerLists[0], ReplaceListDefault = replaceDefinitionLists[0], SpeakerListNoJapaneseJudge = speakerLists[0], ReplaceListNoJapaneseJudge = replaceDefinitionLists[0] });
             }
-            else
+
+            // extend フォルダの処理
+            foreach (var item in typeCollector.ListenerConfigTypeDictionary)
             {
-                // 旧リスナ定義に含まれていないリスナを追加する処理
-
-                if (listenerConfigLists.Find(v => v.LsnrType == Tasks.ListenerType.clipboard) == null)
+                if (listenerConfigLists.Find(v => v.GetType() == item.Value) == null)
                 {
-                    listenerConfigLists.Add(new ListenerConfigClipboard() { SpeakerListDefault = speakerLists[0], ReplaceListDefault = replaceDefinitionLists[0], SpeakerListNoJapaneseJudge = speakerLists[0], ReplaceListNoJapaneseJudge = replaceDefinitionLists[0] });
-                }
+                    object lsnrObjx = Activator.CreateInstance(item.Value);
 
-                if (listenerConfigLists.Find(v => v.LsnrType == Tasks.ListenerType.twitter) == null)
-                {
-                    listenerConfigLists.Add(new ListenerConfigTwitter() { SpeakerListDefault = speakerLists[0], ReplaceListDefault = replaceDefinitionLists[0], SpeakerListNoJapaneseJudge = speakerLists[0], ReplaceListNoJapaneseJudge = replaceDefinitionLists[0] });
+                    (lsnrObjx as ListenerConfigBase).SpeakerListDefault = speakerLists[0];
+                    (lsnrObjx as ListenerConfigBase).ReplaceListDefault = replaceDefinitionLists[0];
+                    (lsnrObjx as ListenerConfigBase).SpeakerListNoJapaneseJudge = speakerLists[0];
+                    (lsnrObjx as ListenerConfigBase).ReplaceListNoJapaneseJudge = replaceDefinitionLists[0];
+
+                    listenerConfigLists.Add(lsnrObjx as ListenerConfigBase);
                 }
             }
+
         }
 
         public void RebuildReplaceDefinitionList()

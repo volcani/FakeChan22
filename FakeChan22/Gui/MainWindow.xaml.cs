@@ -9,8 +9,12 @@ using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Json;
 using System.Reflection;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json.Nodes;
+using System.Text.RegularExpressions;
 using FakeChan22.Params;
 using FakeChan22.Config;
+using FakeChan22.Configs;
 
 namespace FakeChan22
 {
@@ -19,7 +23,7 @@ namespace FakeChan22
     /// </summary>
     public partial class MainWindow : Window
     {
-        private string versionStr = "1.0.11";
+        private string versionStr = "1.0.12";
 
         /// <summary>
         /// アプリ全体の設定格納
@@ -42,6 +46,11 @@ namespace FakeChan22
         ScAPIs api = null;
 
         /// <summary>
+        /// シリアライズ/デシリアライズ用の型コレクション
+        /// </summary>
+        FakeChanTypesCollector TypeCollection = new FakeChanTypesCollector();
+
+        /// <summary>
         /// Win32との相互運用で使用
         /// </summary>
         WindowInteropHelper WinHelper;
@@ -59,8 +68,29 @@ namespace FakeChan22
 
             if (Properties.Settings.Default.UserDatas != "")
             {
-                DataContractJsonSerializer uds = new DataContractJsonSerializer(typeof(FakeChanConfig));
-                MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(Properties.Settings.Default.UserDatas));
+                // 取り外された Task への対応
+
+                JsonNode configNode = JsonNode.Parse(Properties.Settings.Default.UserDatas);
+                List<JsonNode> nodes = configNode["listenerConfigLists"].AsArray().ToList<JsonNode>();
+
+                foreach (var item in nodes)
+                {
+                    string lsnrTypeName = Regex.Replace(item[@"__type"].GetValue<string>(), @"^([^:#]+):#([^:#]+)$", @"$2.$1");
+
+                    if (!TypeCollection.ListenerConfigTypeDictionary.ContainsKey(lsnrTypeName))
+                    {
+                        JsonNode tNode = item as JsonNode;
+                        (configNode["listenerConfigLists"] as JsonArray).Remove(tNode);
+                    }
+                }
+
+                // 改めて保存された設定を読み込む
+
+                DataContractJsonSerializerSettings settings = new DataContractJsonSerializerSettings();
+                settings.KnownTypes = TypeCollection.ListenerConfigTypeDictionary.Values.Select(v => v).ToList();
+
+                DataContractJsonSerializer uds = new DataContractJsonSerializer(typeof(FakeChanConfig), settings);
+                MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(configNode.ToJsonString()));
                 config = (FakeChanConfig)uds.ReadObject(ms);
                 ms.Close();
             }
@@ -148,7 +178,7 @@ namespace FakeChan22
                 }
             }
 
-            config.RebuildListenerConfig();
+            config.RebuildListenerConfig(this.TypeCollection);
             config.RebuildMappingObjects();
 
             ComboBoxSpeakerLists.SelectedIndex = 0;
@@ -158,7 +188,7 @@ namespace FakeChan22
             ComboBoxListenerConfigLists.SelectedIndex = 0;
 
             // バックグラウンドタスク管理
-            taskManager = new TaskManager(ref config.listenerConfigLists, ref messageQueue, ref config);
+            taskManager = new TaskManager(ref config.listenerConfigLists, ref messageQueue, ref config, ref TypeCollection);
 
             taskManager.ClipboardTask.OnSetClipboardChain += SetClipboardListener;
             taskManager.ClipboardTask.OnRemoveClipboardChain += RemoveClipboardListener;
@@ -172,7 +202,10 @@ namespace FakeChan22
         {
             taskManager.TaskShutdown();
 
-            DataContractJsonSerializer uds = new DataContractJsonSerializer(typeof(FakeChanConfig));
+            DataContractJsonSerializerSettings settings = new DataContractJsonSerializerSettings();
+            settings.KnownTypes = TypeCollection.ListenerConfigTypeDictionary.Values.Select(v => v).ToList(); // new List<Type>();
+
+            DataContractJsonSerializer uds = new DataContractJsonSerializer(typeof(FakeChanConfig), settings);
             MemoryStream ms = new MemoryStream();
             uds.WriteObject(ms, config);
 
@@ -445,31 +478,8 @@ namespace FakeChan22
         private void ButtonListenerUpd_Click(object sender, RoutedEventArgs e)
         {
             if (ComboBoxListenerConfigLists.SelectedIndex == -1) return;
-            
-            var lsnrType = (ComboBoxListenerConfigLists.SelectedItem as ListenerConfigBase).LsnrType;
-            ListenerConfigBase Lsner = null;
-            switch (lsnrType)
-            {
-                case ListenerType.ipc:
-                    Lsner = ComboBoxListenerConfigLists.SelectedItem as ListenerConfigIpc;
-                    break;
 
-                case ListenerType.socket:
-                    Lsner = ComboBoxListenerConfigLists.SelectedItem as ListenerConfigSocket;
-                    break;
-
-                case ListenerType.http:
-                    Lsner = ComboBoxListenerConfigLists.SelectedItem as ListenerConfigHttp;
-                    break;
-
-                case ListenerType.twitter:
-                    Lsner = ComboBoxListenerConfigLists.SelectedItem as ListenerConfigTwitter;
-                    break;
-
-                case ListenerType.clipboard:
-                    Lsner = ComboBoxListenerConfigLists.SelectedItem as ListenerConfigClipboard;
-                    break;
-            }
+            ListenerConfigBase Lsner = ComboBoxListenerConfigLists.SelectedItem as dynamic;
 
             Window wd = new EditListenerConfig(ref Lsner, ref config.speakerLists, ref config.replaceDefinitionLists);
             wd.ShowDialog();

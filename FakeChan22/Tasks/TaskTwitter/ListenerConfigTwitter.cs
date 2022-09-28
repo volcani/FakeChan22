@@ -1,4 +1,4 @@
-﻿using FakeChan22.Plugins;
+﻿using System;
 using System.Runtime.Serialization;
 
 namespace FakeChan22.Tasks
@@ -46,7 +46,7 @@ namespace FakeChan22.Tasks
         {
             LabelName = "Twitter";
             ServiceName = "Twitter";
-            LsnrType = ListenerType.twitter;
+            TaskTypeFullName = typeof(TaskTwitter).FullName;
         }
     }
 }

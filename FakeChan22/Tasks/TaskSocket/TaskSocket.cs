@@ -8,20 +8,20 @@ namespace FakeChan22.Tasks
 {
     public class TaskSocket : TaskBase, IDisposable
     {
-        ListenerConfigSocket lsnrCfg = null;
+        ListenerConfigSocket LsnrConfig = null;
 
         TcpListener tcpIpListener;
 
         public TaskSocket(ref ListenerConfigSocket lsrCfg, ref MessageQueueWrapper que)
         {
-            lsnrCfg = lsrCfg;
+            LsnrConfig = lsrCfg;
             MessQueue = que;
             based = false;
         }
 
         public void Dispose()
         {
-            lsnrCfg = null;
+            LsnrConfig = null;
             MessQueue = null;
             tcpIpListener = null;
         }
@@ -30,7 +30,7 @@ namespace FakeChan22.Tasks
         {
             try
             {
-                tcpIpListener = new TcpListener(IPAddress.Parse(lsnrCfg.Host), lsnrCfg.Port);
+                tcpIpListener = new TcpListener(IPAddress.Parse(LsnrConfig.Host), LsnrConfig.Port);
                 tcpIpListener.Start();
                 tcpIpListener.BeginAcceptTcpClient(new AsyncCallback(AcceptData), tcpIpListener);
                 IsRunning = true;
@@ -87,7 +87,7 @@ namespace FakeChan22.Tasks
                             var sr = br;
                             MessageData talk = Parse0x0001(ref sr);
 
-                            if (lsnrCfg.IsAsync)
+                            if (LsnrConfig.IsAsync)
                             {
                                 AsyncTalk(talk);
                             }
@@ -181,7 +181,7 @@ namespace FakeChan22.Tasks
 
             MessageData talk = new MessageData()
             {
-                LsnrCfg = lsnrCfg,
+                LsnrCfg = LsnrConfig,
                 OrgMessage = TalkText,
                 CompatSpeed = iSpeed,
                 CompatTone = iTone,

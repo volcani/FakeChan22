@@ -16,7 +16,7 @@ namespace FakeChan22.Tasks
             ObjURI = "Remoting";
             LabelName = String.Format(@"{0}/{1}", channelName, ObjURI);
             ServiceName = serviceName;
-            LsnrType = ListenerType.ipc;
+            TaskTypeFullName = typeof(TaskIpc).FullName;
         }
     }
 }

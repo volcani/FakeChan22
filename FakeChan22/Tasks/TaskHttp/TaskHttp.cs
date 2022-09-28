@@ -10,7 +10,7 @@ namespace FakeChan22.Tasks
 {
     public class TaskHttp : TaskBase, IDisposable
     {
-        ListenerConfigHttp lsnrCfg = null;
+        ListenerConfigHttp LsnrConfig = null;
 
         HttpListener httpListener = null;
 
@@ -18,13 +18,13 @@ namespace FakeChan22.Tasks
 
         public TaskHttp(ref ListenerConfigHttp lsrCfg, ref MessageQueueWrapper que)
         {
-            lsnrCfg = lsrCfg;
+            LsnrConfig = lsrCfg;
             MessQueue = que;
             based = false;
         }
         public void Dispose()
         {
-            lsnrCfg = null;
+            LsnrConfig = null;
             MessQueue = null;
             httpListener = null;
         }
@@ -34,7 +34,7 @@ namespace FakeChan22.Tasks
             try
             {
                 httpListener = new HttpListener();
-                httpListener.Prefixes.Add(string.Format(@"http://{0}:{1}/", lsnrCfg.Host, lsnrCfg.Port));
+                httpListener.Prefixes.Add(string.Format(@"http://{0}:{1}/", LsnrConfig.Host, LsnrConfig.Port));
                 httpListener.Start();
                 httpListener.BeginGetContext(new AsyncCallback(AcceptRequest), httpListener);
                 IsRunning = true;
@@ -134,7 +134,7 @@ namespace FakeChan22.Tasks
                 case "/TALK":
                     MessageData talk = new MessageData()
                     {
-                        LsnrCfg = lsnrCfg,
+                        LsnrCfg = LsnrConfig,
                         OrgMessage = talktext,
                         CompatSpeed = speed,
                         CompatTone = tone,
@@ -143,7 +143,7 @@ namespace FakeChan22.Tasks
                         TaskId = MessQueue.count + 1
                     };
 
-                    if (lsnrCfg.IsAsync)
+                    if (LsnrConfig.IsAsync)
                     {
                         AsyncTalk(talk);
                     }
@@ -162,7 +162,7 @@ namespace FakeChan22.Tasks
                     sb.Clear();
                     if (callback != "") sb.AppendLine( string.Format(@"{0}(",callback));
                     sb.AppendLine(@"{ ""voiceList"":[");
-                    sb.Append(string.Join(",", lsnrCfg.SpeakerListDefault.ValidSpeakers.Select((v, i) => "{" + string.Format(listFmt, i, v.Value.Name) + "}").ToArray()));
+                    sb.Append(string.Join(",", LsnrConfig.SpeakerListDefault.ValidSpeakers.Select((v, i) => "{" + string.Format(listFmt, i, v.Value.Name) + "}").ToArray()));
                     sb.AppendLine(@"] }");
                     if (callback != "") sb.AppendLine(@")");
                     responseMessageBuff = Encoding.UTF8.GetBytes(sb.ToString());

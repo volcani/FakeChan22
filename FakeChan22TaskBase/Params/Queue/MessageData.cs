@@ -1,4 +1,6 @@
-﻿namespace FakeChan22.Params
+﻿using FakeChan22.Tasks;
+
+namespace FakeChan22.Params
 {
     public class MessageData
     {

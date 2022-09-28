@@ -11,21 +11,21 @@ namespace FakeChan22.Tasks
 {
     public class TaskTwitter : TaskBase, IDisposable
     {
-        ListenerConfigTwitter lsnrCfg = null;
+        ListenerConfigTwitter LsnrConfig = null;
 
         Tokens tokens = null;
         DispatcherTimer KickTweetRead = null;
 
         public TaskTwitter(ref ListenerConfigTwitter lsrCfg, ref MessageQueueWrapper que)
         {
-            lsnrCfg = lsrCfg;
+            LsnrConfig = lsrCfg;
             MessQueue = que;
             based = false;
         }
 
         public void Dispose()
         {
-            lsnrCfg = null;
+            LsnrConfig = null;
             MessQueue = null;
             tokens = null;
             KickTweetRead = null;
@@ -36,7 +36,7 @@ namespace FakeChan22.Tasks
             try
             {
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-                tokens = Tokens.Create(lsnrCfg.ConsumerKey, lsnrCfg.ConsumerKeySecret, lsnrCfg.AccessToken, lsnrCfg.AccessTokenSecret);
+                tokens = Tokens.Create(LsnrConfig.ConsumerKey, LsnrConfig.ConsumerKeySecret, LsnrConfig.AccessToken, LsnrConfig.AccessTokenSecret);
 
                 KickTweetRead = new DispatcherTimer();
                 KickTweetRead.Tick += new EventHandler(KickTweetRead_Tick);
@@ -72,17 +72,17 @@ namespace FakeChan22.Tasks
             {
                 Dictionary<string, object> dict = new Dictionary<string, object>()
                 {
-                    {"q", lsnrCfg.SearchQuery },
-                    {"lang", lsnrCfg.SearchLang },
-                    {"count",lsnrCfg.SearchCount },
-                    {"result_type",lsnrCfg.SearchResultType }
+                    {"q", LsnrConfig.SearchQuery },
+                    {"lang", LsnrConfig.SearchLang },
+                    {"count",LsnrConfig.SearchCount },
+                    {"result_type",LsnrConfig.SearchResultType }
                 };
-                if (lsnrCfg.SearchSinceID != "") dict.Add("since_id", lsnrCfg.SearchSinceID);
+                if (LsnrConfig.SearchSinceID != "") dict.Add("since_id", LsnrConfig.SearchSinceID);
 
                 SearchResult result = tokens.Search.Tweets(dict);
                 int count = result.SearchMetadata.Count;
 
-                lsnrCfg.SearchSinceID = result.SearchMetadata.MaxId.ToString();
+                LsnrConfig.SearchSinceID = result.SearchMetadata.MaxId.ToString();
 
                 for (int index = 0; index < count; index++)
                 {
@@ -92,7 +92,7 @@ namespace FakeChan22.Tasks
 
                     var talk = new Params.MessageData()
                     {
-                        LsnrCfg = lsnrCfg,
+                        LsnrCfg = LsnrConfig,
                         OrgMessage = Regex.Replace(item.Text, @"[\r\n]", ""),
                         CompatSpeed = -1,
                         CompatTone = -1,
@@ -101,7 +101,7 @@ namespace FakeChan22.Tasks
                         TaskId = MessQueue.count + 1
                     };
 
-                    if (lsnrCfg.IsAsync)
+                    if (LsnrConfig.IsAsync)
                     {
                         AsyncTalk(talk);
                     }

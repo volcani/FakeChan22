@@ -5,7 +5,7 @@ namespace FakeChan22.Tasks
 {
     public class TaskClipboard : TaskBase, IDisposable
     {
-        ListenerConfigClipboard lsnrCfg = null;
+        ListenerConfigClipboard LsnrConfig = null;
 
         public delegate void CallEventHandlerOperateClipboardChain();
         public event CallEventHandlerOperateClipboardChain OnSetClipboardChain;
@@ -13,14 +13,14 @@ namespace FakeChan22.Tasks
 
         public TaskClipboard(ref ListenerConfigClipboard lsrCfg, ref MessageQueueWrapper que)
         {
-            lsnrCfg = lsrCfg;
+            LsnrConfig = lsrCfg;
             MessQueue = que;
             based = false;
         }
 
         public void Dispose()
         {
-            lsnrCfg = null;
+            LsnrConfig = null;
             MessQueue = null;
         }
 
@@ -56,7 +56,7 @@ namespace FakeChan22.Tasks
         {
             MessageData talk = new MessageData()
             {
-                LsnrCfg = lsnrCfg,
+                LsnrCfg = LsnrConfig,
                 OrgMessage = talkText,
                 CompatSpeed = -1,
                 CompatTone = -1,
@@ -65,7 +65,7 @@ namespace FakeChan22.Tasks
                 TaskId = MessQueue.count + 1
             };
 
-            if (lsnrCfg.IsAsync)
+            if (LsnrConfig.IsAsync)
             {
                 AsyncTalk(talk);
             }

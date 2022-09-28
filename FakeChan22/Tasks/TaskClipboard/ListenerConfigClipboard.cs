@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
+using System.Runtime.Serialization;
 
 namespace FakeChan22.Tasks
 {
@@ -9,7 +10,7 @@ namespace FakeChan22.Tasks
         {
             LabelName = "ClipBoard";
             ServiceName = "ClipBoard";
-            LsnrType = ListenerType.clipboard;
+            TaskTypeFullName = typeof(TaskClipboard).FullName;
         }
     }
 }

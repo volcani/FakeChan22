@@ -1,7 +1,9 @@
 ﻿using FakeChan22.Config;
+using FakeChan22.Configs;
 using FakeChan22.Params;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace FakeChan22.Tasks
 {
@@ -32,7 +34,7 @@ namespace FakeChan22.Tasks
             }
         }
 
-        public TaskManager(ref List<ListenerConfigBase> list, ref MessageQueueWrapper que, ref FakeChanConfig cfg)
+        public TaskManager(ref List<ListenerConfigBase> list, ref MessageQueueWrapper que, ref FakeChanConfig cfg, ref FakeChanTypesCollector typeCollection)
         {
             tasks = new Dictionary<ListenerConfigBase, TaskBase>();
             messQue = que;
@@ -42,40 +44,21 @@ namespace FakeChan22.Tasks
             talkTask = new SubTaskTalks(ref messQue, ref config);
             talkTask.OnLogging += Logging;
 
-            // 受信タスク
+            // 受信タスクのインスタンス生成
             foreach (var item in list)
             {
-                switch (item.LsnrType)
+                if (typeCollection.TaskTypeDictionary.TryGetValue(item.TaskTypeFullName, out Type t))
                 {
-                    case ListenerType.ipc:
-                        var lsnrIpc = item as ListenerConfigIpc;
-                        tasks.Add(item, new TaskIpc(ref lsnrIpc, ref que));
-                        break;
+                    ListenerConfigBase lsnr = item;
+                    object taskObj = Activator.CreateInstance(t, new object[] { lsnr, que });
 
-                    case ListenerType.socket:
-                        var lsnrSocket = item as ListenerConfigSocket;
-                        tasks.Add(item, new TaskSocket(ref lsnrSocket, ref que));
-                        break;
+                    tasks.Add(item, taskObj as TaskBase);
 
-                    case ListenerType.http:
-                        var lsnrHttp = item as ListenerConfigHttp;
-                        tasks.Add(item, new TaskHttp(ref lsnrHttp, ref que));
-                        break;
+                    tasks[item].OnCallAsyncTalk += talkTask.AsyncTalk;
+                    tasks[item].OnLogging += Logging;
 
-                    case ListenerType.twitter:
-                        var lsnrTwitter = item as ListenerConfigTwitter;
-                        tasks.Add(item, new TaskTwitter(ref lsnrTwitter, ref que));
-                        break;
-
-                    case ListenerType.clipboard:
-                        var lsnrClip = item as ListenerConfigClipboard;
-                        taskClipboard = new TaskClipboard(ref lsnrClip, ref que);
-                        tasks.Add(item, taskClipboard);
-                        break;
+                    if (item.GetType() == typeof(ListenerConfigClipboard)) taskClipboard = taskObj as TaskClipboard;
                 }
-
-                tasks[item].OnCallAsyncTalk += talkTask.AsyncTalk;
-                tasks[item].OnLogging += Logging;
             }
 
         }
@@ -107,7 +90,15 @@ namespace FakeChan22.Tasks
                 if (item.Key.IsEnable)
                 {
                     item.Value.TaskStart();
-                    LoggingTM(String.Format(@"{0}, 処理開始", item.Key.LabelName));
+                    if (item.Value.IsRunning)
+                    {
+                        LoggingTM(String.Format(@"{0}, 処理開始", item.Key.LabelName));
+                    }
+                    else
+                    {
+                        LoggingTM(String.Format(@"{0}, 処理停止", item.Key.LabelName));
+                    }
+
                 }
             }
         }

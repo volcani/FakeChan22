@@ -1,9 +1,8 @@
-﻿using FakeChan22.Tasks;
+﻿using System;
 using System.Runtime.Serialization;
 
-namespace FakeChan22
+namespace FakeChan22.Tasks
 {
-
     [DataContract]
     public class ListenerConfigBase
     {
@@ -37,7 +36,7 @@ namespace FakeChan22
 
         [DataMember] public bool IsEnable { get; set; }
 
-        [DataMember] public ListenerType LsnrType { get; set; }
+        [DataMember] public string TaskTypeFullName { get; set; }
 
         public ListenerConfigBase()
         {

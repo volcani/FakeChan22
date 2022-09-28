@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
+using System.Runtime.Serialization;
 
 namespace FakeChan22.Tasks
 {
@@ -16,7 +17,7 @@ namespace FakeChan22.Tasks
 
             LabelName = string.Format("Socket{0}:{1}", Host, Port);
             ServiceName = string.Format("Socket{0}", Port);
-            LsnrType = ListenerType.socket;
+            TaskTypeFullName = typeof(TaskSocket).FullName;
         }
 
     }

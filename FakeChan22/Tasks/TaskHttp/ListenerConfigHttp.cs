@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
+using System.Runtime.Serialization;
 
 namespace FakeChan22.Tasks
 {
@@ -15,7 +16,7 @@ namespace FakeChan22.Tasks
             Port = port;
             LabelName = string.Format("Http{0}:{1}", Host, Port);
             ServiceName = string.Format("Http{0}", Port);
-            LsnrType = ListenerType.http;
+            TaskTypeFullName = typeof(TaskHttp).FullName;
         }
     }
 }

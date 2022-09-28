@@ -8,14 +8,14 @@ namespace FakeChan22.Tasks
 {
     public class TaskIpc : TaskBase, IDisposable
     {
-        ListenerConfigIpc LsnrCfg = null;
+        ListenerConfigIpc LsnrConfig = null;
 
         FNF.Utility.BouyomiChanRemoting ShareIpcObject;
         IpcServerChannel IpcCh = null;
 
         public TaskIpc(ref ListenerConfigIpc lsnrCfg, ref MessageQueueWrapper que)
         {
-            LsnrCfg = lsnrCfg; 
+            LsnrConfig = lsnrCfg; 
             MessQueue = que;
             based = false;
 
@@ -32,7 +32,7 @@ namespace FakeChan22.Tasks
 
         public void Dispose()
         {
-            LsnrCfg = null;
+            LsnrConfig = null;
             MessQueue = null;
             ShareIpcObject = null;
             IpcCh = null;
@@ -44,12 +44,12 @@ namespace FakeChan22.Tasks
             {
                 if (IpcCh is null)
                 {
-                    IpcCh = new IpcServerChannel(LsnrCfg.ChannelName);
+                    IpcCh = new IpcServerChannel(LsnrConfig.ChannelName);
                 }
 
                 IpcCh.IsSecured = false;
                 ChannelServices.RegisterChannel(IpcCh, false);
-                RemotingServices.Marshal(ShareIpcObject, LsnrCfg.ObjURI, typeof(FNF.Utility.BouyomiChanRemoting));
+                RemotingServices.Marshal(ShareIpcObject, LsnrConfig.ObjURI, typeof(FNF.Utility.BouyomiChanRemoting));
                 IsRunning = true;
             }
             catch (Exception e)
@@ -92,7 +92,7 @@ namespace FakeChan22.Tasks
         {
             MessageData talk = new MessageData()
             {
-                LsnrCfg = this.LsnrCfg,
+                LsnrCfg = this.LsnrConfig,
                 OrgMessage = TalkText,
                 CompatSpeed = iSpeed,
                 CompatTone = iTone,
@@ -101,7 +101,7 @@ namespace FakeChan22.Tasks
                 TaskId = MessQueue.count + 1
             };
             
-            if (LsnrCfg.IsAsync)
+            if (LsnrConfig.IsAsync)
             {
                 AsyncTalk(talk);
             }

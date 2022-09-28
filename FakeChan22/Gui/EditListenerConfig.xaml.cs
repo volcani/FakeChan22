@@ -155,19 +155,18 @@ namespace FakeChan22
         // 拡張プロパティの入力欄生成
         private void ExtentPropertiesRendar()
         {
-            if (LsnrCfg.LsnrType != Tasks.ListenerType.twitter) return;
-
             Grid grid = GridExtentSetting;
+            bool labSwitch = false;
             var items = LsnrCfg.GetType();
             var rowindex = 0;
-
-            LabelExtentSetting.Content = LsnrCfg.LsnrType.ToString();
 
             foreach(var item in items.GetProperties())
             {
                 var propertyAttribute = GuiItemAttribute.Get(item);
 
                 if (propertyAttribute == null) continue;
+
+                labSwitch = true;
 
                 grid.RowDefinitions.Add(new RowDefinition());
 
@@ -260,6 +259,9 @@ namespace FakeChan22
 
                 rowindex++;
             }
+
+            if (labSwitch) LabelExtentSetting.Content = "固有設定";
+
         }
     }
 }
