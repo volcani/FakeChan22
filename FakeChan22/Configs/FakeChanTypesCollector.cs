@@ -18,7 +18,21 @@ namespace FakeChan22.Configs
 
         public FakeChanTypesCollector()
         {
-            string targetPath = string.Format(@"{0}\extend", Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+            string targetPath = string.Format(@"{0}\Extend", Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+
+            ListenerConfigTypeDictionary.Add(typeof(ListenerConfigIpc).FullName, typeof(ListenerConfigIpc));
+            ListenerConfigTypeDictionary.Add(typeof(ListenerConfigSocket).FullName, typeof(ListenerConfigSocket));
+            ListenerConfigTypeDictionary.Add(typeof(ListenerConfigHttp).FullName, typeof(ListenerConfigHttp));
+            ListenerConfigTypeDictionary.Add(typeof(ListenerConfigClipboard).FullName, typeof(ListenerConfigClipboard));
+            ListenerConfigTypeDictionary.Add(typeof(ListenerConfigTwitter).FullName, typeof(ListenerConfigTwitter));
+
+            TaskTypeDictionary.Add(typeof(TaskIpc).FullName, typeof(TaskIpc));
+            TaskTypeDictionary.Add(typeof(TaskSocket).FullName, typeof(TaskSocket));
+            TaskTypeDictionary.Add(typeof(TaskHttp).FullName, typeof(TaskHttp));
+            TaskTypeDictionary.Add(typeof(TaskClipboard).FullName, typeof(TaskClipboard));
+            TaskTypeDictionary.Add(typeof(TaskTwitter).FullName, typeof(TaskTwitter));
+
+            // Extendフォルダのassembly収集
 
             if (Directory.Exists(targetPath))
             {
@@ -38,18 +52,6 @@ namespace FakeChan22.Configs
                 }
             }
 
-            ListenerConfigTypeDictionary.Add(typeof(ListenerConfigIpc).FullName, typeof(ListenerConfigIpc));
-            ListenerConfigTypeDictionary.Add(typeof(ListenerConfigSocket).FullName, typeof(ListenerConfigSocket));
-            ListenerConfigTypeDictionary.Add(typeof(ListenerConfigHttp).FullName, typeof(ListenerConfigHttp));
-            ListenerConfigTypeDictionary.Add(typeof(ListenerConfigClipboard).FullName, typeof(ListenerConfigClipboard));
-            ListenerConfigTypeDictionary.Add(typeof(ListenerConfigTwitter).FullName, typeof(ListenerConfigTwitter));
-
-            TaskTypeDictionary.Add(typeof(TaskIpc).FullName, typeof(TaskIpc));
-            TaskTypeDictionary.Add(typeof(TaskSocket).FullName, typeof(TaskSocket));
-            TaskTypeDictionary.Add(typeof(TaskHttp).FullName, typeof(TaskHttp));
-            TaskTypeDictionary.Add(typeof(TaskClipboard).FullName, typeof(TaskClipboard));
-            TaskTypeDictionary.Add(typeof(TaskTwitter).FullName, typeof(TaskTwitter));
-
             foreach (var item in ListenerAssemblyList)
             {
                 var lsnrType = item.ExportedTypes.FirstOrDefault(v=>v.BaseType.Name== "ListenerConfigBase");
@@ -59,7 +61,6 @@ namespace FakeChan22.Configs
                 if ((taskType != null)&&(Regex.IsMatch(taskType.FullName, @"^FakeChan22\.Tasks\.Task"))) TaskTypeDictionary.Add(taskType.FullName, taskType);
             }
 
-            //System.Text.Json 
         }
     }
 }
