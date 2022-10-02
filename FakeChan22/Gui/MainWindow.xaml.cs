@@ -24,7 +24,7 @@ namespace FakeChan22
     /// </summary>
     public partial class MainWindow : Window
     {
-        private string versionStr = "1.0.13.1";
+        private string versionStr = "1.0.13.2";
 
         /// <summary>
         /// アプリ全体の設定格納
@@ -164,7 +164,7 @@ namespace FakeChan22
             {
                 api = new ScAPIs();
             }
-            catch(Exception e1)
+            catch (Exception e1)
             {
                 MessageBox.Show(String.Format(@"AssistantSeikaとの接続ができません : {0}", e1.Message), "接続処理");
                 Application.Current.Shutdown();
@@ -174,7 +174,7 @@ namespace FakeChan22
             {
                 int count = api.AvatorList().Count;
 
-                if(count==0)
+                if (count == 0)
                 {
                     MessageBox.Show(String.Format(@"AssistantSeikaで認識されている話者が存在しません"), "接続処理");
                     Application.Current.Shutdown();
@@ -197,7 +197,7 @@ namespace FakeChan22
             else
             {
                 // 念のため、話者のマップ再構築実行
-                foreach(var item in config.speakerLists)
+                foreach (var item in config.speakerLists)
                 {
                     item.MakeValidObjects();
                 }
@@ -282,7 +282,7 @@ namespace FakeChan22
         {
             bool ans = false;
 
-            foreach(var item in config.listenerConfigLists)
+            foreach (var item in config.listenerConfigLists)
             {
                 if (item.SpeakerListDefault.Equals(ss))
                 {
@@ -298,9 +298,9 @@ namespace FakeChan22
 
             if (ans) return ans;
 
-            foreach(var item in config.soloSpeechList.SpeechDefinitions)
+            foreach (var item in config.soloSpeechList.SpeechDefinitions)
             {
-                if(item.Value.speakerList.Equals(ss))
+                if (item.Value.speakerList.Equals(ss))
                 {
                     ans = true;
                     break;
@@ -317,48 +317,32 @@ namespace FakeChan22
         {
             var ss = new ReplaceDefinitionList();
 
-            // 暫定対応
+            var list = TypeCollection.FilterProcTypeSortedList;
+
+            foreach (var proc in list)
             {
-                object confObjx = Activator.CreateInstance(TypeCollection.FilterConfigTypeDictionary[@"FakeChan22.Filters.FilterConfigSplitUser"]);
-                object procObjx = Activator.CreateInstance(TypeCollection.FilterProcTypeDictionary[@"FakeChan22.Filters.FilterProcSplitUser"], new object[] { confObjx });
+                string confname = Regex.Replace(proc.FullName, @"^FakeChan22\.Filters\.FilterProc", @"FakeChan22.Filters.FilterConfig");
+
+                object confObjx = Activator.CreateInstance(TypeCollection.FilterConfigTypeDictionary[confname]);
+                object procObjx = Activator.CreateInstance(proc, new object[] { confObjx });
                 ss.FilterProcs.Add(procObjx as FilterProcBase);
 
-                confObjx = Activator.CreateInstance(TypeCollection.FilterConfigTypeDictionary[@"FakeChan22.Filters.FilterConfigCleanupURL"]);
-                procObjx = Activator.CreateInstance(TypeCollection.FilterProcTypeDictionary[@"FakeChan22.Filters.FilterProcCleanupURL"], new object[] { confObjx });
-                ss.FilterProcs.Add(procObjx as FilterProcBase);
+                switch (procObjx)
+                {
+                    case FilterProcCutString filterProCutString:
+                        filterProCutString.FilterConfig.IsUse = true;
+                        break;
 
-                confObjx = Activator.CreateInstance(TypeCollection.FilterConfigTypeDictionary[@"FakeChan22.Filters.FilterConfigGrassWord"]);
-                procObjx = Activator.CreateInstance(TypeCollection.FilterProcTypeDictionary[@"FakeChan22.Filters.FilterProcGrassWord"], new object[] { confObjx });
-                ss.FilterProcs.Add(procObjx as FilterProcBase);
+                    case FilterProcReplaceText filterProcReplaceText:
+                        filterProcReplaceText.FilterConfig.Definitions = new List<ReplaceDefinition>();
+                        filterProcReplaceText.FilterConfig.IsUse = true;
+                        break;
 
-                confObjx = Activator.CreateInstance(TypeCollection.FilterConfigTypeDictionary[@"FakeChan22.Filters.FilterConfigApplauseWord"]);
-                procObjx = Activator.CreateInstance(TypeCollection.FilterProcTypeDictionary[@"FakeChan22.Filters.FilterProcApplauseWord"], new object[] { confObjx });
-                ss.FilterProcs.Add(procObjx as FilterProcBase);
-
-                confObjx = Activator.CreateInstance(TypeCollection.FilterConfigTypeDictionary[@"FakeChan22.Filters.FilterConfigEmojiReplace"]);
-                procObjx = Activator.CreateInstance(TypeCollection.FilterProcTypeDictionary[@"FakeChan22.Filters.FilterProcEmojiReplace"], new object[] { confObjx });
-                ss.FilterProcs.Add(procObjx as FilterProcBase);
-
-                confObjx = Activator.CreateInstance(TypeCollection.FilterConfigTypeDictionary[@"FakeChan22.Filters.FilterConfigEmojiCleaner"]);
-                procObjx = Activator.CreateInstance(TypeCollection.FilterProcTypeDictionary[@"FakeChan22.Filters.FilterProcEmojiCleaner"], new object[] { confObjx });
-                ss.FilterProcs.Add(procObjx as FilterProcBase);
-
-                confObjx = Activator.CreateInstance(TypeCollection.FilterConfigTypeDictionary[@"FakeChan22.Filters.FilterConfigZen2HanChar"]);
-                procObjx = Activator.CreateInstance(TypeCollection.FilterProcTypeDictionary[@"FakeChan22.Filters.FilterProcZen2HanChar"], new object[] { confObjx });
-                ss.FilterProcs.Add(procObjx as FilterProcBase);
-
-                confObjx = Activator.CreateInstance(TypeCollection.FilterConfigTypeDictionary[@"FakeChan22.Filters.FilterConfigZen2HanNum"]);
-                procObjx = Activator.CreateInstance(TypeCollection.FilterProcTypeDictionary[@"FakeChan22.Filters.FilterProcZen2HanNum"], new object[] { confObjx });
-                ss.FilterProcs.Add(procObjx as FilterProcBase);
-
-                confObjx = Activator.CreateInstance(TypeCollection.FilterConfigTypeDictionary[@"FakeChan22.Filters.FilterConfigReplaceText"]);
-                procObjx = Activator.CreateInstance(TypeCollection.FilterProcTypeDictionary[@"FakeChan22.Filters.FilterProcReplaceText"], new object[] { confObjx });
-                (confObjx as FilterConfigReplaceText).Definitions = new List<ReplaceDefinition>();
-                ss.FilterProcs.Add(procObjx as FilterProcBase);
-
-                confObjx = Activator.CreateInstance(TypeCollection.FilterConfigTypeDictionary[@"FakeChan22.Filters.FilterConfigCutString"]);
-                procObjx = Activator.CreateInstance(TypeCollection.FilterProcTypeDictionary[@"FakeChan22.Filters.FilterProcCutString"], new object[] { confObjx });
-                ss.FilterProcs.Add(procObjx as FilterProcBase);
+                    case FilterProcSplitUser filterProcSplitUser:
+                        filterProcSplitUser.FilterConfig.ApplyToSpeaker = true;
+                        filterProcSplitUser.FilterConfig.IsUse = true;
+                        break;
+                }
             }
 
             Window wd = new EditReplaceList(ref ss);
@@ -491,13 +475,13 @@ namespace FakeChan22
 
             var ss = ComboBoxSpeakerLists.SelectedItem as SpeakerFakeChanList;
 
-            if(IsUsedSpeakerList(ref ss))
+            if (IsUsedSpeakerList(ref ss))
             {
                 MessageBox.Show("指定の話者リストは使用されているので削除できません", "話者リストの削除確認");
                 return;
             }
 
-            if (MessageBoxResult.Yes == MessageBox.Show(String.Format(@"{0} を削除します", ss.Listname),"話者リストの削除確認",  MessageBoxButton.YesNo))
+            if (MessageBoxResult.Yes == MessageBox.Show(String.Format(@"{0} を削除します", ss.Listname), "話者リストの削除確認", MessageBoxButton.YesNo))
             {
                 config.speakerLists.Remove(ss);
                 ComboBoxSpeakerLists.Items.Refresh();
@@ -590,7 +574,7 @@ namespace FakeChan22
 
         private void ButtonResetListenerConfig_Click(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("全リスナ設定を初期化します","初期化", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            if (MessageBox.Show("全リスナ設定を初期化します", "初期化", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 config.listenerConfigLists.Clear();
 

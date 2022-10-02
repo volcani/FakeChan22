@@ -21,6 +21,8 @@ namespace FakeChan22.Configs
 
         public Dictionary<string, Type> FilterProcTypeDictionary { get; private set; } = new Dictionary<string, Type>();
 
+        public List<Type> FilterProcTypeSortedList { get; private set; } = new List<Type>();
+
         public FakeChanTypesCollector()
         {
             string targetPath = string.Format(@"{0}\Extend", Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
@@ -49,7 +51,7 @@ namespace FakeChan22.Configs
                         {
                             ListenerAssemblyList.Add(Assembly.LoadFrom(item));
                         }
-                        catch(Exception)
+                        catch (Exception)
                         {
                             //
                         }
@@ -78,6 +80,17 @@ namespace FakeChan22.Configs
             FilterProcTypeDictionary.Add(typeof(FilterProcSplitUser).FullName, typeof(FilterProcSplitUser));
             FilterProcTypeDictionary.Add(typeof(FilterProcZen2HanChar).FullName, typeof(FilterProcZen2HanChar));
             FilterProcTypeDictionary.Add(typeof(FilterProcZen2HanNum).FullName, typeof(FilterProcZen2HanNum));
+
+            FilterProcTypeSortedList.Add(typeof(FilterProcSplitUser));
+            FilterProcTypeSortedList.Add(typeof(FilterProcCleanupURL));
+            FilterProcTypeSortedList.Add(typeof(FilterProcGrassWord));
+            FilterProcTypeSortedList.Add(typeof(FilterProcApplauseWord));
+            FilterProcTypeSortedList.Add(typeof(FilterProcEmojiReplace));
+            FilterProcTypeSortedList.Add(typeof(FilterProcEmojiCleaner));
+            FilterProcTypeSortedList.Add(typeof(FilterProcZen2HanChar));
+            FilterProcTypeSortedList.Add(typeof(FilterProcZen2HanNum));
+            FilterProcTypeSortedList.Add(typeof(FilterProcReplaceText));
+            FilterProcTypeSortedList.Add(typeof(FilterProcCutString));
 
             // Extendフォルダのassembly収集
 
@@ -111,7 +124,12 @@ namespace FakeChan22.Configs
                 if ((filterConfType != null) && (Regex.IsMatch(filterConfType.FullName, @"^FakeChan22\.Filters\.FilterConfig"))) FilterConfigTypeDictionary.Add(filterConfType.FullName, filterConfType);
 
                 var filterProcType = item.ExportedTypes.FirstOrDefault(v => v.BaseType.Name == "FilterProcBase");
-                if ((filterProcType != null) && (Regex.IsMatch(filterProcType.FullName, @"^FakeChan22\.Filters\.FilterProc"))) FilterProcTypeDictionary.Add(filterProcType.FullName, filterProcType);
+                if ((filterProcType != null) && (Regex.IsMatch(filterProcType.FullName, @"^FakeChan22\.Filters\.FilterProc")))
+                {
+                    FilterProcTypeDictionary.Add(filterProcType.FullName, filterProcType);
+                    FilterProcTypeSortedList.Add(filterProcType);
+                }
+
             }
 
         }
