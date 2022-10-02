@@ -15,6 +15,7 @@ using System.Text.RegularExpressions;
 using FakeChan22.Params;
 using FakeChan22.Config;
 using FakeChan22.Configs;
+using FakeChan22.Filters;
 
 namespace FakeChan22
 {
@@ -23,7 +24,7 @@ namespace FakeChan22
     /// </summary>
     public partial class MainWindow : Window
     {
-        private string versionStr = "1.0.13";
+        private string versionStr = "1.0.13.1";
 
         /// <summary>
         /// アプリ全体の設定格納
@@ -315,6 +316,51 @@ namespace FakeChan22
         private void CreateNewDefinitionList()
         {
             var ss = new ReplaceDefinitionList();
+
+            // 暫定対応
+            {
+                object confObjx = Activator.CreateInstance(TypeCollection.FilterConfigTypeDictionary[@"FakeChan22.Filters.FilterConfigSplitUser"]);
+                object procObjx = Activator.CreateInstance(TypeCollection.FilterProcTypeDictionary[@"FakeChan22.Filters.FilterProcSplitUser"], new object[] { confObjx });
+                ss.FilterProcs.Add(procObjx as FilterProcBase);
+
+                confObjx = Activator.CreateInstance(TypeCollection.FilterConfigTypeDictionary[@"FakeChan22.Filters.FilterConfigCleanupURL"]);
+                procObjx = Activator.CreateInstance(TypeCollection.FilterProcTypeDictionary[@"FakeChan22.Filters.FilterProcCleanupURL"], new object[] { confObjx });
+                ss.FilterProcs.Add(procObjx as FilterProcBase);
+
+                confObjx = Activator.CreateInstance(TypeCollection.FilterConfigTypeDictionary[@"FakeChan22.Filters.FilterConfigGrassWord"]);
+                procObjx = Activator.CreateInstance(TypeCollection.FilterProcTypeDictionary[@"FakeChan22.Filters.FilterProcGrassWord"], new object[] { confObjx });
+                ss.FilterProcs.Add(procObjx as FilterProcBase);
+
+                confObjx = Activator.CreateInstance(TypeCollection.FilterConfigTypeDictionary[@"FakeChan22.Filters.FilterConfigApplauseWord"]);
+                procObjx = Activator.CreateInstance(TypeCollection.FilterProcTypeDictionary[@"FakeChan22.Filters.FilterProcApplauseWord"], new object[] { confObjx });
+                ss.FilterProcs.Add(procObjx as FilterProcBase);
+
+                confObjx = Activator.CreateInstance(TypeCollection.FilterConfigTypeDictionary[@"FakeChan22.Filters.FilterConfigEmojiReplace"]);
+                procObjx = Activator.CreateInstance(TypeCollection.FilterProcTypeDictionary[@"FakeChan22.Filters.FilterProcEmojiReplace"], new object[] { confObjx });
+                ss.FilterProcs.Add(procObjx as FilterProcBase);
+
+                confObjx = Activator.CreateInstance(TypeCollection.FilterConfigTypeDictionary[@"FakeChan22.Filters.FilterConfigEmojiCleaner"]);
+                procObjx = Activator.CreateInstance(TypeCollection.FilterProcTypeDictionary[@"FakeChan22.Filters.FilterProcEmojiCleaner"], new object[] { confObjx });
+                ss.FilterProcs.Add(procObjx as FilterProcBase);
+
+                confObjx = Activator.CreateInstance(TypeCollection.FilterConfigTypeDictionary[@"FakeChan22.Filters.FilterConfigZen2HanChar"]);
+                procObjx = Activator.CreateInstance(TypeCollection.FilterProcTypeDictionary[@"FakeChan22.Filters.FilterProcZen2HanChar"], new object[] { confObjx });
+                ss.FilterProcs.Add(procObjx as FilterProcBase);
+
+                confObjx = Activator.CreateInstance(TypeCollection.FilterConfigTypeDictionary[@"FakeChan22.Filters.FilterConfigZen2HanNum"]);
+                procObjx = Activator.CreateInstance(TypeCollection.FilterProcTypeDictionary[@"FakeChan22.Filters.FilterProcZen2HanNum"], new object[] { confObjx });
+                ss.FilterProcs.Add(procObjx as FilterProcBase);
+
+                confObjx = Activator.CreateInstance(TypeCollection.FilterConfigTypeDictionary[@"FakeChan22.Filters.FilterConfigReplaceText"]);
+                procObjx = Activator.CreateInstance(TypeCollection.FilterProcTypeDictionary[@"FakeChan22.Filters.FilterProcReplaceText"], new object[] { confObjx });
+                (confObjx as FilterConfigReplaceText).Definitions = new List<ReplaceDefinition>();
+                ss.FilterProcs.Add(procObjx as FilterProcBase);
+
+                confObjx = Activator.CreateInstance(TypeCollection.FilterConfigTypeDictionary[@"FakeChan22.Filters.FilterConfigCutString"]);
+                procObjx = Activator.CreateInstance(TypeCollection.FilterProcTypeDictionary[@"FakeChan22.Filters.FilterProcCutString"], new object[] { confObjx });
+                ss.FilterProcs.Add(procObjx as FilterProcBase);
+            }
+
             Window wd = new EditReplaceList(ref ss);
 
             wd.ShowDialog();

@@ -177,7 +177,7 @@ namespace FakeChan22.Config
                 {
                     if (repItem.FilterProcs.Find(v => v.GetType() == procItem.Value) == null)
                     {
-                        string cKey = Regex.Replace(procItem.Key, @"^FilterProc", @"FilterConfig");
+                        string cKey = Regex.Replace(procItem.Key, @"^FakeChan22\.Filters\.FilterProc", @"FakeChan22.Filters.FilterConfig");
                         object confObjx = Activator.CreateInstance(typeCollector.FilterConfigTypeDictionary[cKey]);
                         object procObjx = Activator.CreateInstance(procItem.Value, new object[] { confObjx });
 
