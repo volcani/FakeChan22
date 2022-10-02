@@ -42,9 +42,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FilterConfigBase.cs" />
+    <Compile Include="FilterProcBase.cs" />
     <Compile Include="GuiItemAttribute.cs" />
     <Compile Include="ITask.cs" />
     <Compile Include="ListenerConfigBase.cs" />
+    <Compile Include="Params\Filters\FilterParams.cs" />
     <Compile Include="Params\Queue\MessageData.cs" />
     <Compile Include="Params\Queue\MessageQueueWrapper.cs" />
     <Compile Include="Params\Queue\MessageQueueParam.cs" />

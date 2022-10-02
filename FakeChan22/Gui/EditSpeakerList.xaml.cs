@@ -1,7 +1,11 @@
-﻿using FakeChan22.Plugins;
+﻿using FakeChan22.Filters;
+using FakeChan22.Plugins;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -269,7 +273,65 @@ namespace FakeChan22
             return true;
         }
 
+        private void ButtonImport_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new System.Windows.Forms.OpenFileDialog();
+
+            dlg.Filter = "Jsonファイル(*.json)|*.json";
+            dlg.FileName = "FakeChan22Speakers.json";
+            dlg.FilterIndex = 0;
+            dlg.Title = "取込む話者リストの保存ファイルを指定";
+
+            if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                try
+                {
+                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(List<SpeakerFakeChan>));
+                    List<SpeakerFakeChan> lst = new List<SpeakerFakeChan>();
+                    using (var fs = File.Open(dlg.FileName, FileMode.Open, FileAccess.Read))
+                    {
+                        lst = (List<SpeakerFakeChan>)js.ReadObject(fs);
+                    }
+                    speakerList.Speakers = lst;
+                    DataGridAvators.ItemsSource = null;
+                    DataGridAvators.ItemsSource = speakerList.Speakers;
+                    DataGridAvators.SelectedIndex = 0;
+                    speakerList.MakeValidObjects();
+                }
+                catch (Exception e1)
+                {
+                    MessageBox.Show(string.Format("エラー: {0}", e1.Message));
+                }
+            }
+        }
+
         private void ButtonExport_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new System.Windows.Forms.SaveFileDialog();
+
+            dlg.Filter = "Jsonファイル(*.json)|*.json";
+            dlg.FileName = "FakeChan22Speakers.json";
+            dlg.FilterIndex = 0;
+            dlg.Title = "書出す話者リストの保存ファイルを指定";
+            if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                try
+                {
+                    DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(List<SpeakerFakeChan>));
+                    using (var fs = File.Open(dlg.FileName, FileMode.Create, FileAccess.Write))
+                    using (var writer = JsonReaderWriterFactory.CreateJsonWriter(fs, Encoding.UTF8, true, true, "    "))
+                    {
+                        js.WriteObject(writer, speakerList.Speakers);
+                    }
+                }
+                catch (Exception e1)
+                {
+                    MessageBox.Show(string.Format("エラー: {0}", e1.Message));
+                }
+            }
+        }
+
+        private void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
             if (CloseCheck()) this.Close();
         }
@@ -280,10 +342,11 @@ namespace FakeChan22
 
             speakerList.MakeValidObjects();
 
-            var (key, txt) = ReplaceText.SeparateMapKey(TextboxSampleText.Text);
+            var (key, text) =  ReplaceText.SplitUserSpecifier(TextboxSampleText.Text);
+
             var sp = DataGridAvators.SelectedItem as SpeakerFakeChan;
 
-            if ((key != "") && (speakerList.SpeakerMaps.ContainsKey(key)))
+            if ((key != "") && speakerList.SpeakerMaps.ContainsKey(key))
             {
                 sp = speakerList.SpeakerMaps[key];
             }
@@ -291,7 +354,8 @@ namespace FakeChan22
             var eff = sp.Effects.ToDictionary(k => k.ParamName, v => v.Value);
             var emo = sp.Emotions.ToDictionary(k => k.ParamName, v => v.Value);
 
-            api.Talk(sp.Cid, txt, "", eff, emo);
+            api.Talk(sp.Cid, text, "", eff, emo);
         }
+
     }
 }

@@ -8,6 +8,8 @@ using System.Text.RegularExpressions;
 using FakeChan22.Params;
 using FakeChan22.Plugins;
 using FakeChan22.Config;
+using FakeChan22.Filters;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace FakeChan22.Tasks
 {
@@ -81,16 +83,9 @@ namespace FakeChan22.Tasks
 
         public void AsyncTalk(MessageData talk)
         {
-            int cid;
-            string text;
-            string cname;
-            string sname;
-            Dictionary<string, decimal> eff;
-            Dictionary<string, decimal> emo;
+            string sname = talk.LsnrCfg == null ? "----" : talk.LsnrCfg.ServiceName;
 
-            sname = talk.LsnrCfg == null ? "----" : talk.LsnrCfg.ServiceName;
-
-            (cid, cname, text, eff, emo) = ParseSpeakerAndParams(talk);
+            var (cid, cname, text, eff, emo) = ParseSpeakerAndParams(talk);
 
             Log(string.Format(@"{0}, {1}, async, [{2}]", sname, cid, talk.OrgMessage));
             api.TalkAsync(cid, text, eff, emo);
@@ -139,24 +134,15 @@ namespace FakeChan22.Tasks
                 MessageData item;
                 while ((item = messQueue.TakeQueue()) != null)
                 {
-                    int mode;
-                    int cid;
-                    string text;
-                    string orgtext;
-                    string cname;
                     string sname;
-                    Dictionary<string, decimal> eff;
-                    Dictionary<string, decimal> emo;
 
                     messQueue.NowtaskId = item.TaskId;
 
                     sname = item.LsnrCfg == null ? "----" : item.LsnrCfg.ServiceName;
 
-                    orgtext = Regex.Replace(item.OrgMessage, @"(\r\n|\r|\n)", "");
-                    (cid, cname, text, eff, emo) = ParseSpeakerAndParams(item);
-                    text = Regex.Replace(text, @"(\r\n|\r|\n)", "");
+                    var (cid, cname, text, eff, emo) = ParseSpeakerAndParams(item);
+                    int mode = config.queueParam.QueueMode(messQueue.count);
 
-                    mode = config.queueParam.QueueMode(messQueue.count);
                     switch (mode)
                     {
                         case 1:
@@ -213,9 +199,6 @@ namespace FakeChan22.Tasks
         private (int cid, string spkrName, string text, Dictionary<string,decimal> eff, Dictionary<string, decimal> emo) ParseSpeakerAndParams(MessageData talk)
         {
             int cid = 0;
-            string sepText = "";
-            string sepMap = "";
-            string parsedText = "";
             string spkrname = "";
             int splistIndex = -1;
             SpeakerFakeChanList splist = null;
@@ -223,16 +206,17 @@ namespace FakeChan22.Tasks
             Dictionary<string, decimal> eff = null;
             Dictionary<string, decimal> emo = null;
 
-            // 話者のキーとテキストを分離
-            (sepMap, sepText) = ReplaceText.SeparateMapKey(talk.OrgMessage);
-
             splist = talk.LsnrCfg.SpeakerListDefault;
             replist = talk.LsnrCfg.ReplaceListDefault;
+
+            talk.OrgMessage = Regex.Replace(talk.OrgMessage, @"(\r\n|\r|\n)", "");
+
+            var (sepMap, sepText) = ReplaceText.SplitUserSpecifier(talk.OrgMessage);
 
             // 非日本語判定の実施判定
             if (talk.LsnrCfg.IsNoJapanese)
             {
-                (bool judge, double rate) = JudgeTextLang.JudgeNoJapanese(talk.OrgMessage, talk.LsnrCfg.NoJapaneseCharRate);
+                (bool judge, double rate) = JudgeTextLang.JudgeNoJapanese(sepText, talk.LsnrCfg.NoJapaneseCharRate);
                 if (judge)
                 {
                     splist = talk.LsnrCfg.SpeakerListNoJapaneseJudge;
@@ -241,18 +225,19 @@ namespace FakeChan22.Tasks
             }
 
             // 置換処理
-            parsedText = ReplaceText.ParseText(sepText, replist);
+            FilterParams fp = ReplaceText.ParseText(talk.OrgMessage, replist);
+            talk.Message = fp.Text;
 
             // 話者選定
-            if ((sepMap != "") && (splist.SpeakerMaps.ContainsKey(sepMap)))
+            if ((fp.UserSpecifier != "") && (splist.SpeakerMaps.ContainsKey(fp.UserSpecifier)))
             {
                 // テキスト先頭に話者の識別子が定義されている場合はその話者とする
-                cid = splist.SpeakerMaps[sepMap].Cid;
-                spkrname = splist.SpeakerMaps[sepMap].Name;
+                cid = splist.SpeakerMaps[fp.UserSpecifier].Cid;
+                spkrname = splist.SpeakerMaps[fp.UserSpecifier].Name;
 
                 // 音声パラメタ
-                eff = splist.SpeakerMaps[sepMap].Effects.ToDictionary(k => k.ParamName, v => v.Value);
-                emo = splist.SpeakerMaps[sepMap].Emotions.ToDictionary(k => k.ParamName, v => v.Value);
+                eff = splist.SpeakerMaps[fp.UserSpecifier].Effects.ToDictionary(k => k.ParamName, v => v.Value);
+                emo = splist.SpeakerMaps[fp.UserSpecifier].Emotions.ToDictionary(k => k.ParamName, v => v.Value);
             }
             else
             {
@@ -284,7 +269,7 @@ namespace FakeChan22.Tasks
                 emo = splist.ValidSpeakers[splistIndex].Emotions.ToDictionary(k => k.ParamName, v => v.Value);
             }
 
-            return (cid, spkrname, parsedText, eff, emo);
+            return (cid, spkrname, fp.Text, eff, emo);
         }
 
     }

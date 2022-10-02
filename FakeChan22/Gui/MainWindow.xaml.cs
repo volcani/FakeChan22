@@ -23,7 +23,7 @@ namespace FakeChan22
     /// </summary>
     public partial class MainWindow : Window
     {
-        private string versionStr = "1.0.12";
+        private string versionStr = "1.0.13";
 
         /// <summary>
         /// アプリ全体の設定格納
@@ -68,12 +68,13 @@ namespace FakeChan22
 
             if (Properties.Settings.Default.UserDatas != "")
             {
-                // 取り外された Task への対応
+                // 取り外された Task,FilterProc への対応
 
                 JsonNode configNode = JsonNode.Parse(Properties.Settings.Default.UserDatas);
-                List<JsonNode> nodes = configNode["listenerConfigLists"].AsArray().ToList<JsonNode>();
 
-                foreach (var item in nodes)
+                // Task への対応
+                List<JsonNode> listenerConfigListsNodes = configNode["listenerConfigLists"].AsArray().ToList<JsonNode>();
+                foreach (var item in listenerConfigListsNodes)
                 {
                     string lsnrTypeName = Regex.Replace(item[@"__type"].GetValue<string>(), @"^([^:#]+):#([^:#]+)$", @"$2.$1");
 
@@ -84,10 +85,33 @@ namespace FakeChan22
                     }
                 }
 
+                // FilterProc への対応
+                List<JsonNode> replaceDefinitionListsNodes = configNode["replaceDefinitionLists"].AsArray().ToList<JsonNode>();
+                foreach (var repItem in replaceDefinitionListsNodes)
+                {
+                    if (repItem[@"FilterProcs"] != null)
+                    {
+                        foreach (var procItem in repItem[@"FilterProcs"].AsArray().ToList<JsonNode>())
+                        {
+                            string procTypeName = Regex.Replace(procItem[@"__type"].GetValue<string>(), @"^([^:#]+):#([^:#]+)$", @"$2.$1");
+
+                            if (!TypeCollection.FilterProcTypeDictionary.ContainsKey(procTypeName))
+                            {
+                                JsonNode tNode = procItem as JsonNode;
+                                (repItem[@"FilterProcs"] as JsonArray).Remove(tNode);
+                            }
+                        }
+                    }
+                }
+
                 // 改めて保存された設定を読み込む
 
                 DataContractJsonSerializerSettings settings = new DataContractJsonSerializerSettings();
-                settings.KnownTypes = TypeCollection.ListenerConfigTypeDictionary.Values.Select(v => v).ToList();
+                List<Type> KnownTypes = new List<Type>();
+                KnownTypes.AddRange(TypeCollection.ListenerConfigTypeDictionary.Values.Select(v => v).ToList());
+                KnownTypes.AddRange(TypeCollection.FilterProcTypeDictionary.Values.Select(v => v).ToList());
+                KnownTypes.Add(typeof(GuiItemAttribute));
+                settings.KnownTypes = KnownTypes;
 
                 DataContractJsonSerializer uds = new DataContractJsonSerializer(typeof(FakeChanConfig), settings);
                 MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(configNode.ToJsonString()));
@@ -99,7 +123,7 @@ namespace FakeChan22
                 config = new FakeChanConfig();
             }
 
-            config.RebuildReplaceDefinitionList();
+            config.RebuildReplaceDefinitionList(this.TypeCollection);
             config.RebuildSoloSpeechList();
             config.RebuildQueueParam();
 
@@ -203,7 +227,11 @@ namespace FakeChan22
             taskManager.TaskShutdown();
 
             DataContractJsonSerializerSettings settings = new DataContractJsonSerializerSettings();
-            settings.KnownTypes = TypeCollection.ListenerConfigTypeDictionary.Values.Select(v => v).ToList(); // new List<Type>();
+            List<Type> KnownTypes = new List<Type>();
+            KnownTypes.AddRange(TypeCollection.ListenerConfigTypeDictionary.Values.Select(v => v).ToList());
+            KnownTypes.AddRange(TypeCollection.FilterProcTypeDictionary.Values.Select(v => v).ToList());
+            KnownTypes.Add(typeof(GuiItemAttribute));
+            settings.KnownTypes = KnownTypes;
 
             DataContractJsonSerializer uds = new DataContractJsonSerializer(typeof(FakeChanConfig), settings);
             MemoryStream ms = new MemoryStream();

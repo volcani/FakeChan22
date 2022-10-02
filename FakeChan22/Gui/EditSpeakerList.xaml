@@ -56,6 +56,9 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
@@ -65,7 +68,11 @@
             <Button x:Name="ButtonDelete" Content="削除"      Grid.Column="0" Grid.Row="0" Margin="2,2,2,2"  FontFamily="Meiryo UI" Click="ButtonDelete_Click"/>
             <Button x:Name="ButtonMoveUp" Content="↑移動"    Grid.Column="1" Grid.Row="0" Margin="2,2,2,2"  FontFamily="Meiryo UI" Click="ButtonMoveUp_Click"/>
             <Button x:Name="ButtonMoveDn" Content="↓移動"    Grid.Column="2" Grid.Row="0" Margin="2,2,2,2"  FontFamily="Meiryo UI" Click="ButtonMoveDn_Click"/>
-            <Button x:Name="ButtonExport" Content="保存"      Grid.Column="4" Grid.Row="0" Margin="2,2,2,2"  FontFamily="Meiryo UI" Click="ButtonExport_Click"/>
+
+            <Button x:Name="ButtonExport" Content="エクスポート"  Grid.Column="4" Grid.Row="0" Margin="2,2,2,2"  FontFamily="Meiryo UI" Click="ButtonExport_Click"/>
+            <Button x:Name="ButtonImport" Content="インポート"    Grid.Column="5" Grid.Row="0" Margin="2,2,2,2"  FontFamily="Meiryo UI" Click="ButtonImport_Click"/>
+
+            <Button x:Name="ButtonSave" Content="保存"  Grid.Column="7" Grid.Row="0" Margin="2,2,2,2"  FontFamily="Meiryo UI" Click="ButtonSave_Click"/>
         </Grid>
 
         <DataGrid x:Name="DataGridAvators"  Grid.Column="2" Grid.Row="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"

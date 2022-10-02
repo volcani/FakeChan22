@@ -76,11 +76,6 @@ namespace FakeChan22.Tasks
         [DataMember] public bool IsEnable { get; set; }
 
         /// <summary>
-        /// テキスト(メッセージ)を置換する前に拡張フィルタを適用する場合にtrueを設定します。エディタで変更されます。
-        /// </summary>
-        [DataMember] public bool IsUseFilter { get; set; }
-
-        /// <summary>
         /// 内部処理用です。
         /// </summary>
         [DataMember] public string TaskTypeFullName { get; set; }
@@ -95,7 +90,6 @@ namespace FakeChan22.Tasks
             IsAsync = false;
             IsRandom = false;
             IsEnable = false;
-            IsUseFilter = false;
             NoJapaneseCharRate = 75.0;
         }
     }

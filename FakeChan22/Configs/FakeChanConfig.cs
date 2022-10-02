@@ -1,10 +1,13 @@
 ﻿using FakeChan22.Configs;
+using FakeChan22.Filters;
 using FakeChan22.Params;
 using FakeChan22.Tasks;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
+using System.Text.RegularExpressions;
 
 namespace FakeChan22.Config
 {
@@ -68,7 +71,7 @@ namespace FakeChan22.Config
                 listenerConfigLists.Add(new ListenerConfigTwitter() { SpeakerListDefault = speakerLists[0], ReplaceListDefault = replaceDefinitionLists[0], SpeakerListNoJapaneseJudge = speakerLists[0], ReplaceListNoJapaneseJudge = replaceDefinitionLists[0] });
             }
 
-            // extend フォルダの処理
+            // Extend フォルダの処理
             foreach (var item in typeCollector.ListenerConfigTypeDictionary)
             {
                 if (listenerConfigLists.Find(v => v.GetType() == item.Value) == null)
@@ -86,11 +89,103 @@ namespace FakeChan22.Config
 
         }
 
-        public void RebuildReplaceDefinitionList()
+        public void RebuildReplaceDefinitionList(FakeChanTypesCollector typeCollector)
         {
             // 置換リスト再構成
             if (replaceDefinitionLists == null) replaceDefinitionLists = new List<ReplaceDefinitionList>();
             if (replaceDefinitionLists.Count == 0) replaceDefinitionLists.Add(new ReplaceDefinitionList());
+
+            // 旧置換リストなら補正をかける（新形式への変換処理）
+            foreach (var item in replaceDefinitionLists)
+            {
+                if (item.FilterProcs == null) item.FilterProcs = new List<Filters.FilterProcBase>();
+
+                if (item.FilterProcs.Count == 0)
+                {
+                    var filterConfigSplitUser = new Filters.FilterConfigSplitUser();
+                    var filterProcSplitUser = new Filters.FilterProcSplitUser(ref filterConfigSplitUser);
+                    filterConfigSplitUser.IsUse = true;
+                    filterConfigSplitUser.ApplyToSpeaker = true;
+                    item.FilterProcs.Add(filterProcSplitUser);
+
+                    var filterConfigCleanupURL = new Filters.FilterConfigCleanupURL();
+                    var filterProcCleanupURL = new Filters.FilterProcCleanupURL(ref filterConfigCleanupURL);
+                    filterConfigCleanupURL.IsUse = item.IsReplaceUrl;
+                    item.FilterProcs.Add(filterProcCleanupURL);
+
+                    var filterConfigGrassWord = new Filters.FilterConfigGrassWord();
+                    var filterProcGrassWord = new Filters.FilterProcGrassWord(ref filterConfigGrassWord);
+                    filterConfigGrassWord.IsUse = item.IsReplaceGrassWord;
+                    item.FilterProcs.Add(filterProcGrassWord);
+
+                    var filterConfigApplauseWord = new Filters.FilterConfigApplauseWord();
+                    var filterProcApplauseWord = new Filters.FilterProcApplauseWord(ref filterConfigApplauseWord);
+                    filterConfigApplauseWord.IsUse = item.IsReplaceApplauseWord;
+                    item.FilterProcs.Add(filterProcApplauseWord);
+
+                    var filterConfigEmojiReplace = new Filters.FilterConfigEmojiReplace();
+                    var filterProcEmojiReplace = new Filters.FilterProcEmojiReplace(ref filterConfigEmojiReplace);
+                    filterConfigEmojiReplace.IsUse = item.IsReplaceEmoji;
+                    item.FilterProcs.Add(filterProcEmojiReplace);
+
+                    var filterConfigEmojiCleaner = new Filters.FilterConfigEmojiCleaner();
+                    var filterProcEmojiCleaner = new Filters.FilterProcEmojiCleaner(ref filterConfigEmojiCleaner);
+                    filterConfigEmojiCleaner.IsUse = (item.IsRemovalEmojiBeforeReplace || item.IsRemovalEmojiAfterReplace);
+                    item.FilterProcs.Add(filterProcEmojiCleaner);
+
+                    var filterConfigZen2HanNotNum = new Filters.FilterConfigZen2HanChar();
+                    var filterProcZen2HanNotNum = new Filters.FilterProcZen2HanChar(ref filterConfigZen2HanNotNum);
+                    filterConfigZen2HanNotNum.IsUse = item.IsReplaceZentoHan1;
+                    item.FilterProcs.Add(filterProcZen2HanNotNum);
+
+                    var filterConfigZen2HanNum = new Filters.FilterConfigZen2HanNum();
+                    var filterProcZen2HanNum = new Filters.FilterProcZen2HanNum(ref filterConfigZen2HanNum);
+                    filterConfigZen2HanNum.IsUse = item.IsReplaceZentoHan2;
+                    item.FilterProcs.Add(filterProcZen2HanNum);
+
+                    var filterConfigReplaceText = new Filters.FilterConfigReplaceText();
+                    var filterProcReplaceText = new Filters.FilterProcReplaceText(ref filterConfigReplaceText);
+                    filterConfigReplaceText.IsUse = true;
+                    item.FilterProcs.Add(filterProcReplaceText);
+                    filterConfigReplaceText.Definitions = new List<ReplaceDefinition>(item.Definitions.ToList());
+                    //item.Definitions.Clear();
+
+                    var filterConfigCutString = new Filters.FilterConfigCutString();
+                    var filterProcCutString = new Filters.FilterProcCutString(ref filterConfigCutString);
+                    filterConfigCutString.IsUse = true;
+                    item.FilterProcs.Add(filterProcCutString);
+
+                    item.AppendStr = "";
+                    item.CutLength = 1;
+                    item.Definitions = null;
+                    item.IsRemovalEmojiAfterReplace = false;
+                    item.IsRemovalEmojiBeforeReplace = false;
+                    item.IsReplaceApplauseWord = false;
+                    item.IsReplaceEmoji = false;
+                    item.IsReplaceGrassWord = false;
+                    item.IsReplaceUrl = false;
+                    item.IsReplaceZentoHan1 = false;
+                    item.IsReplaceZentoHan2 = false;
+                    item.ReplaceStrFromUrl = "";
+                }
+            }
+
+            // Extend フォルダの処理
+            foreach(var procItem in typeCollector.FilterProcTypeDictionary)
+            {
+                foreach(var repItem in replaceDefinitionLists)
+                {
+                    if (repItem.FilterProcs.Find(v => v.GetType() == procItem.Value) == null)
+                    {
+                        string cKey = Regex.Replace(procItem.Key, @"^FilterProc", @"FilterConfig");
+                        object confObjx = Activator.CreateInstance(typeCollector.FilterConfigTypeDictionary[cKey]);
+                        object procObjx = Activator.CreateInstance(procItem.Value, new object[] { confObjx });
+
+                        repItem.FilterProcs.Add(procObjx as FilterProcBase);
+                    }
+                }
+            }
+
         }
 
         public void RebuildSoloSpeechList()

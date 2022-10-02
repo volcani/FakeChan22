@@ -227,6 +227,26 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="Configs\FakeChanTypesCollector.cs" />
+    <Compile Include="Filters\FilterProcCutString\FilterConfigCutString.cs" />
+    <Compile Include="Filters\FilterProcEmojiCleaner\FilterConfigEmojiCleaner.cs" />
+    <Compile Include="Filters\FilterProcEmojiReplace\FilterConfigEmojiReplace.cs" />
+    <Compile Include="Filters\FilterProcGrassWord\FilterConfigGrassWord.cs" />
+    <Compile Include="Filters\FilterProcReplaceText\FilterConfigReplaceText.cs" />
+    <Compile Include="Filters\FilterProcSplitUser\FilterConfigSplitUser.cs" />
+    <Compile Include="Filters\FilterProcSplitUser\FilterProcSplitUser.cs" />
+    <Compile Include="Filters\FilterProcZen2HanChar\FilterConfigZen2HanChar.cs" />
+    <Compile Include="Filters\FilterProcZen2HanNum\FilterConfigZen2HanNum.cs" />
+    <Compile Include="Filters\FilterProcApplauseWord\FilterConfigApplauseWord.cs" />
+    <Compile Include="Filters\FilterProcApplauseWord\FilterProcApplauseWord.cs" />
+    <Compile Include="Filters\FilterProcCleanupURL\FilterConfigCleanupURL.cs" />
+    <Compile Include="Filters\FilterProcCleanupURL\FilterProcCleanupURL.cs" />
+    <Compile Include="Filters\FilterProcCutString\FilterProcCutString.cs" />
+    <Compile Include="Filters\FilterProcEmojiCleaner\FilterProcEmojiCleaner.cs" />
+    <Compile Include="Filters\FilterProcEmojiReplace\FilterProcEmojiReplace.cs" />
+    <Compile Include="Filters\FilterProcGrassWord\FilterProcGrassWord.cs" />
+    <Compile Include="Filters\FilterProcReplaceText\FilterProcReplaceText.cs" />
+    <Compile Include="Filters\FilterProcZen2HanChar\FilterProcZen2HanChar.cs" />
+    <Compile Include="Filters\FilterProcZen2HanNum\FilterProcZen2HanNum.cs" />
     <Compile Include="Gui\EditListenerConfig.xaml.cs">
       <DependentUpon>EditListenerConfig.xaml</DependentUpon>
     </Compile>
@@ -347,6 +367,7 @@
       <Name>FakeChan22TaskBase</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

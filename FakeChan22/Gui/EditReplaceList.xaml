@@ -5,137 +5,82 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FakeChan22"
         mc:Ignorable="d"
-        Title="置換リスト定義編集" Height="513" Width="821" Loaded="Window_Loaded" Closing="Window_Closing">
+        Title="置換リスト定義編集" Height="485" Width="918" Loaded="Window_Loaded" Closing="Window_Closing">
 
     <Grid>
+
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="60*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="50*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Label Content="置換リスト定義名" Grid.Column="0" Grid.Row="0" Margin="2,2,2,2"/>
-        <TextBox x:Name="TextBoxListName" Text="" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="4" Margin="2,2,2,2" TextChanged="TextBoxListName_TextChanged" VerticalContentAlignment="Center"/>
+        <Label Content="置換リスト定義名"           Grid.Column="0" Grid.Row="0"  Margin="2,2,2,2"/>
+        <TextBox x:Name="TextBoxListName" Text=""   Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="3" Margin="2,2,2,2" TextChanged="TextBoxListName_TextChanged" VerticalContentAlignment="Center"/>
+        <Button x:Name="ButtonSave" Content="保存"  Grid.Column="4" Grid.Row="0" Margin="2,2,2,2" Click="ButtonSave_Click" />
 
-        <Button x:Name="ButtonInsert" Content="追加"  Grid.Column="0" Grid.Row="1" Margin="2,2,2,2" Click="ButtonInsert_Click" />
-        <Button x:Name="ButtonDelete" Content="削除"  Grid.Column="1" Grid.Row="1" Margin="2,2,2,2" Click="ButtonDelete_Click" />
-        <Button x:Name="ButtonMoveUp" Content="↑移動"  Grid.Column="2" Grid.Row="1" Margin="2,2,2,2" Click="ButtonMoveUp_Click" />
-        <Button x:Name="ButtonMoveDn" Content="↓移動"  Grid.Column="3" Grid.Row="1" Margin="2,2,2,2" Click="ButtonMoveDn_Click" />
-        <Button x:Name="ButtonSave" Content="保存"  Grid.Column="6" Grid.Row="1" Margin="2,2,2,2" Click="ButtonSave_Click" />
-        <!--
-        <Button x:Name="ButtonExport" Content="保存"  Grid.Column="5" Grid.Row="1" Margin="2,2,2,2" Click="ButtonExport_Click" />
-        <Button x:Name="ButtonImport" Content="取込み"  Grid.Column="6" Grid.Row="1" Margin="2,2,2,2" Click="ButtonImport_Click" />
-        -->
+        <StackPanel  Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Margin="2,2,2,2" Orientation="Horizontal">
+            <Button x:Name="ButtonMoveProcUp" Content="↑移動" Margin="2,2,2,2" Click="ButtonMoveProcUp_Click" />
+            <Button x:Name="ButtonMoveProcDn" Content="↓移動" Margin="2,2,2,2" Click="ButtonMoveProcDn_Click" />
+        </StackPanel>
 
-        <DataGrid x:Name="DataGridRepDefs" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="7" ItemsSource="{Binding}" VerticalContentAlignment="Center" Margin="3,3,3,3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="False" IsManipulationEnabled="True" AreRowDetailsFrozen="True" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserSortColumns="False" RowHeaderWidth="15" HeadersVisibility="Column" CanUserAddRows="False" CanUserDeleteRows="False">
+        <DataGrid x:Name="DataGridRepProcs"  Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" ItemsSource="{Binding}" VerticalContentAlignment="Center" Margin="3,3,3,3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="False" IsManipulationEnabled="True" AreRowDetailsFrozen="True" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserSortColumns="False" RowHeaderWidth="15" HeadersVisibility="Column" CanUserAddRows="False" CanUserDeleteRows="False" SelectionChanged="DataGridRepProcs_SelectionChanged" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <DataGrid.Columns>
-                <DataGridTemplateColumn Header="適用" CanUserResize="False" CanUserReorder="False" >
+                <DataGridTemplateColumn Header="実行" CanUserResize="False" CanUserReorder="False" >
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox IsChecked="{Binding Apply, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <CheckBox IsChecked="{Binding Path=FilterConfig.IsUse, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
                 <DataGridTextColumn Header="dummy" IsReadOnly="True" Visibility="Hidden" CanUserSort="False" CanUserReorder="False"/>
-                <DataGridTextColumn Header="マッチングパターン" Binding="{Binding MatchingPattern}" Width="45*" CanUserSort="False" CanUserReorder="False"/>
-                <DataGridTextColumn Header="置換内容"           Binding="{Binding ReplaceText}" Width="45*" CanUserSort="False" CanUserReorder="False"/>
+                <DataGridTextColumn Header="処理名" Binding="{Binding Path=LabelName}" Width="160" IsReadOnly="True" CanUserSort="False" CanUserReorder="False"/>
             </DataGrid.Columns>
         </DataGrid>
 
-        <Grid Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="7" Margin="3,3,3,3">
+        <Grid Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="3">
+
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <Label Content="変換テスト"                Grid.Column="0" Grid.Row="0"  Margin="2,2,2,2" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
-            <StackPanel  Grid.Column="2" Grid.Row="0" Grid.ColumnSpan="3" Orientation="Horizontal">
-                <TextBox x:Name="TextBoxBeforeStr" Text="" Width="250" Margin="2,2,2,2" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
-                <Label Content="→"                                   Margin="2,2,2,2" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
-                <TextBox x:Name="TextBoxAfterStr"  Text="" Width="250" Margin="2,2,2,2" IsReadOnly="True" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
-                <Button Content="変換"                                Margin="2,2,2,2" VerticalAlignment="Center" VerticalContentAlignment="Center" Click="Button_Click"/>
+            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" >
+                <Label Content="[処理の説明] "/>
+                <Label x:Name="LabelProcDescription" Content="処理の説明がここに表示されます" />
             </StackPanel>
 
-            <Label Content="(1) URL置換"                   Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
-            <CheckBox x:Name="CheckBoxIsURLReplace"    Grid.Column="1" Grid.Row="1" Margin="2,2,2,2" VerticalAlignment="Center" VerticalContentAlignment="Center" Click="CheckBoxIsURLReplace_Click" />
-            <TextBox x:Name="TextBoxUrlRepStr" Text="" Grid.Column="2" Grid.Row="1" Margin="2,2,2,2" HorizontalAlignment="Stretch" VerticalAlignment="Center" VerticalContentAlignment="Center" TextChanged="TextBoxUrlRepStr_TextChanged"/>
-            <Label Content="テキスト置換処理前にURLらしい文字を置換します" Grid.Column="3" Grid.Row="1"/>
-
-            <Label Content="(2) ｗ置換"                    Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
-            <CheckBox x:Name="CheckBoxTransGrassWords" Grid.Column="1" Grid.Row="2" Margin="2,2,2,2" VerticalAlignment="Center" Click="CheckBoxTransGrassWords_Click" />
-            <Label Content="テキスト置換処理前に「ｗ」を「わら」へ変換します ※英語話者用ならチェックを外した方がいいです" Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="3"/>
-
-            <Label Content="(3) ８置換"                       Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
-            <CheckBox x:Name="CheckBoxTransApplauseWords" Grid.Column="1" Grid.Row="3" Margin="2,2,2,2" VerticalAlignment="Center" Click="CheckBoxTransApplauseWords_Click" />
-            <Label Content="テキスト置換処理前に「８８８」を「パチパチパチ」へ変換します ※英語話者用ならチェックを外した方がいいです" Grid.Column="2" Grid.Row="3" Grid.ColumnSpan="3"/>
-
-
-            <Label Content="(4) 絵文字置換"                Grid.Column="0" Grid.Row="4" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
-            <CheckBox x:Name="CheckBoxTransEmoji"      Grid.Column="1" Grid.Row="4" Margin="2,2,2,2" VerticalAlignment="Center" Click="CheckBoxTransEmoji_Click" />
-            <Label Content="絵文字除去前に一部の絵文字を通常テキストへ変換します" Grid.Column="2" Grid.Row="4" Grid.ColumnSpan="2"/>
-
-            <Label Content="(5) 絵文字除去"                Grid.Column="0" Grid.Row="5" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
-            <CheckBox x:Name="CheckBoxRemovalEmoji"    Grid.Column="1" Grid.Row="5" Margin="2,2,2,2" VerticalAlignment="Center" Click="CheckBoxRemovalEmoji_Click" />
-            <Label Content="テキスト置換処理 前 に絵文字を除去します" Grid.Column="2" Grid.Row="5" Grid.ColumnSpan="2"/>
-
-
-            <Label Content="(6) 半角置換1"                 Grid.Column="0" Grid.Row="6" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
-            <CheckBox x:Name="CheckBoxTransZen2Han"    Grid.Column="1" Grid.Row="6" Margin="2,2,2,2" VerticalAlignment="Center" Click="CheckBoxTransZen2Han_Click" />
-            <Label Content="テキスト置換処理前に全角英字と記号を半角に変換します" Grid.Column="2" Grid.Row="6" Grid.ColumnSpan="2"/>
-
-            <Label Content="(7) 半角置換2"                 Grid.Column="0" Grid.Row="7" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
-            <CheckBox x:Name="CheckBoxTransZen2HanNum" Grid.Column="1" Grid.Row="7" Margin="2,2,2,2" VerticalAlignment="Center" Click="CheckBoxTransZen2HanNum_Click" />
-            <Label Content="テキスト置換処理前に全角数字を半角に変換します" Grid.Column="2" Grid.Row="7"  Grid.ColumnSpan="2"/>
-
-
-            <Label Content="(8) テキスト置換"                 Grid.Column="0" Grid.Row="8" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
-            <Label Content="テキスト置換処理は常に実行されます" Grid.Column="2" Grid.Row="8"  Grid.ColumnSpan="2"/>
-
-            
-            <Label Content="(9) 絵文字除去"                Grid.Column="0" Grid.Row="9" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
-            <CheckBox x:Name="CheckBoxRemovalEmojiafter"    Grid.Column="1" Grid.Row="9" Margin="2,2,2,2" VerticalAlignment="Center" Click="CheckBoxRemovalEmojiafter_Click" />
-            <Label Content="テキスト置換処理 後 に絵文字を除去します" Grid.Column="2" Grid.Row="9" Grid.ColumnSpan="2"/>
-
-
-            <Label Content="(10) 切捨て" Grid.Column="0" Grid.Row="10" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
-            <TextBox  x:Name="TextBoxTextLength" Text="" Grid.Column="2" Grid.Row="10" MaxLength="6"  Margin="2,2,2,2" VerticalAlignment="Center" VerticalContentAlignment="Center" InputMethod.IsInputMethodEnabled="False" PreviewTextInput="TextBox_MaxTextSizePreviewTextInput" CommandManager.PreviewExecuted="TextBox_MaxTextSizePreviewExecuted" TextChanged="TextBoxTextLength_TextChanged" LostFocus="TextBoxTextLength_LostFocus" HorizontalAlignment="Stretch"/>
-            <Label Content="テキスト置換処理後、この文字数を越えた部分は切り捨てます" Grid.Column="3" Grid.Row="10" Grid.ColumnSpan="2"/>
-
-            <Label Content="(11) 切捨て後に追加" Grid.Column="0" Grid.Row="11" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
-            <TextBox x:Name="TextBoxAddSuffixStr" Text="" Grid.Column="2" Grid.Row="11"  Margin="2,2,2,2" Width="150" VerticalAlignment="Center" VerticalContentAlignment="Center" TextChanged="TextBoxAddSuffixStr_TextChanged" HorizontalAlignment="Stretch"/>
-            <Label Content="切捨て発生時、文字列末尾にこの文字列を追加します" Grid.Column="3" Grid.Row="11" Grid.ColumnSpan="2"/>
+            <Grid x:Name="GridExtentSetting" Grid.Row="1" Grid.Column="0" ScrollViewer.CanContentScroll="True" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20*"/>
+                    <ColumnDefinition Width="40*"/>
+                    <ColumnDefinition Width="40*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions/>
+            </Grid>
 
         </Grid>
+
+        <Label Content="変換テスト"                Grid.Column="0" Grid.Row="3"  Margin="2,2,2,2" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
+        <StackPanel  Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="3" Orientation="Horizontal">
+            <TextBox x:Name="TextBoxBeforeStr" Text="" Width="250" Margin="2,2,2,2" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
+            <Label Content="→"                                   Margin="2,2,2,2" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
+            <TextBox x:Name="TextBoxAfterStr"  Text="" Width="250" Margin="2,2,2,2" IsReadOnly="True" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
+            <Button Content="変換"                                Margin="2,2,2,2" VerticalAlignment="Center" VerticalContentAlignment="Center" Click="Button_Click"/>
+        </StackPanel>
 
     </Grid>
 

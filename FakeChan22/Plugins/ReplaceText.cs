@@ -3,149 +3,72 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using EmojiTools;
+using FakeChan22.Filters;
 
 namespace FakeChan22.Plugins
 {
     public class ReplaceText
     {
-        static Regex RepUrlReg = new Regex(@"[hH]{0,1}[tT][tT][pP][sS]{0,1}:\/\/[^\t 　]{1,}");
-        static Regex RepMapReg = new Regex(@"^[\da-zA-Z]{1,2}\)");
-
-        static Regex RepGrass01 = new Regex(@"^[WwＷｗ]{2,}$");
-        static Regex RepGrass02 = new Regex(@"^[WwＷｗ]{2,}([^a-zA-Zａ-ｚＡ-Ｚ]{1,})");
-        static Regex RepGrass03 = new Regex(@"([^a-zA-Zａ-ｚＡ-Ｚ]{1,})[WwＷｗ]{2,}([^a-zA-Zａ-ｚＡ-Ｚ]{1,})");
-        static Regex RepGrass04 = new Regex(@"([^a-zA-Zａ-ｚＡ-Ｚ]{1,})[WwＷｗ]{2,}$");
-
-        static Regex RepGrass11 = new Regex(@"^[WwＷｗ]{1,1}$");
-        static Regex RepGrass12 = new Regex(@"^[WwＷｗ]{1,1}([^a-zA-Zａ-ｚＡ-Ｚ]{1,})");
-        static Regex RepGrass13 = new Regex(@"([^a-zA-Zａ-ｚＡ-Ｚ]{1,})[WwＷｗ]{1,1}([^a-zA-Zａ-ｚＡ-Ｚ]{1,})");
-        static Regex RepGrass14 = new Regex(@"([^a-zA-Zａ-ｚＡ-Ｚ]{1,})[WwＷｗ]{1,1}$");
-
-        static Regex RepApplause01 = new Regex(@"^[8８]{3,}$");
-        static Regex RepApplause02 = new Regex(@"^[8８]{3,}([^0-9０-９]{1,})");
-        static Regex RepApplause03 = new Regex(@"([^0-9０-９]{1,})[8８]{3,}([^0-9０-９]{1,})");
-        static Regex RepApplause04 = new Regex(@"([^0-9０-９]{1,})[8８]{3,}");
-
-        static string Words01w = @"わらわら";
-        static string Words02w = @"わらわら $1";
-        static string Words03w = @"$1 わらわら $2";
-        static string Words04w = @"$1 わらわら";
-        static string Words11w = @"わら";
-        static string Words12w = @"わら $1";
-        static string Words13w = @"$1 わら $2";
-        static string Words14w = @"$1 わら";
-
-        static string Words01p = @"パチパチパチ";
-        static string Words02p = @"パチパチパチ $1";
-        static string Words03p = @"$1 パチパチパチ $2";
-        static string Words04p = @"$1 パチパチパチ";
-
-
-        public static string ParseText(string text, ReplaceDefinitionList defs, bool demomode=false)
+        /// <summary>
+        /// 置換リストを使ってテキストをパースする
+        /// </summary>
+        /// <param name="text">処理対象テキスト</param>
+        /// <param name="repDefs">処理に使用する置換リスト</param>
+        /// <returns>変換結果テキスト</returns>
+        public static FilterParams ParseText(string text, ReplaceDefinitionList repDefs)
         {
-            string s = text;
+            FilterParams fp = new FilterParams();
 
-            // demo mode
+            fp.Text = text;
 
-            if (demomode)
+            foreach (var proc in repDefs.FilterProcs)
             {
-                s = RepMapReg.Replace(s, "");
+                dynamic convproc = proc;
+                if(convproc.FilterConfig.IsUse) proc.Processing(ref fp);
             }
 
-            // before
-
-            if (defs.IsReplaceUrl)
-            {
-                s = RepUrlReg.Replace(s, defs.ReplaceStrFromUrl);
-            }
-
-            if(defs.IsReplaceGrassWord)
-            {
-                s = ReplaceGrass(s);
-            }
-
-            if (defs.IsReplaceApplauseWord)
-            {
-                s = ReplaceApplause(s);
-            }
-
-            if (defs.IsReplaceEmoji)
-            {
-                s = EmojiTool.ChangeEmoji(s);
-            }
-
-            if (defs.IsRemovalEmojiBeforeReplace)
-            {
-                s = EmojiTool.StripEmoji(s);
-            }
-
-            if (defs.IsReplaceZentoHan1)
-            {
-                s = TransZen2HanString(s);
-            }
-
-            if (defs.IsReplaceZentoHan2)
-            {
-                s = TransZen2HanNumString(s);
-            }
-
-            //replace
-
-            if (s.Length != 0)
-            {
-                for (int idx = 0; idx < defs.Definitions.Count; idx++)
-                {
-                    if (defs.Definitions[idx].Apply)
-                    {
-                        try { s = Regex.Replace(s, defs.Definitions[idx].MatchingPattern, defs.Definitions[idx].ReplaceText); } catch (Exception) { }
-                    }
-                }
-            }
-
-            //after
-
-            if (defs.IsRemovalEmojiAfterReplace)
-            {
-                s = EmojiTool.StripEmoji(s);
-            }
-            
-            if (s.Length > defs.CutLength)
-            {
-                s = s.Substring(0, defs.CutLength) + defs.AppendStr;
-            }
-
-            return s;
+            return fp;
         }
 
-        public static (string key, string text) SeparateMapKey(string text)
+        /// <summary>
+        /// テキスト先頭の話者指定を分離する
+        /// </summary>
+        /// <param name="text">処理対象テキスト</param>
+        /// <returns>(話者, 分離したテキスト)</returns>
+        public static (string key, string splittedText) SplitUserSpecifier(string text,  bool ext = false)
         {
-            string key = "";
-            string txt = text;
+            string UserSpecifier = "";
+            string Text = text;
 
-            if (Regex.IsMatch(txt, @"^([\da-zA-Z]{1,2})\).*$"))
+            if (Regex.IsMatch(text, @"^([\da-zA-Z]{1,2})\).*$"))
             {
-                key = Regex.Replace(txt, @"^([\da-zA-Z]{1,2})\).*$", "$1");
-                txt = Regex.Replace(txt, @"^[\da-zA-Z]{1,2}\)(.*)$", "$1");
+                UserSpecifier = Regex.Replace(text, @"^([\da-zA-Z]{1,2})\).*$", "$1");
+                Text = Regex.Replace(text, @"^[\da-zA-Z]{1,2}\)(.*)$", "$1");
             }
 
-            return (key, txt);
+            return (UserSpecifier, Text);
         }
 
-        private static string ReplaceGrass(string text)
+        /// <summary>
+        /// テキスト先頭の話者指定を分離する
+        /// </summary>
+        /// <param name="text">処理対象テキスト</param>
+        /// <returns>(話者, 分離したテキスト)</returns>
+        public static (string key, string splittedText) SplitUserSpecifierFullwide(string text, bool ext = false)
         {
-            string s = RepGrass04.Replace(RepGrass03.Replace(RepGrass02.Replace(RepGrass01.Replace(text, Words01w), Words02w), Words03w), Words04w);
-            s = RepGrass14.Replace(RepGrass13.Replace(RepGrass12.Replace(RepGrass11.Replace(s, Words11w), Words12w), Words13w), Words14w);
+            string UserSpecifier = "";
+            string Text = text;
 
-            return s;
+            if (Regex.IsMatch(text, @"^([0-9０-９a-zA-Zａ-ｚＡ-Ｚ]{1,2})[\)）].*$"))
+            {
+                UserSpecifier = Regex.Replace(text, @"^([0-9０-９a-zA-Zａ-ｚＡ-Ｚ]{1,2})[\)）].*$", "$1");
+                Text = Regex.Replace(text, @"^[0-9０-９a-zA-Zａ-ｚＡ-Ｚ]{1,2}[\)）](.*)$", "$1");
+            }
+
+            return (UserSpecifier, Text);
         }
 
-        private static string ReplaceApplause(string text)
-        {
-            return RepApplause04.Replace(RepApplause03.Replace(RepApplause02.Replace(RepApplause01.Replace(text, Words01p), Words02p), Words03p), Words04p); ;
-        }
-
-
-        private static string TransZen2HanString(string text)
+        public static string Zen2HanChar(string text)
         {
             StringBuilder sb = new StringBuilder();
 
@@ -165,7 +88,7 @@ namespace FakeChan22.Plugins
             return sb.ToString();
         }
 
-        private static string TransZen2HanNumString(string text)
+        public static string Zen2HanNumChar(string text)
         {
             StringBuilder sb = new StringBuilder();
 
@@ -184,7 +107,6 @@ namespace FakeChan22.Plugins
 
             return sb.ToString();
         }
-
 
         private static readonly Dictionary<char, char> Zen2Han = new Dictionary<char, char>()
         {
@@ -287,6 +209,7 @@ namespace FakeChan22.Plugins
             {'８',     '8'},
             {'９',     '9'}
         };
+
 
     }
 }
