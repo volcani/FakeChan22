@@ -36,7 +36,14 @@ namespace FakeChan22.Tasks
             }
             else
             {
-                MessQueue.AddQueue(talk);
+                if (talk.OverrideAsync)
+                {
+                    OnCallAsyncTalk?.Invoke(talk);
+                }
+                else
+                {
+                    MessQueue.AddQueue(talk);
+                }
             }
         }
 

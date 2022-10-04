@@ -14,6 +14,8 @@ namespace FakeChan22.Params
 
         public int CompatVType { get; set; }
 
+        public bool OverrideAsync { get; set; } = false;
+
         public ListenerConfigBase LsnrCfg { get; set; }
 
         public string Message { get; set; }
