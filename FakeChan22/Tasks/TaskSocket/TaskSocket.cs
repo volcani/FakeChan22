@@ -87,14 +87,16 @@ namespace FakeChan22.Tasks
                             var sr = br;
                             MessageData talk = Parse0x0001(ref sr);
 
-                            if (LsnrConfig.IsAsync)
-                            {
-                                AsyncTalk(talk);
-                            }
-                            else
-                            {
-                                SyncTalk(talk);
-                            }
+                            AsTalk(talk);
+
+                            //if (LsnrConfig.IsAsync)
+                            //{
+                            //    AsyncTalk(talk);
+                            //}
+                            //else
+                            //{
+                            //    SyncTalk(talk);
+                            //}
 
                             break;
 

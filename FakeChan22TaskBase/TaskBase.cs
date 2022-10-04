@@ -1,4 +1,5 @@
 ﻿using FakeChan22.Params;
+using System;
 
 namespace FakeChan22.Tasks
 {
@@ -15,14 +16,28 @@ namespace FakeChan22.Tasks
         public event CallEventHandlerCallTalk OnCallAsyncTalk;
         public event CallEventHandlerLogging OnLogging;
 
+        [Obsolete("AsTalk()を利用してください", false)]
         public void AsyncTalk(MessageData talk)
         {
             OnCallAsyncTalk?.Invoke(talk);
         }
 
+        [Obsolete("AsTalk()を利用してください", false)]
         public void SyncTalk(MessageData talk)
         {
             MessQueue.AddQueue(talk);
+        }
+
+        public void AsTalk(MessageData talk)
+        {
+            if (talk.LsnrCfg.IsAsync)
+            {
+                OnCallAsyncTalk?.Invoke(talk);
+            }
+            else
+            {
+                MessQueue.AddQueue(talk);
+            }
         }
 
         public void Logging(string logText)

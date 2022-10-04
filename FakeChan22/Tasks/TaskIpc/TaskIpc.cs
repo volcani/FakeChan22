@@ -100,15 +100,17 @@ namespace FakeChan22.Tasks
                 CompatVType= vType,
                 TaskId = MessQueue.count + 1
             };
-            
-            if (LsnrConfig.IsAsync)
-            {
-                AsyncTalk(talk);
-            }
-            else
-            {
-                SyncTalk(talk);
-            }
+
+            AsTalk(talk);
+
+            //if (LsnrConfig.IsAsync)
+            //{
+            //    AsyncTalk(talk);
+            //}
+            //else
+            //{
+            //    SyncTalk(talk);
+            //}
         }
 
         private int IPCAddTalkTask21(string TalkText)

@@ -101,14 +101,16 @@ namespace FakeChan22.Tasks
                         TaskId = MessQueue.count + 1
                     };
 
-                    if (LsnrConfig.IsAsync)
-                    {
-                        AsyncTalk(talk);
-                    }
-                    else
-                    {
-                        SyncTalk(talk);
-                    }
+                    AsTalk(talk);
+
+                    //if (LsnrConfig.IsAsync)
+                    //{
+                    //    AsyncTalk(talk);
+                    //}
+                    //else
+                    //{
+                    //    SyncTalk(talk);
+                    //}
                 }
             });
         }
