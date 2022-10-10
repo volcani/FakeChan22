@@ -61,7 +61,7 @@ namespace FakeChan22.Plugins
 
             if (Regex.IsMatch(text, @"^([0-9０-９a-zA-Zａ-ｚＡ-Ｚ]{1,2})[\)）].*$"))
             {
-                UserSpecifier = Regex.Replace(text, @"^([0-9０-９a-zA-Zａ-ｚＡ-Ｚ]{1,2})[\)）].*$", "$1");
+                UserSpecifier = Zen2HanNumChar(Zen2HanChar(Regex.Replace(text, @"^([0-9０-９a-zA-Zａ-ｚＡ-Ｚ]{1,2})[\)）].*$", "$1")));
                 Text = Regex.Replace(text, @"^[0-9０-９a-zA-Zａ-ｚＡ-Ｚ]{1,2}[\)）](.*)$", "$1");
             }
 
