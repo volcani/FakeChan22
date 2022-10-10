@@ -14,6 +14,11 @@ namespace FakeChan22.Filters
         public string Text { get; set; }
 
         /// <summary>
+        /// 処理されるテキスト
+        /// </summary>
+        public List<string> Texts { get; set; }
+
+        /// <summary>
         /// ユーザ指定（切り出しした場合）
         /// </summary>
         public string UserSpecifier { get; set; }
@@ -29,12 +34,18 @@ namespace FakeChan22.Filters
         /// </summary>
         public double JudgeCalculatedValue { get; set; }
 
+        /// <summary>
+        /// 非同期判定
+        /// </summary>
+        public bool UseAsync { get; set; }
 
         public FilterParams()
         {
             Text = "";
             UserSpecifier = "";
             Lang = "ja";
+            UseAsync = false;
+            Texts = new List<string>();
         }
     }
 }

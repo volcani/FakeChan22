@@ -9,9 +9,15 @@ AssistantSeikaはこちらからダウンロードしてください。
 　 https://hgotoh.jp/wiki/doku.php/documents/voiceroid/assistantseika/assistantseika-001a
 
 
-■変更点等( Ver 1.0.11 → 1.0.12 )
 
-- DLLで拡張リスナを追加できるようにした。
+■変更点等
+
+Ver 1.0.13 → 1.0.14
+- 話者指定に全角文字を許した時話者指定が全角のままだったので半角に変換する修正実施
+- 新I/F用の機構組み込み
+
+Ver 1.0.12 → 1.0.13
+- 置換リストの仕様変更
 
 
 ■使用しているサードパーティ製品

@@ -213,9 +213,11 @@ namespace FakeChan22.Tasks
 
             var (sepMap, sepText) = ReplaceText.SplitUserSpecifier(talk.OrgMessage);
 
-            // 非日本語判定の実施判定
+            // 非日本語判定の実施
             if (talk.LsnrCfg.IsNoJapanese)
             {
+                talk.SelectedLang = "noneJa";
+
                 (bool judge, double rate) = JudgeTextLang.JudgeNoJapanese(sepText, talk.LsnrCfg.NoJapaneseCharRate);
                 if (judge)
                 {
@@ -223,10 +225,15 @@ namespace FakeChan22.Tasks
                     replist = talk.LsnrCfg.ReplaceListNoJapaneseJudge;
                 }
             }
+            else
+            {
+                talk.SelectedLang = "Ja";
+            }
 
             // 置換処理
             FilterParams fp = ReplaceText.ParseText(talk.OrgMessage, replist);
             talk.Message = fp.Text;
+            talk.OverrideAsync = fp.UseAsync;
 
             // 話者選定
             if ((fp.UserSpecifier != "") && (splist.SpeakerMaps.ContainsKey(fp.UserSpecifier)))

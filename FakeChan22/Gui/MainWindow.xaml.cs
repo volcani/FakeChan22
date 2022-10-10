@@ -24,7 +24,7 @@ namespace FakeChan22
     /// </summary>
     public partial class MainWindow : Window
     {
-        private string versionStr = "1.0.13.2";
+        private string versionStr = "1.0.14.1";
 
         /// <summary>
         /// アプリ全体の設定格納
@@ -71,39 +71,7 @@ namespace FakeChan22
             {
                 // 取り外された Task,FilterProc への対応
 
-                JsonNode configNode = JsonNode.Parse(Properties.Settings.Default.UserDatas);
-
-                // Task への対応
-                List<JsonNode> listenerConfigListsNodes = configNode["listenerConfigLists"].AsArray().ToList<JsonNode>();
-                foreach (var item in listenerConfigListsNodes)
-                {
-                    string lsnrTypeName = Regex.Replace(item[@"__type"].GetValue<string>(), @"^([^:#]+):#([^:#]+)$", @"$2.$1");
-
-                    if (!TypeCollection.ListenerConfigTypeDictionary.ContainsKey(lsnrTypeName))
-                    {
-                        JsonNode tNode = item as JsonNode;
-                        (configNode["listenerConfigLists"] as JsonArray).Remove(tNode);
-                    }
-                }
-
-                // FilterProc への対応
-                List<JsonNode> replaceDefinitionListsNodes = configNode["replaceDefinitionLists"].AsArray().ToList<JsonNode>();
-                foreach (var repItem in replaceDefinitionListsNodes)
-                {
-                    if (repItem[@"FilterProcs"] != null)
-                    {
-                        foreach (var procItem in repItem[@"FilterProcs"].AsArray().ToList<JsonNode>())
-                        {
-                            string procTypeName = Regex.Replace(procItem[@"__type"].GetValue<string>(), @"^([^:#]+):#([^:#]+)$", @"$2.$1");
-
-                            if (!TypeCollection.FilterProcTypeDictionary.ContainsKey(procTypeName))
-                            {
-                                JsonNode tNode = procItem as JsonNode;
-                                (repItem[@"FilterProcs"] as JsonArray).Remove(tNode);
-                            }
-                        }
-                    }
-                }
+                string userDataJson = UnRegisterJson();
 
                 // 改めて保存された設定を読み込む
 
@@ -111,11 +79,12 @@ namespace FakeChan22
                 List<Type> KnownTypes = new List<Type>();
                 KnownTypes.AddRange(TypeCollection.ListenerConfigTypeDictionary.Values.Select(v => v).ToList());
                 KnownTypes.AddRange(TypeCollection.FilterProcTypeDictionary.Values.Select(v => v).ToList());
+                KnownTypes.AddRange(TypeCollection.FilterConfigTypeDictionary.Values.Select(v => v).ToList());
                 KnownTypes.Add(typeof(GuiItemAttribute));
                 settings.KnownTypes = KnownTypes;
 
                 DataContractJsonSerializer uds = new DataContractJsonSerializer(typeof(FakeChanConfig), settings);
-                MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(configNode.ToJsonString()));
+                MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(userDataJson));
                 config = (FakeChanConfig)uds.ReadObject(ms);
                 ms.Close();
             }
@@ -151,6 +120,63 @@ namespace FakeChan22
                 config.commentXmGenlPath = Directory.GetParent(Assembly.GetExecutingAssembly().Location).FullName;
             }
             TextBoxCommentXmlPath.Text = config.commentXmGenlPath;
+        }
+
+        private string  UnRegisterJson()
+        {
+            JsonNode configNode = JsonNode.Parse(Properties.Settings.Default.UserDatas);
+
+            // Task, FilterProc への対応
+            List<JsonNode> listenerConfigListsNodes = configNode["listenerConfigLists"].AsArray().ToList<JsonNode>();
+            foreach (var item in listenerConfigListsNodes)
+            {
+                string lsnrTypeName = Regex.Replace(item[@"__type"].GetValue<string>(), @"^([^:#]+):#([^:#]+)$", @"$2.$1");
+
+                if (!TypeCollection.ListenerConfigTypeDictionary.ContainsKey(lsnrTypeName))
+                {
+                    JsonNode tNode = item as JsonNode;
+                    (configNode["listenerConfigLists"] as JsonArray).Remove(tNode);
+                }
+
+                if (item["ReplaceListDefault"] != null)
+                {
+                    var lst = item["ReplaceListDefault"];
+                    UnRegisterJsonFilterProcs(ref lst);
+                }
+
+                if (item["ReplaceListNoJapaneseJudge"] != null)
+                {
+                    var lst = item["ReplaceListNoJapaneseJudge"];
+                    UnRegisterJsonFilterProcs(ref lst);
+                }
+            }
+
+            // FilterProc への対応
+            List<JsonNode> replaceDefinitionListsNodes = configNode["replaceDefinitionLists"].AsArray().ToList<JsonNode>();
+            foreach (var repItem in replaceDefinitionListsNodes)
+            {
+                var lst = repItem;
+                UnRegisterJsonFilterProcs(ref lst);
+            }
+
+            return configNode.ToJsonString();
+        }
+
+        private void UnRegisterJsonFilterProcs(ref JsonNode ccc)
+        {
+            if (ccc[@"FilterProcs"] != null)
+            {
+                foreach (var procItem in ccc[@"FilterProcs"].AsArray().ToList<JsonNode>())
+                {
+                    string procTypeName = Regex.Replace(procItem[@"__type"].GetValue<string>(), @"^([^:#]+):#([^:#]+)$", @"$2.$1");
+
+                    if (!TypeCollection.FilterProcTypeDictionary.ContainsKey(procTypeName))
+                    {
+                        JsonNode tNode = procItem as JsonNode;
+                        (ccc[@"FilterProcs"] as JsonArray).Remove(tNode);
+                    }
+                }
+            }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
