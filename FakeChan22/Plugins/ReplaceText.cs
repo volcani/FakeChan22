@@ -39,11 +39,13 @@ namespace FakeChan22.Plugins
         {
             string UserSpecifier = "";
             string Text = text;
+            string j1 = @"^([\da-zA-Z]{1,3})\).*$";
+            string j2 = @"^[\da-zA-Z]{1,3}\)(.*)$";
 
-            if (Regex.IsMatch(text, @"^([\da-zA-Z]{1,2})\).*$"))
+            if (Regex.IsMatch(text, j1))
             {
-                UserSpecifier = Regex.Replace(text, @"^([\da-zA-Z]{1,2})\).*$", "$1");
-                Text = Regex.Replace(text, @"^[\da-zA-Z]{1,2}\)(.*)$", "$1");
+                UserSpecifier = Regex.Replace(text, j1, "$1");
+                Text = Regex.Replace(text, j2, "$1");
             }
 
             return (UserSpecifier, Text);
@@ -58,11 +60,13 @@ namespace FakeChan22.Plugins
         {
             string UserSpecifier = "";
             string Text = text;
+            string j1 = @"^([0-9０-９a-zA-Zａ-ｚＡ-Ｚ]{1,3})[\)）].*$";
+            string j2 = @"^[0-9０-９a-zA-Zａ-ｚＡ-Ｚ]{1,3}[\)）](.*)$";
 
-            if (Regex.IsMatch(text, @"^([0-9０-９a-zA-Zａ-ｚＡ-Ｚ]{1,2})[\)）].*$"))
+            if (Regex.IsMatch(text, j1))
             {
-                UserSpecifier = Zen2HanNumChar(Zen2HanChar(Regex.Replace(text, @"^([0-9０-９a-zA-Zａ-ｚＡ-Ｚ]{1,2})[\)）].*$", "$1")));
-                Text = Regex.Replace(text, @"^[0-9０-９a-zA-Zａ-ｚＡ-Ｚ]{1,2}[\)）](.*)$", "$1");
+                UserSpecifier = Zen2HanNumChar(Zen2HanChar(Regex.Replace(text, j1, "$1")));
+                Text = Regex.Replace(text, j2, "$1");
             }
 
             return (UserSpecifier, Text);

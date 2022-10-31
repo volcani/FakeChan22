@@ -29,13 +29,13 @@ namespace FakeChan22
 
             set
             {
-                if (value.Length > 2)
+                if (value.Length > 3)
                 {
-                    throw new ArgumentException("識別子が2文字を越えている");
+                    throw new ArgumentException("識別子が3文字を越えている");
                 }
-                else if (!Regex.IsMatch(value, @"[\da-zA-Z]{0,2}"))
+                else if (!Regex.IsMatch(value, @"[\da-zA-Z]{0,3}"))
                 {
-                    throw new ArgumentException("識別子が1～2文字の英数字ではない");
+                    throw new ArgumentException("識別子が1～3文字の英数字ではない");
                 }
 
                 macroName = value;
