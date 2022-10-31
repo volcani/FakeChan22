@@ -24,7 +24,8 @@ namespace FakeChan22
     /// </summary>
     public partial class MainWindow : Window
     {
-        private string versionStr = "1.0.14.1";
+        private string versionStr = "1.0.15";
+        private string configFile = "FakeChan22.conf";
 
         /// <summary>
         /// アプリ全体の設定格納
@@ -65,6 +66,18 @@ namespace FakeChan22
                 Properties.Settings.Default.Upgrade();
                 Properties.Settings.Default.UpgradeRequired = false;
                 Properties.Settings.Default.Save();
+            }
+
+            // 同じフォルダに設定ファイルを残すように
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            var cnfFile = Path.Combine( Path.GetDirectoryName(assembly.Location), configFile );
+            if(File.Exists(cnfFile))
+            {
+                using (var fp = new StreamReader(cnfFile, Encoding.UTF8))
+                {
+                    Properties.Settings.Default.UserDatas = fp.ReadLine();
+                    fp.Close();
+                }
             }
 
             if (Properties.Settings.Default.UserDatas != "")
@@ -263,6 +276,15 @@ namespace FakeChan22
             DataContractJsonSerializer uds = new DataContractJsonSerializer(typeof(FakeChanConfig), settings);
             MemoryStream ms = new MemoryStream();
             uds.WriteObject(ms, config);
+
+            // 同じフォルダに設定を残す
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            var cnfFile = Path.Combine(Path.GetDirectoryName(assembly.Location), configFile);
+            using (var fp = new StreamWriter(cnfFile, false,Encoding.UTF8))
+            {
+                fp.WriteLine(Encoding.UTF8.GetString(ms.GetBuffer(), 0, (int)(ms.Length)));
+                fp.Close();
+            }
 
             Properties.Settings.Default.UserDatas = Encoding.UTF8.GetString(ms.GetBuffer(), 0, (int)(ms.Length));
             Properties.Settings.Default.Save();
