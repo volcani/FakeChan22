@@ -24,7 +24,7 @@ namespace FakeChan22
     /// </summary>
     public partial class MainWindow : Window
     {
-        private string versionStr = "1.0.15";
+        private string versionStr = "1.0.16";
         private string configFile = "FakeChan22.conf";
 
         /// <summary>
