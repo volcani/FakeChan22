@@ -51,24 +51,33 @@ namespace FakeChan22.Config
                 listenerConfigLists.Add(new ListenerConfigIpc("BouyomiChan") { SpeakerListDefault = speakerLists[0], ReplaceListDefault = replaceDefinitionLists[0], SpeakerListNoJapaneseJudge = speakerLists[0], ReplaceListNoJapaneseJudge = replaceDefinitionLists[0] });
                 listenerConfigLists.Add(new ListenerConfigSocket("127.0.0.1", 50001) { SpeakerListDefault = speakerLists[0], ReplaceListDefault = replaceDefinitionLists[0], SpeakerListNoJapaneseJudge = speakerLists[0], ReplaceListNoJapaneseJudge = replaceDefinitionLists[0] });
                 listenerConfigLists.Add(new ListenerConfigSocket("127.0.0.1", 50002) { SpeakerListDefault = speakerLists[0], ReplaceListDefault = replaceDefinitionLists[0], SpeakerListNoJapaneseJudge = speakerLists[0], ReplaceListNoJapaneseJudge = replaceDefinitionLists[0] });
-                listenerConfigLists.Add(new ListenerConfigSocket("127.0.0.1", 50003) { SpeakerListDefault = speakerLists[0], ReplaceListDefault = replaceDefinitionLists[0], SpeakerListNoJapaneseJudge = speakerLists[0], ReplaceListNoJapaneseJudge = replaceDefinitionLists[0] });
-                listenerConfigLists.Add(new ListenerConfigSocket("127.0.0.1", 50004) { SpeakerListDefault = speakerLists[0], ReplaceListDefault = replaceDefinitionLists[0], SpeakerListNoJapaneseJudge = speakerLists[0], ReplaceListNoJapaneseJudge = replaceDefinitionLists[0] });
+                //listenerConfigLists.Add(new ListenerConfigSocket("127.0.0.1", 50003) { SpeakerListDefault = speakerLists[0], ReplaceListDefault = replaceDefinitionLists[0], SpeakerListNoJapaneseJudge = speakerLists[0], ReplaceListNoJapaneseJudge = replaceDefinitionLists[0] });
+                //listenerConfigLists.Add(new ListenerConfigSocket("127.0.0.1", 50004) { SpeakerListDefault = speakerLists[0], ReplaceListDefault = replaceDefinitionLists[0], SpeakerListNoJapaneseJudge = speakerLists[0], ReplaceListNoJapaneseJudge = replaceDefinitionLists[0] });
+
                 listenerConfigLists.Add(new ListenerConfigHttp("127.0.0.1", 50080) { SpeakerListDefault = speakerLists[0], ReplaceListDefault = replaceDefinitionLists[0], SpeakerListNoJapaneseJudge = speakerLists[0], ReplaceListNoJapaneseJudge = replaceDefinitionLists[0] });
                 listenerConfigLists.Add(new ListenerConfigHttp("127.0.0.1", 50081) { SpeakerListDefault = speakerLists[0], ReplaceListDefault = replaceDefinitionLists[0], SpeakerListNoJapaneseJudge = speakerLists[0], ReplaceListNoJapaneseJudge = replaceDefinitionLists[0] });
-                listenerConfigLists.Add(new ListenerConfigHttp("127.0.0.1", 50082) { SpeakerListDefault = speakerLists[0], ReplaceListDefault = replaceDefinitionLists[0], SpeakerListNoJapaneseJudge = speakerLists[0], ReplaceListNoJapaneseJudge = replaceDefinitionLists[0] });
-                listenerConfigLists.Add(new ListenerConfigHttp("127.0.0.1", 50083) { SpeakerListDefault = speakerLists[0], ReplaceListDefault = replaceDefinitionLists[0], SpeakerListNoJapaneseJudge = speakerLists[0], ReplaceListNoJapaneseJudge = replaceDefinitionLists[0] });
-            }
+                //listenerConfigLists.Add(new ListenerConfigHttp("127.0.0.1", 50082) { SpeakerListDefault = speakerLists[0], ReplaceListDefault = replaceDefinitionLists[0], SpeakerListNoJapaneseJudge = speakerLists[0], ReplaceListNoJapaneseJudge = replaceDefinitionLists[0] });
+                //listenerConfigLists.Add(new ListenerConfigHttp("127.0.0.1", 50083) { SpeakerListDefault = speakerLists[0], ReplaceListDefault = replaceDefinitionLists[0], SpeakerListNoJapaneseJudge = speakerLists[0], ReplaceListNoJapaneseJudge = replaceDefinitionLists[0] });
 
-            // 旧リスナ定義に含まれていないリスナを追加する処理
-
-            if (listenerConfigLists.Find(v => v.GetType() == typeof(ListenerConfigClipboard)) == null)
-            {
                 listenerConfigLists.Add(new ListenerConfigClipboard() { SpeakerListDefault = speakerLists[0], ReplaceListDefault = replaceDefinitionLists[0], SpeakerListNoJapaneseJudge = speakerLists[0], ReplaceListNoJapaneseJudge = replaceDefinitionLists[0] });
             }
-
-            if (listenerConfigLists.Find(v => v.GetType() == typeof(ListenerConfigTwitter)) == null)
+            else
             {
-                listenerConfigLists.Add(new ListenerConfigTwitter() { SpeakerListDefault = speakerLists[0], ReplaceListDefault = replaceDefinitionLists[0], SpeakerListNoJapaneseJudge = speakerLists[0], ReplaceListNoJapaneseJudge = replaceDefinitionLists[0] });
+                // リスナ定義から除外対象を除外する処理
+                var obj1 = listenerConfigLists.Find(v => v.GetType() == typeof(ListenerConfigSocket) && v.LabelName == "Socket127.0.0.1:50003");
+                var obj2 = listenerConfigLists.Find(v => v.GetType() == typeof(ListenerConfigSocket) && v.LabelName == "Socket127.0.0.1:50004");
+                var obj3 = listenerConfigLists.Find(v => v.GetType() == typeof(ListenerConfigHttp) && v.LabelName == "Http127.0.0.1:50082");
+                var obj4 = listenerConfigLists.Find(v => v.GetType() == typeof(ListenerConfigHttp) && v.LabelName == "Http127.0.0.1:50083");
+
+                var obj5 = listenerConfigLists.Find(v => v.GetType() == typeof(ListenerConfigClipboard));
+
+                if (obj1 != null) listenerConfigLists.Remove(obj1);
+                if (obj2 != null) listenerConfigLists.Remove(obj2);
+                if (obj3 != null) listenerConfigLists.Remove(obj3);
+                if (obj4 != null) listenerConfigLists.Remove(obj4);
+
+                // リスナ定義に含まれていないリスナを追加する処理
+                if (obj5 == null) listenerConfigLists.Add(new ListenerConfigClipboard() { SpeakerListDefault = speakerLists[0], ReplaceListDefault = replaceDefinitionLists[0], SpeakerListNoJapaneseJudge = speakerLists[0], ReplaceListNoJapaneseJudge = replaceDefinitionLists[0] });
             }
 
             // Extend フォルダの処理

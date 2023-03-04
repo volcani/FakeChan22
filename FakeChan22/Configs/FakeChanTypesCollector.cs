@@ -31,13 +31,13 @@ namespace FakeChan22.Configs
             ListenerConfigTypeDictionary.Add(typeof(ListenerConfigSocket).FullName, typeof(ListenerConfigSocket));
             ListenerConfigTypeDictionary.Add(typeof(ListenerConfigHttp).FullName, typeof(ListenerConfigHttp));
             ListenerConfigTypeDictionary.Add(typeof(ListenerConfigClipboard).FullName, typeof(ListenerConfigClipboard));
-            ListenerConfigTypeDictionary.Add(typeof(ListenerConfigTwitter).FullName, typeof(ListenerConfigTwitter));
+            //ListenerConfigTypeDictionary.Add(typeof(ListenerConfigTwitter).FullName, typeof(ListenerConfigTwitter));
 
             TaskTypeDictionary.Add(typeof(TaskIpc).FullName, typeof(TaskIpc));
             TaskTypeDictionary.Add(typeof(TaskSocket).FullName, typeof(TaskSocket));
             TaskTypeDictionary.Add(typeof(TaskHttp).FullName, typeof(TaskHttp));
             TaskTypeDictionary.Add(typeof(TaskClipboard).FullName, typeof(TaskClipboard));
-            TaskTypeDictionary.Add(typeof(TaskTwitter).FullName, typeof(TaskTwitter));
+            //TaskTypeDictionary.Add(typeof(TaskTwitter).FullName, typeof(TaskTwitter));
 
             // Extendフォルダのassembly収集
 

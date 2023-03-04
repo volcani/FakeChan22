@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 //using System.Web.UI.WebControls;
 using System.Windows;
 using System.Windows.Controls;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace FakeChan22
 {
@@ -250,6 +251,22 @@ namespace FakeChan22
                                 tb.Undo();
                             }
                         };
+                        break;
+
+                    case List<string> selectList:
+                        component = new ListBox();
+                        (component as ListBox).ItemsSource = null;
+                        (component as ListBox).ItemsSource = selectList;
+                        (component as ListBox).Margin = new Thickness(2, 2, 2, 2);
+                        (component as ListBox).VerticalAlignment = VerticalAlignment.Center;
+                        (component as ListBox).SelectionChanged += (object sender, SelectionChangedEventArgs e) => {
+                            var lb = sender as ListBox;
+                            var idxpi = items.GetProperty(string.Format(@"{0}_index", item.Name)); // リストの選択インデクス格納プロパティ
+                            var inst = Activator.CreateInstance(items);
+
+                            idxpi.SetValue(inst, lb.SelectedIndex);
+                        };
+
                         break;
                 }
 
