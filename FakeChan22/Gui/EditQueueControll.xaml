@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FakeChan22"
         mc:Ignorable="d"
-        Title="キュー制御設定" Height="239" Width="750" Closing="Window_Closing" Loaded="Window_Loaded">
+        Title="キュー制御設定" Height="239" Width="750" Closing="Window_Closing" Loaded="Window_Loaded" Background="#FFE6DCDC">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeChan22", "FakeChan22\Fa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeChan22TaskBase", "FakeChan22TaskBase\FakeChan22TaskBase.csproj", "{A9589335-7EB4-44CB-8DB5-51CA27CC818C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeChan22Backends", "FakeChan22Backends\FakeChan22Backends.csproj", "{359E575D-121A-4A61-A1F8-1499EFE80698}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{A9589335-7EB4-44CB-8DB5-51CA27CC818C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9589335-7EB4-44CB-8DB5-51CA27CC818C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9589335-7EB4-44CB-8DB5-51CA27CC818C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{359E575D-121A-4A61-A1F8-1499EFE80698}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{359E575D-121A-4A61-A1F8-1499EFE80698}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{359E575D-121A-4A61-A1F8-1499EFE80698}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{359E575D-121A-4A61-A1F8-1499EFE80698}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

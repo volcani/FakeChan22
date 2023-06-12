@@ -24,7 +24,7 @@ namespace FakeChan22
     /// </summary>
     public partial class MainWindow : Window
     {
-        private string versionStr = "1.0.17";
+        private string versionStr = "1.0.18";
         private string configFile = "FakeChan22.conf";
 
         /// <summary>
@@ -43,9 +43,9 @@ namespace FakeChan22
         MessageQueueWrapper messageQueue = new MessageQueueWrapper();
 
         /// <summary>
-        /// AssistantSeikaとの通信用オブジェクト
+        /// TTSバックエンドとの通信用オブジェクト
         /// </summary>
-        ScAPIs api = null;
+        Backends.BackendBridge Api = App.TTSBridge;
 
         /// <summary>
         /// シリアライズ/デシリアライズ用の型コレクション
@@ -59,7 +59,6 @@ namespace FakeChan22
 
         public MainWindow()
         {
-
             // 古いバージョンの設定のバージョンアップを試みる
             if (Properties.Settings.Default.UpgradeRequired)
             {
@@ -126,6 +125,26 @@ namespace FakeChan22
             // ウインドウタイトル変更
             this.Title = config.fakeChan22WindowTitle + " " + config.versionStr;
             TextBoxWinTitle.Text = config.fakeChan22WindowTitle;
+
+            // バックエンド指定
+            {
+                var dict = Api.BackendList;
+                ComboBoxBackendTTSLists.ItemsSource = null;
+                ComboBoxBackendTTSLists.SelectedValuePath = "Key";
+                ComboBoxBackendTTSLists.DisplayMemberPath = "Value";
+                ComboBoxBackendTTSLists.ItemsSource = dict;
+                ComboBoxBackendTTSLists.SelectedIndex = 1; // AssistantSeika
+
+                if (dict.ContainsKey(config.BackendTTSSelect))
+                {
+                    ComboBoxBackendTTSLists.SelectedValue = config.BackendTTSSelect;
+                }
+                else
+                {
+                    ComboBoxBackendTTSLists.SelectedIndex = 1;
+                }
+            }
+
 
             // comment.xml 生成パス設定
             if ((config.commentXmGenlPath == "") || (config.commentXmGenlPath == @".\"))
@@ -198,38 +217,21 @@ namespace FakeChan22
             HwndSource MsgProc = HwndSource.FromHwnd(WinHelper.Handle);
             MsgProc.AddHook(WndProc);
 
+            ComboBoxBackendTTSLists.SelectedValue = config.BackendTTSSelect == 0 ? 1 : config.BackendTTSSelect;
 
-            try
+            if (Api.Selector == 0)
             {
-                api = new ScAPIs();
-            }
-            catch (Exception e1)
-            {
-                MessageBox.Show(String.Format(@"AssistantSeikaとの接続ができません : {0}", e1.Message), "接続処理");
+                MessageBox.Show(String.Format(@"全てのTTSバックエンドと接続ができません。終了します。"), "接続処理");
                 Application.Current.Shutdown();
             }
 
-            try
-            {
-                int count = api.AvatorList().Count;
-
-                if (count == 0)
-                {
-                    MessageBox.Show(String.Format(@"AssistantSeikaで認識されている話者が存在しません"), "接続処理");
-                    Application.Current.Shutdown();
-                }
-            }
-            catch (Exception e2)
-            {
-                MessageBox.Show(String.Format(@"AssistantSeikaの製品スキャンが実行されていない可能性があります : {0}", e2.Message), "接続処理");
-                Application.Current.Shutdown();
-            }
+            // 以降は1つ以上のバックエンドと接続できている状態
 
             // 話者リストが無い時は強制的に作成させる
             if (config.speakerLists == null) config.speakerLists = new List<SpeakerFakeChanList>();
             if (config.speakerLists.Count == 0)
             {
-                MessageBox.Show("話者リストの登録がないので最初に作成してください", "初期設定処理");
+                MessageBox.Show("話者リストを最初に作成してください", "初期設定処理");
 
                 CreateNewSpeakerList();
             }
@@ -272,6 +274,8 @@ namespace FakeChan22
             KnownTypes.AddRange(TypeCollection.FilterProcTypeDictionary.Values.Select(v => v).ToList());
             KnownTypes.Add(typeof(GuiItemAttribute));
             settings.KnownTypes = KnownTypes;
+
+            config.BackendTTSSelect = (int)ComboBoxBackendTTSLists.SelectedValue;
 
             DataContractJsonSerializer uds = new DataContractJsonSerializer(typeof(FakeChanConfig), settings);
             MemoryStream ms = new MemoryStream();

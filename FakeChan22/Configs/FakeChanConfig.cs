@@ -31,6 +31,8 @@ namespace FakeChan22.Config
 
         [DataMember] public string commentXmGenlPath = @".\";
 
+        [DataMember] public int BackendTTSSelect = 1;
+
         public FakeChanConfig()
         {
             //

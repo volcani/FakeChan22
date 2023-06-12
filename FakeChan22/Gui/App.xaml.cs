@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace FakeChan22
@@ -15,6 +10,7 @@ namespace FakeChan22
     public partial class App : Application
     {
         static Mutex mutex = new Mutex(false, "echoseika.fakechan22");
+        public static Backends.BackendBridge TTSBridge { get; private set; }
 
         [STAThread]
         public static void Main()
@@ -26,7 +22,9 @@ namespace FakeChan22
                 return;
             }
 
+            TTSBridge = new Backends.BackendBridge();
             App app = new App();
+
             app.StartupUri = new Uri("MainWindow.xaml", UriKind.Relative);
             app.InitializeComponent();
             app.Run();

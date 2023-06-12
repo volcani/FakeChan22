@@ -9,6 +9,7 @@ using FakeChan22.Params;
 using FakeChan22.Plugins;
 using FakeChan22.Config;
 using FakeChan22.Filters;
+using FakeChan22.Backends;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace FakeChan22.Tasks
@@ -21,7 +22,7 @@ namespace FakeChan22.Tasks
         DispatcherTimer KickTalker;
         DispatcherTimer KickLogQue;
         SubTaskCommentGen CommentGen;
-        ScAPIs api;
+        BackendBridge Bridge;
         Task backgroundTalker;
         BlockingCollection<string> logQue = new BlockingCollection<string>();
 
@@ -43,7 +44,7 @@ namespace FakeChan22.Tasks
             messQueue = que;
             config = cnfg;
 
-            api = new ScAPIs();
+            Bridge = App.TTSBridge;
 
             KickTalker = new DispatcherTimer();
             KickTalker.Tick += new EventHandler(KickTalker_Tick);
@@ -88,7 +89,7 @@ namespace FakeChan22.Tasks
             var (cid, cname, text, eff, emo) = ParseSpeakerAndParams(talk);
 
             Log(string.Format(@"{0}, {1}, async, [{2}]", sname, cid, talk.OrgMessage));
-            api.TalkAsync(cid, text, eff, emo);
+            Bridge.TalkAsync(cid, text, eff, emo);
         }
 
         private void KickTalker_Tick(object sender, EventArgs e)
@@ -111,7 +112,7 @@ namespace FakeChan22.Tasks
                         var emo = spkrs[idx1].Emotions.ToDictionary(k => k.ParamName, v => v.Value);
 
                         Log(string.Format(@"SOLO, {0}, past {1}sec, [{2}]", cid, SoloTimeCount, text));
-                        api.TalkAsync(cid, text, eff, emo);
+                        Bridge.TalkAsync(cid, text, eff, emo);
                     });
                 }
 
@@ -180,7 +181,7 @@ namespace FakeChan22.Tasks
                     {
                         CommentGen.AddComment(item.OrgMessage, sname, "", string.Format(@"{0}:{1}", cid, cname));
                         Log(string.Format(@"{0}, {1}, mode{2}, [{3}]", sname, cid, mode, item.OrgMessage));
-                        api.Talk(cid, text, "", eff, emo);
+                        Bridge.Talk(cid, text, eff, emo);
                     }
                     catch (Exception)
                     {

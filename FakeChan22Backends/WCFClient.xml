@@ -1,0 +1,268 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WCFClient</name>
+    </assembly>
+    <members>
+        <member name="T:AssistantSeika.IWCFClient">
+            <summary>
+            AssistantSeikaアクセス用DLL I/F
+            </summary>
+        </member>
+        <member name="M:AssistantSeika.IWCFClient.Version">
+            <summary>
+            AssistantSeikaバージョン取得
+            </summary>
+            <returns>AssistantSeikaバージョン文字列</returns>
+        </member>
+        <member name="M:AssistantSeika.IWCFClient.ProductScan">
+            <summary>
+            製品スキャン
+            </summary>
+        </member>
+        <member name="M:AssistantSeika.IWCFClient.BootHttpService">
+            <summary>
+            HTTP機能起動
+            </summary>
+        </member>
+        <member name="M:AssistantSeika.IWCFClient.AvatorList">
+            <summary>
+            AssistantSeikaが認識している話者の一覧を取得
+            </summary>
+            <returns>話者一覧</returns>
+        </member>
+        <member name="M:AssistantSeika.IWCFClient.AvatorList2">
+            <summary>
+            AssistantSeikaが認識している話者の少し詳しい一覧を取得
+            </summary>
+            <returns>話者一覧</returns>
+        </member>
+        <member name="M:AssistantSeika.IWCFClient.AvatorListDetail2">
+            <summary>
+            AssistantSeikaが認識している話者の詳しい一覧を取得
+            </summary>
+            <returns>話者一覧</returns>
+        </member>
+        <member name="M:AssistantSeika.IWCFClient.GetDefaultParams2(System.Int32)">
+            <summary>
+            指定話者のデフォルトパラメタ取得
+            </summary>
+            <param name="cid">話者のcid</param>
+            <returns>デフォルトパラメタの一覧</returns>
+        </member>
+        <member name="M:AssistantSeika.IWCFClient.GetCurrentParams2(System.Int32)">
+            <summary>
+            指定話者の現在の設定パラメタ取得
+            </summary>
+            <param name="cid">話者のcid</param>
+            <returns>パラメタの一覧</returns>
+        </member>
+        <member name="M:AssistantSeika.IWCFClient.Talk(System.Int32,System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Decimal},System.Collections.Generic.Dictionary{System.String,System.Decimal})">
+            <summary>
+            指定話者で発声させる
+            </summary>
+            <param name="cid">話者のcid</param>
+            <param name="talktext">発声させるテキスト</param>
+            <param name="filepath">発声内容を保存するファイル名。""なら保存しない</param>
+            <param name="effects">音声効果のパラメタ</param>
+            <param name="emotions">感情のパラメタ</param>
+            <returns>発声時間(ms)</returns>
+        </member>
+        <member name="M:AssistantSeika.IWCFClient.Talk(System.Int32,System.String,System.Collections.Generic.Dictionary{System.String,System.Decimal},System.Collections.Generic.Dictionary{System.String,System.Decimal})">
+            <summary>
+            指定話者で発声させる
+            </summary>
+            <param name="cid">話者のcid</param>
+            <param name="talktext">発声させるテキスト</param>
+            <param name="effects">音声効果のパラメタ</param>
+            <param name="emotions">感情のパラメタ</param>
+            <returns>発声時間(ms)</returns>
+        </member>
+        <member name="M:AssistantSeika.IWCFClient.Talk(System.Int32,System.String[],System.String,System.Collections.Generic.Dictionary{System.String,System.Decimal},System.Collections.Generic.Dictionary{System.String,System.Decimal})">
+            <summary>
+            指定話者で発声させる
+            </summary>
+            <param name="cid">話者のcid</param>
+            <param name="talktexts">発声させるテキストの配列</param>
+            <param name="filepath">発声内容を保存するファイル名。""なら保存しない</param>
+            <param name="effects">音声効果のパラメタ</param>
+            <param name="emotions">感情のパラメタ</param>
+            <returns>発声時間(ms)</returns>
+        </member>
+        <member name="M:AssistantSeika.IWCFClient.Talk(System.Int32,System.String[],System.Collections.Generic.Dictionary{System.String,System.Decimal},System.Collections.Generic.Dictionary{System.String,System.Decimal})">
+            <summary>
+            指定話者で発声させる
+            </summary>
+            <param name="cid">話者のcid</param>
+            <param name="talktexts">発声させるテキストの配列</param>
+            <param name="effects">音声効果のパラメタ</param>
+            <param name="emotions">感情のパラメタ</param>
+            <returns>発声時間(ms)</returns>
+        </member>
+        <member name="M:AssistantSeika.IWCFClient.TalkAsync(System.Int32,System.String,System.Collections.Generic.Dictionary{System.String,System.Decimal},System.Collections.Generic.Dictionary{System.String,System.Decimal})">
+            <summary>
+            指定話者で発声させる（非同期）
+            </summary>
+            <param name="cid">話者のcid</param>
+            <param name="talktext">発声させるテキスト</param>
+            <param name="effects">音声効果のパラメタ</param>
+            <param name="emotions">感情のパラメタ</param>
+        </member>
+        <member name="M:AssistantSeika.IWCFClient.TalkAsync(System.Int32,System.String[],System.Collections.Generic.Dictionary{System.String,System.Decimal},System.Collections.Generic.Dictionary{System.String,System.Decimal})">
+            <summary>
+            指定話者で発声させる（非同期）
+            </summary>
+            <param name="cid">話者のcid</param>
+            <param name="talktexts">発声させるテキストの配列</param>
+            <param name="effects">音声効果のパラメタ</param>
+            <param name="emotions">感情のパラメタ</param>
+        </member>
+        <member name="M:AssistantSeika.IWCFClient.CheckCid(System.Int32)">
+            <summary>
+            cidの変換
+            </summary>
+            <param name="cid">話者のcid</param>
+        </member>
+        <member name="T:AssistantSeika.WCFClient">
+            <summary>
+            AssistantSeikaアクセス用DLL
+            </summary>
+        </member>
+        <member name="M:AssistantSeika.WCFClient.#ctor">
+            <summary>
+            コンストラクタ
+            </summary>
+        </member>
+        <member name="M:AssistantSeika.WCFClient.Finalize">
+            <summary>
+            デストラクタ
+            </summary>
+        </member>
+        <member name="M:AssistantSeika.WCFClient.Version">
+            <summary>
+            AssistantSeikaバージョン取得
+            </summary>
+            <returns>AssistantSeikaバージョン文字列</returns>
+        </member>
+        <member name="M:AssistantSeika.WCFClient.ProductScan">
+            <summary>
+            製品スキャン
+            </summary>
+        </member>
+        <member name="M:AssistantSeika.WCFClient.BootHttpService">
+            <summary>
+            HTTP機能起動
+            </summary>
+        </member>
+        <member name="M:AssistantSeika.WCFClient.AvatorList">
+            <summary>
+            AssistantSeikaが認識している話者の一覧を取得
+            </summary>
+            <returns>話者一覧</returns>
+        </member>
+        <member name="M:AssistantSeika.WCFClient.AvatorList2">
+            <summary>
+            AssistantSeikaが認識している話者の少し詳しい一覧を取得
+            </summary>
+            <returns>話者一覧</returns>
+        </member>
+        <member name="M:AssistantSeika.WCFClient.AvatorListDetail2">
+            <summary>
+            AssistantSeikaが認識している話者の詳しい一覧を取得
+            </summary>
+            <returns>話者一覧</returns>
+        </member>
+        <member name="M:AssistantSeika.WCFClient.GetDefaultParams2(System.Int32)">
+            <summary>
+            指定話者のデフォルトパラメタ取得
+            </summary>
+            <param name="cid">話者のcid</param>
+            <returns>デフォルトパラメタの一覧</returns>
+        </member>
+        <member name="M:AssistantSeika.WCFClient.GetCurrentParams2(System.Int32)">
+            <summary>
+            指定話者の現在の設定パラメタ取得
+            </summary>
+            <param name="cid">話者のcid</param>
+            <returns>パラメタの一覧</returns>
+        </member>
+        <member name="M:AssistantSeika.WCFClient.ResetParams2(System.Int32)">
+            <summary>
+            指定話者の設定パラメタをデフォルトに戻す
+            </summary>
+            <param name="cid">話者のcid</param>
+        </member>
+        <member name="M:AssistantSeika.WCFClient.Talk(System.Int32,System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Decimal},System.Collections.Generic.Dictionary{System.String,System.Decimal})">
+            <summary>
+            指定話者で発声させる
+            </summary>
+            <param name="cid">話者のcid</param>
+            <param name="talktext">発声させるテキスト</param>
+            <param name="filepath">発声内容を保存するファイル名。""なら保存しない</param>
+            <param name="effects">音声効果のパラメタ</param>
+            <param name="emotions">感情のパラメタ</param>
+            <returns>発声時間(ms)</returns>
+        </member>
+        <member name="M:AssistantSeika.WCFClient.Talk(System.Int32,System.String,System.Collections.Generic.Dictionary{System.String,System.Decimal},System.Collections.Generic.Dictionary{System.String,System.Decimal})">
+            <summary>
+            指定話者で発声させる
+            </summary>
+            <param name="cid">話者のcid</param>
+            <param name="talktext">発声させるテキスト</param>
+            <param name="effects">音声効果のパラメタ</param>
+            <param name="emotions">感情のパラメタ</param>
+            <returns>発声時間(ms)</returns>
+        </member>
+        <member name="M:AssistantSeika.WCFClient.Talk(System.Int32,System.String[],System.String,System.Collections.Generic.Dictionary{System.String,System.Decimal},System.Collections.Generic.Dictionary{System.String,System.Decimal})">
+            <summary>
+            指定話者で発声させる
+            </summary>
+            <param name="cid">話者のcid</param>
+            <param name="talktexts">発声させるテキストの配列</param>
+            <param name="filepath">発声内容を保存するファイル名。""なら保存しない</param>
+            <param name="effects">音声効果のパラメタ</param>
+            <param name="emotions">感情のパラメタ</param>
+            <returns>発声時間(ms)</returns>
+        </member>
+        <member name="M:AssistantSeika.WCFClient.Talk(System.Int32,System.String[],System.Collections.Generic.Dictionary{System.String,System.Decimal},System.Collections.Generic.Dictionary{System.String,System.Decimal})">
+            <summary>
+            指定話者で発声させる
+            </summary>
+            <param name="cid">話者のcid</param>
+            <param name="talktexts">発声させるテキストの配列</param>
+            <param name="effects">音声効果のパラメタ</param>
+            <param name="emotions">感情のパラメタ</param>
+            <returns>発声時間(ms)</returns>
+        </member>
+        <member name="M:AssistantSeika.WCFClient.TalkAsync(System.Int32,System.String,System.Collections.Generic.Dictionary{System.String,System.Decimal},System.Collections.Generic.Dictionary{System.String,System.Decimal})">
+            <summary>
+            指定話者で発声させる（非同期）
+            </summary>
+            <param name="cid">話者のcid</param>
+            <param name="talktext">発声させるテキスト</param>
+            <param name="effects">音声効果のパラメタ</param>
+            <param name="emotions">感情のパラメタ</param>
+        </member>
+        <member name="M:AssistantSeika.WCFClient.TalkAsync(System.Int32,System.String[],System.Collections.Generic.Dictionary{System.String,System.Decimal},System.Collections.Generic.Dictionary{System.String,System.Decimal})">
+            <summary>
+            指定話者で発声させる（非同期）
+            </summary>
+            <param name="cid">話者のcid</param>
+            <param name="talktexts">発声させるテキストの配列</param>
+            <param name="effects">音声効果のパラメタ</param>
+            <param name="emotions">感情のパラメタ</param>
+        </member>
+        <member name="M:AssistantSeika.WCFClient.CheckCid(System.Int32)">
+            <summary>
+            cidの変換
+            </summary>
+            <param name="cid">話者のcid</param>
+            <returns>旧cidだった場合、新cidに変換される</returns>
+        </member>
+        <member name="M:AssistantSeika.WCFClient.Shutdown">
+            <summary>
+            AssistantSeikaの終了
+            </summary>
+        </member>
+    </members>
+</doc>

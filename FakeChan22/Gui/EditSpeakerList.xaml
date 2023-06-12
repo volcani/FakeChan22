@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FakeChan22"
         mc:Ignorable="d"
-        Title="話者リスト作成/編集" Height="462" Width="1068" Loaded="Window_Loaded" Closing="Window_Closing">
+        Title="話者リスト作成/編集" Height="462" Width="1068" Loaded="Window_Loaded" Closing="Window_Closing" Background="#FFE6DCDC">
     <Window.Effect>
         <DropShadowEffect/>
     </Window.Effect>

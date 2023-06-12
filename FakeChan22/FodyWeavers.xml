@@ -2,6 +2,7 @@
 	<Costura>
 		<ExcludeAssemblies>
 			FakeChan22TaskBase
+			FakeChan22Backends
 			EmojiTools
 		</ExcludeAssemblies>
 	</Costura>

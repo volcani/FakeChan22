@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FakeChan22"
         mc:Ignorable="d"
-        Title="リスナインタフェース設定" Height="389" Width="600" Loaded="Window_Loaded" Closing="Window_Closing">
+        Title="リスナインタフェース設定" Height="389" Width="600" Loaded="Window_Loaded" Closing="Window_Closing" Background="#FFE6DCDC">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>

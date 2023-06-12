@@ -1,22 +1,14 @@
-﻿using FakeChan22.Filters;
-using FakeChan22.Plugins;
+﻿using FakeChan22.Plugins;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Json;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace FakeChan22
 {
@@ -29,7 +21,7 @@ namespace FakeChan22
 
         SpeakerFakeChanList speakerList = null;
 
-        ScAPIs api = null;
+        Backends.BackendBridge Bridge = App.TTSBridge;
 
         public EditSpeakerList(ref SpeakerFakeChanList spkrs)
         {
@@ -40,11 +32,9 @@ namespace FakeChan22
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            api = new ScAPIs();
-
             TextBoxListName.Text = speakerList.Listname;
 
-            avatorList = api.AvatorList2().Where(v => v.Value["isalias"] == "False").Select(v=> new SpeakerAssistantSeika() { Cid = v.Key, Name = v.Value["name"], ProdName=v.Value["prod"] }).ToList();
+            avatorList = Bridge.AvatorList2().Select(v=> new SpeakerAssistantSeika() { Cid = v.Key, Name = v.Value["name"], ProdName=v.Value["prod"] }).ToList();
             ListBoxAvators.ItemsSource = null;
             ListBoxAvators.ItemsSource = avatorList;
             ListBoxAvators.DisplayMemberPath = "DispName";
@@ -72,7 +62,7 @@ namespace FakeChan22
             foreach (SpeakerAssistantSeika av in avatorList)
             {
                 SpeakerFakeChan sp = new SpeakerFakeChan() { Apply = true, Cid = av.Cid, MacroName = "", Name = av.Name, ProdName = av.ProdName, Effects = null, Emotions = null };
-                var prm = api.GetDefaultParams2(av.Cid);
+                var prm = Bridge.GetDefaultParams2(av.Cid);
                 var eft = prm["effect"].Select(v=>new SpeakerAssistantSeikaParamSpec() { ParamName=v.Key, Value = v.Value["value"], Max_value = v.Value["max"], Min_value = v.Value["min"], Step = v.Value["step"] }).ToList();
                 var emo = prm["emotion"].Select(v => new SpeakerAssistantSeikaParamSpec() { ParamName = v.Key, Value = v.Value["value"], Max_value = v.Value["max"], Min_value = v.Value["min"], Step = v.Value["step"] }).ToList();
 
@@ -98,7 +88,7 @@ namespace FakeChan22
             DataGrid dg = DataGridAvators as DataGrid;
             SpeakerFakeChan sp = new SpeakerFakeChan() { Apply = true, Cid = av.Cid, MacroName = "", Name = av.Name, ProdName = av.ProdName, Effects = null, Emotions = null };
             int idx = dg.SelectedIndex;
-            var prm = api.GetDefaultParams2(av.Cid);
+            var prm = Bridge.GetDefaultParams2(av.Cid);
             var eft = prm["effect"].Select(v => new SpeakerAssistantSeikaParamSpec() { ParamName = v.Key, Value = v.Value["value"], Max_value = v.Value["max"], Min_value = v.Value["min"], Step = v.Value["step"] }).ToList();
             var emo = prm["emotion"].Select(v => new SpeakerAssistantSeikaParamSpec() { ParamName = v.Key, Value = v.Value["value"], Max_value = v.Value["max"], Min_value = v.Value["min"], Step = v.Value["step"] }).ToList();
 
@@ -190,8 +180,8 @@ namespace FakeChan22
                 TextBlock tb = new TextBlock();
 
                 sp.Orientation = Orientation.Vertical;
-                sp.Margin = new Thickness(2, 0, 2, 2);
-                sp.Background = new SolidColorBrush(Color.FromArgb(0xff, 253, 252, 227));
+                sp.Margin = new Thickness(2, 2, 2, 2);
+                sp.Background = new SolidColorBrush(Color.FromArgb(0xff, 255, 255, 255)); //SolidColorBrush(Color.FromArgb(0xff, 253, 252, 227));
 
                 // パラメタ名
                 lb.HorizontalAlignment = HorizontalAlignment.Left;
@@ -354,7 +344,7 @@ namespace FakeChan22
             var eff = sp.Effects.ToDictionary(k => k.ParamName, v => v.Value);
             var emo = sp.Emotions.ToDictionary(k => k.ParamName, v => v.Value);
 
-            api.Talk(sp.Cid, text, "", eff, emo);
+            Bridge.Talk(sp.Cid, text, eff, emo);
         }
 
     }

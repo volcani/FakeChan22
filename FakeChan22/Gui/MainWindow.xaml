@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FakeChan22"
         mc:Ignorable="d"
-        Title="偽装ちゃん22 x.x.x" Height="313" Width="548" Loaded="Window_Loaded" Closing="Window_Closing" Icon="/Resource/icon.ico">
-    <TabControl>
+        Title="偽装ちゃん22 x.x.x" Height="359" Width="554" Loaded="Window_Loaded" Closing="Window_Closing" Icon="/Resource/icon.ico" Background="#FFE6DCDC">
+    <TabControl Background="#FFD8CDCD">
 
         <TabItem Header="設定">
 
@@ -24,6 +24,7 @@
                     </Grid.ColumnDefinitions>
 
                     <Grid.RowDefinitions>
+                        <RowDefinition />
                         <RowDefinition />
                         <RowDefinition />
                         <RowDefinition />
@@ -50,21 +51,24 @@
                     <ComboBox x:Name="ComboBoxListenerConfigLists" DisplayMemberPath="LabelName"  Margin="2,2,2,2" Grid.Column="1" Grid.Row="2" VerticalContentAlignment="Center"  />
                     <Button Content="編集"  Grid.Column="3" Grid.Row="2"  Margin="2,2,2,2" Click="ButtonListenerUpd_Click" />
 
-                    <Label Content="キュー制御" Grid.Column="0" Grid.Row="3"  Margin="2,2,2,2"/>
-                    <Button Content="編集"  Grid.Column="1" Grid.Row="3" Width="40" HorizontalAlignment="Left"  Margin="2,2,2,2" Click="ButtonQueueUpd_Click" />
+                    <Label Content="TTSバックエンド" Grid.Column="0" Grid.Row="3"  Margin="2,2,2,2"/>
+                    <ComboBox x:Name="ComboBoxBackendTTSLists" DisplayMemberPath="LabelName"  Margin="2,2,2,2" Grid.Column="1" Grid.Row="3" VerticalContentAlignment="Center"  />
 
-                    <Label Content="呟き制御" Grid.Column="0" Grid.Row="4"  Margin="2,2,2,2"/>
-                    <Button Content="編集"  Grid.Column="1" Grid.Row="4" Width="40" HorizontalAlignment="Left"  Margin="2,2,2,2" Click="ButtonSoloSpeechUpd_Click" />
+                    <Label Content="キュー制御" Grid.Column="0" Grid.Row="4"  Margin="2,2,2,2"/>
+                    <Button Content="編集"  Grid.Column="1" Grid.Row="4" Width="40" HorizontalAlignment="Left"  Margin="2,2,2,2" Click="ButtonQueueUpd_Click" />
 
-                    <Label Content="タイトル" Grid.Column="0" Grid.Row="5"  Margin="2,2,2,2"/>
-                    <TextBox x:Name="TextBoxWinTitle" Text="" Grid.Column="1" Grid.Row="5"  Margin="2,2,2,2" VerticalAlignment="Center" TextChanged="TextBoxWinTitle_TextChanged"/>
+                    <Label Content="呟き制御" Grid.Column="0" Grid.Row="5"  Margin="2,2,2,2"/>
+                    <Button Content="編集"  Grid.Column="1" Grid.Row="5" Width="40" HorizontalAlignment="Left"  Margin="2,2,2,2" Click="ButtonSoloSpeechUpd_Click" />
 
-                    <Label Content="コメントパス" Grid.Column="0" Grid.Row="6"  Margin="2,2,2,2"/>
-                    <TextBox x:Name="TextBoxCommentXmlPath" Text="" Grid.Column="1" Grid.Row="6"  Margin="2,2,2,2" VerticalAlignment="Center" HorizontalAlignment="Stretch" IsReadOnly="True"/>
-                    <Button Content="編集"  Grid.Column="3" Grid.Row="6" Margin="2,2,2,2" Click="ButtonCommentUpd_Click" />
+                    <Label Content="タイトル" Grid.Column="0" Grid.Row="6"  Margin="2,2,2,2"/>
+                    <TextBox x:Name="TextBoxWinTitle" Text="" Grid.Column="1" Grid.Row="6"  Margin="2,2,2,2" VerticalAlignment="Center" TextChanged="TextBoxWinTitle_TextChanged"/>
 
-                    <Label Content="リスナ初期化" Grid.Column="0" Grid.Row="7"  Margin="2,2,2,2"/>
-                    <Button Content="全リスナ設定初期化"  Grid.Column="1" Grid.Row="7" Margin="2,2,2,2" Click="ButtonResetListenerConfig_Click" />
+                    <Label Content="コメントパス" Grid.Column="0" Grid.Row="7"  Margin="2,2,2,2"/>
+                    <TextBox x:Name="TextBoxCommentXmlPath" Text="" Grid.Column="1" Grid.Row="7"  Margin="2,2,2,2" VerticalAlignment="Center" HorizontalAlignment="Stretch" IsReadOnly="True"/>
+                    <Button Content="編集"  Grid.Column="3" Grid.Row="7" Margin="2,2,2,2" Click="ButtonCommentUpd_Click" />
+
+                    <Label Content="リスナ初期化" Grid.Column="0" Grid.Row="8"  Margin="2,2,2,2"/>
+                    <Button Content="全リスナ設定初期化"  Grid.Column="1" Grid.Row="8" Margin="2,2,2,2" Click="ButtonResetListenerConfig_Click" />
 
                 </Grid>
             </StackPanel>
